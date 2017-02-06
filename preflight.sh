@@ -15,10 +15,10 @@ cd ..
 
 # This says it is for installing wsgi files
 # but I think I was going to go with the flask option
-# so I am copying files there instead.
-# fingers crossed.
+# so I don't know if they actually need to be copied.
+# oh well, fingers crossed.
 
-cp -R src/* $HOME/flask
+cp -R src/* $HOME/wsgi
 
- 
+
 
