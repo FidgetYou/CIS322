@@ -1,13 +1,13 @@
 CREATE TABLE products (
 	product_pk	serial primary key,
-	vendor		varchar(128) not null,
+	vendor		varchar(128),
 	description	varchar(256),
 	alt_description varchar(500)
 );
 
 CREATE TABLE assets (
 	asset_pk	serial primary key,
-	product_fk	integer REFERENCES products (product_pk) not null,
+	product_fk	integer REFERENCES products (product_pk),
 	asset_tag	varchar(10),
 	description	varchar(128),
 	alt_description varchar(500)
@@ -28,8 +28,8 @@ CREATE TABLE facilities (
 CREATE TABLE assets_at (
 	asset_fk	integer REFERENCES assets (asset_pk) not null,
 	facility_fk	integer REFERENCES facilities (facility_pk) not null,
-	arrive_dt	timestamp DEFAULT current_timestamp,
-	depart_dt	timestamp
+	arrive_dt	varchar(20),
+	depart_dt	varchar(20)
 );
 	
 CREATE TABLE convoys (
@@ -37,8 +37,8 @@ CREATE TABLE convoys (
 	request		varchar(10),
 	source_fk	integer REFERENCES facilities (facility_pk) not null,
 	dest_fk		integer REFERENCES facilities (facility_pk) not null,
-	depart_dt	timestamp DEFAULT current_timestamp,
-	arrive_dt	timestamp
+	depart_dt	varchar(20),
+	arrive_dt	varchar(20)
 );
 
 CREATE TABLE used_by (
@@ -49,8 +49,8 @@ CREATE TABLE used_by (
 CREATE TABLE asset_on (
 	asset_fk	integer REFERENCES assets (asset_pk) not null,
 	convoy_fk	integer REFERENCES convoys (convoy_pk) not null,
-	load_dt		timestamp DEFAULT current_timestamp,
-	unload_dt	timestamp 
+	load_dt		varchar(20),
+	unload_dt	varchar(20) 
 );
 
 CREATE TABLE users (
