@@ -28,11 +28,11 @@ def report_filter():
     return render_template('report_filter.html')
 
 @app.route('/report_facility')
-def facilityInventory():
+def report_facility():
     return render_template('report_facility.html')
 
 @app.route('/report_transit')
-def InTransit():
+def report_transit():
     return render_template('report_transit.html')
 
 
