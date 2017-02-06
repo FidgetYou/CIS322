@@ -1,5 +1,34 @@
 <!DOCTYPE html>
 <html>
-	<head><title>OSNAP Login</title></head>
-	<body><h1>Report Facilites Page</h1></body>
+	<head><title>OSNAP Reports</title></head>
+	<body><h1>Facility Inventory Reports</h1>
+
+	
+	
+
+	<div class ="input-group" style="width:340px">
+		<label> Did you actually want Transit Reports instead? </br> </label>
+			
+
+		<form action = "{{url_for('report_transit')}}">
+			<input type = "Submit" value = "Cargo or Shipment?">
+		</form>
+	
+
+	</div>
+
+
+	<div class ="input-group" style="width:340px">
+		<label> Ready to logout? </br> </label>
+			
+
+		<form action = "{{url_for('logout')}}">
+			<input type = "Submit" value = "I'm Outtie!">
+		</form>
+	
+
+	</div>
+
+
+</body>
 </html>
