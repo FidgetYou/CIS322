@@ -8,8 +8,12 @@ import psycopg2
 import sys
 import csv
 import datetime
+from os.path import expanduser
+home = expanduser("~")
+
 
 arg3 = "./osnap_legacy/" + sys.argv[3]
+arg1 = "" + home + sys.argv[1]
 
 with open(arg3, 'r') as f:
     reader = csv.reader(f)
@@ -18,21 +22,36 @@ with open(arg3, 'r') as f:
 #print (csv_list)
 
 # Setup the database connection #
-conn = psycopg2.connect(dbname=sys.argv[1],host='127.0.0.1',port=int(sys.argv[2]))
+try:
+    conn = psycopg2.connect(dbname=sys.argv[1],host='127.0.0.1',port=int(sys.argv[2]))
+except:
+    print("Unable to connect to the database.")
+
 cur = conn.cursor()
 
 for i in range (4, len(sys.argv), 3):
     #print ("i = " + str(i))
     for j in range (1, len(csv_list)):
         numb = int(sys.argv[i+2])
-        #print ("insert into table %s on the row %s this value %s ", (sys.argv[i], sys.argv[i+1], csv_list[j][numb], ))    
+        thing1 = sys.argv[i]
+        thing1 = thing1.replace("`", "")
+        thing1 = thing1.replace("'", "")
+
+        thing2 = sys.argv[i+1]
+        thing3 = csv_list[j][numb]
+
+        #print ("insert into table %s on the row %s this value %s ", (sys.argv[i].replace("'", ""), sys.argv[i+1], csv_list[j][numb], ))    
+
+        curQuery = "INSERT INTO "+thing1+" ("+thing2+") VALUES ('"+thing3+"');"
 
         try:
-            cur.execute("INSERT INTO %s ( %s ) VALUES ( %s ) ", ( sys.argv[i],  sys.argv[i+1], csv_list[j][numb], ))
+            cur.execute(curQuery)
+            print ( "Inserted "+thing3+" into table "+thing1)
         except Exception:
-            print (csv[0][numb] + " had no information at entry #" + str(j))
+            print (csv_list[0][numb] + " had no information at entry #" + str(j))
+
  
 conn.commit()
 
-curr.close()
+cur.close()
 conn.close()

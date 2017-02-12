@@ -1,4 +1,4 @@
-echo "This file was copy/typed from the lost repo, but copies to flask directory."
+echo "This file was copy/typed from the lost repo."
 
 if [ "$#" -ne 1 ]; then
     echo "Usage: ./preflight.sh <dataBaseName>"
