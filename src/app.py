@@ -35,6 +35,10 @@ def report_facility():
 def report_transit():
     return render_template('report_transit.html')
 
+@app.route('/rest')
+def rest():
+    return render_template('rest.html')
+
 
 
 

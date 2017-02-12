@@ -46,7 +46,7 @@ for i in range (4, len(sys.argv), 3):
 
         try:
             cur.execute(curQuery)
-            print ( "Inserted "+thing3+" into table "+thing1)
+            #print ( "Inserted "+thing3+" into table "+thing1)
         except Exception:
             print (csv_list[0][numb] + " had no information at entry #" + str(j))
 
