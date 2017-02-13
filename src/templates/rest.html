@@ -78,43 +78,59 @@
 		<h3>Example:</h3><br>
 			<h4>{<br>&#8220; timestamp &#8220;:  &#8220;2017-02-02 06:15:13&#8220;,<br>
 			&#8220;result&#8220; : &#8220;OK&#8220; , <br>
-			&#8220;key&#8220; : &#8220;bksaoudu...aolchecksya&#8220;<br><br></h4>
+			&#8220;key&#8220; : &#8220;bksaoudu...aolchecksya&#8220;<br>}<br>}<br></h4>
 
 
 
 
-	<h2>lost_key</h2>
-		<h4><br>This is the only lost call that does not authenticate 
-			the requester and uses plain text input 
-			and output.</h4><br>
+	<h2>add_asset</h2>
+		<h4><br>Adds a new asset to LOST.</h4><br>
 		<h3><strong>Request</strong><br></h3>
-			<h4>The request does not provide values for any of the arguments though
-			data and the signature fields must be present in the request.</h4><br>
+			<h4><em>vendor</em> Vendor of the product.</h4><br>
+			<h4><em>description</em> Description of the product.</h4><br>
+			<h4><em>compartments</em> Additional compartments the asset should be classified under.</h4><br>
+			<h4><em>facility</em> Facility code the asset is initially housed at.</h4><br>
+		<h4><strong>Example:</strong></h4><br>
+				<h4>{<br>&#8220; timestamp &#8220;:  &#8220;2017-02-02 06:15:13&#8220;,<br>
+				&#8220; vendor &#8220;:  &#8220; Blunder MissInfo &#8220;,<br>
+				&#8220; description &#8220;:  &#8220; notepad &#8220;,<br>
+				&#8220; compartments &#8220;: [&#8220; wpn:ts &#8220;] <br>
+				&#8220; facility &#8220;:  &#8220; HQ &#8220;,<br>}<br><br></h4>
 		<h3><strong>Response</strong><br></h3>
 			<h4><em>result</em>  'OK' or 'FAIL' </h4><br>
 			<h4><em>key</em>   The LOST public key </h4><br>
 		<h3>Example:</h3><br>
 			<h4>{<br>&#8220; timestamp &#8220;:  &#8220;2017-02-02 06:15:13&#8220;,<br>
-			&#8220;result&#8220; : &#8220;OK&#8220; , <br>
-			&#8220;key&#8220; : &#8220;bksaoudu...aolchecksya&#8220;<br><br></h4>
+			&#8220;result&#8220; : &#8220;OK&#8220; <br>} <br><br></h4>
 
 
 
 
-	<h2>lost_key</h2>
-		<h4><br>This is the only lost call that does not authenticate 
-			the requester and uses plain text input 
-			and output.</h4><br>
+	<h2>add_products</h2>
+		<h4><br>Adds products to LOST. Requests should be atomic (all products are added or no prod-
+ucts  are  added)  and  attempting  to  add  a  duplicate  product  should  cause  the  request
+to fail.  A product is duplicated if at the end of the call the database would have two
+products with the same vendor and description.</h4><br>
 		<h3><strong>Request</strong><br></h3>
-			<h4>The request does not provide values for any of the arguments though
-			data and the signature fields must be present in the request.</h4><br>
+			<h4><em>new_products</em> a json list describing the new products</h4><br>
+		<h4><strong>Example:</strong></h4><br>
+				<h4>{<br>&#8220; timestamp &#8220;:  &#8220;2017-02-02 06:15:13&#8220;,<br>
+					&#8220; new_products &#8220;: [
+				<br>{<br>
+				&#8220; vendor &#8220;:  &#8220; Dunder Miflin &#8220;,<br>
+				&#8220; description &#8220;:  &#8220; notepad &#8220;,<br>
+				&#8220; alt_description &#8220;: &#8220; Children’s storybook &#8220;<br>
+				&#8220; compartments &#8220;: [&#8220;adm:s&#8220;] <br>
+				},<br>{<br>
+				&#8220; vendor &#8220;:  &#8220; Stark Industries &#8220;,<br>
+				&#8220; description &#8220;:  &#8220; Baseball &#8220;,<br>
+				&#8220; alt_description &#8220;: &#8220; Weaponized Sports &#8220;<br>
+				&#8220; compartments &#8220;: [&#8220; nrg:ts &#8220;,&#8220; wpn:s &#8220;]<br>}<br><br></h4>
 		<h3><strong>Response</strong><br></h3>
 			<h4><em>result</em>  'OK' or 'FAIL' </h4><br>
-			<h4><em>key</em>   The LOST public key </h4><br>
 		<h3>Example:</h3><br>
 			<h4>{<br>&#8220; timestamp &#8220;:  &#8220;2017-02-02 06:15:13&#8220;,<br>
-			&#8220;result&#8220; : &#8220;OK&#8220; , <br>
-			&#8220;key&#8220; : &#8220;bksaoudu...aolchecksya&#8220;<br><br></h4>
+			&#8220;result&#8220; : &#8220;OK&#8220;  <br>}<br></h4>
 
 
 
