@@ -8,6 +8,11 @@ if [ "$#" -ne 1 ]; then
     exit;
 fi
 
+# Don't forget: initdb $HOME/dbName
+#               pg_ctl -D /home/osnapdev/LOST -l logfile start
+# (when prompted) and then
+#               createdb dbName
+
 # Create the SQL tables and maybe import/input some data
 
 cd sql
