@@ -37,7 +37,8 @@ def create_user():
         
         session['user'] = the_username
         return render_template('added_login.html')
-    else render_template('create_user.html')
+    else: 
+        return render_template('create_user.html')
 
 @app.route('/')
 @app.route('/login')
@@ -45,11 +46,11 @@ def login():
     return render_template('login.html')
 
 @app.route('/added_login')
-def logout():
+def added_login():
     return render_template('added_login.html')
 
 @app.route('/already_user')
-def logout():
+def already_user():
     return render_template('already_user.html')
 
 @app.route('/logout')
@@ -177,8 +178,8 @@ def suspend_user():
     dat['timestamp'] = req['timestamp']
     dat['result'] = 'OK'
     data = json.dumps(dat)
-return data
+    return data
 
 
 if __name__ == '__main__':
-app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=8080)
