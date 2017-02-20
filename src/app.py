@@ -44,6 +44,14 @@ def create_user():
 def login():
     return render_template('login.html')
 
+@app.route('/added_login')
+def logout():
+    return render_template('added_login.html')
+
+@app.route('/already_user')
+def logout():
+    return render_template('already_user.html')
+
 @app.route('/logout')
 def logout():
     return render_template('logout.html')
