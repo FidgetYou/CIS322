@@ -64,10 +64,43 @@ def create_user():
             return render_template('already_user.html')
         
 
-@app.route('/')
-@app.route('/login')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
+    if request.method == 'GET':
+        return render_template('login.html')
+    if request.method == 'POST':
+        if request.form['uname']:
+            print(request.form['uname'])
+            session['uname'] = request.args.get('uname')
+        else:
+            # If there isn't a username in the session
+            print("No UserName")
+            return render_template('login.html')
+        
+        if request.form['pass']:
+            session['pass'] = request.args.get('pass')
+        else:
+            print("No password")
+            return render_template('login.html')
+    
+            
+        the_username = "'" + request.form['uname'] + "'"
+        the_password = "'" + request.form['pass'] + "'"
+        
+        SQL = "SELECT username FROM user_name WHERE username = %s;"
+        dataIn = (the_username, the_password)
+        cur.execute('SELECT username, password FROM user_name WHERE username = %s AND password = %s', (dataIn))
+        db_row = cur.fetchone()
+
+        if db_row is None:
+            return render_template('wrong_login.html')
+        else:
+            session['uname'] = request.args.get('uname')
+            return render_template('dashboard.html')
+        
+
+
 
 @app.route('/added_login')
 def added_login():
@@ -77,9 +110,17 @@ def added_login():
 def already_user():
     return render_template('already_user.html')
 
+@app.route('/wrong_login')
+def wrong_login():
+    return render_template('wrong_login.html')
+
 @app.route('/logout')
 def logout():
     return render_template('logout.html')
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
 
 @app.route('/report_filter')
 def report_filter():
