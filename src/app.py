@@ -16,10 +16,25 @@ def create_user():
     if request.method == 'GET':
         return render_template('create_user.html')
     if request.method == 'POST':
+        if 'uname' not in session:
+        # If there isn't a github_username in the session, authentication hasn't been done
+            return render_template('create_user.html')
+        if 'pass' not in session:
+            return render_template('create_user.html')
         the_username = request.form['uname']
         the_password = request.form['pass']
-        do some database stuff?
+        
+        SQL = "SELECT username,password FROM user_name WHERE username=%s and password=%s;"
+        data = (session['uname'],session['pass'])
+        cur.execute(SQL, data)
+        db_row = cur.fetchone()
+        if db_row is None:
+            return render_template('create_user.html')
+        
+
         session['user'] = the_username
+        return render_template('login.html')
+    else render_template('create_user.html')
 
 @app.route('/')
 @app.route('/login')
