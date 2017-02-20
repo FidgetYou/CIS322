@@ -24,40 +24,45 @@ def create_user():
     if request.method == 'POST':
         if request.form['uname']:
             print("You've got a name!")
+            print(request.form['uname'])
             session['uname'] = request.args.get('uname')
+        else:
+            # If there isn't a username in the session
+            print("No UserName")
+            return render_template('create_user.html')
+        
         if request.form['pass']:
             print("You've got a password!")
             session['pass'] = request.args.get('pass')
-
-        if 'uname' not in session:
-            # If there isn't a username in the session
-            print("No UserName")
-            # return render_template('create_user.html')
-        if 'pass' not in session:
-            print("no password")
-            # return render_template('create_user.html')
-        the_username = request.form['uname']
-        the_password = request.form['pass']
+        else:
+            print("No password")
+            return render_template('create_user.html')
+    
+            
+        the_username = "'" + request.form['uname'] + "'"
+        the_password = "'" + request.form['pass'] + "'"
+        print (the_username)
         
-        SQL = "SELECT username,password FROM user_name WHERE username=%s and password=%s;"
-        data = (session['uname'],session['pass'])
-        cur.execute(SQL, data)
+        SQL = "SELECT username FROM user_name WHERE username = %s;"
+        data = the_username
+        cur.execute('SELECT username FROM user_name WHERE username = %s', (data,))
         db_row = cur.fetchone()
-        if db_row != None:
+        print (db_row)
+
+        if db_row is None:
+            SQL = "INSERT INTO user_name (username, password) VALUES (%s, %s);"
+            data = (the_username,the_password)
+            cur.execute(SQL, data)
+            conn.commit()
+            print("Added user and pass")
+
+            session['user'] = the_username
+            return render_template('added_login.html')
+        
+        else:
             print("In the database already")
             return render_template('already_user.html')
         
-        SQL = "INSERT INTO user_name (username, password) VALUES (%s, %s);"
-        data = (session['uname'],session['pass'])
-        cur.execute(SQL, data)
-        conn.commit()
-        print("Added user and pass")
-
-        session['user'] = the_username
-        return render_template('added_login.html')
-    else: 
-        print("Something else went wrong")
-        return render_template('create_user.html')
 
 @app.route('/')
 @app.route('/login')
