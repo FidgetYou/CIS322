@@ -1,6 +1,6 @@
 {
     "database": {
-        "dbname": "lost",
+        "dbname": "LOST",
         "dbhost": "/tmp",
         "dbport": 5432
     },

@@ -1,5 +1,6 @@
-from flask import Flask, render_template, redirect, url_for, session, flash
-##from CONFIG import HOST, PORT, DEBUG, APP_SECRET_KEY, DB_LOCATION
+from flask import Flask, render_template, redirect, url_for, session, flash, request
+from config import dbname, dbhost, dbport
+import json
 ##from db_helper import UTC_OFFSET
 import psycopg2
 import datetime
@@ -11,16 +12,30 @@ import sys
 
 app = Flask(__name__)
 
+app.secret_key = 'qwertyuiopasdfghjklzxcvbnm'
+
+conn = psycopg2.connect(dbname=dbname, host=dbhost, port=dbport)
+cur = conn.cursor()
+
 @app.route('/create_user', methods=['GET', 'POST'])
 def create_user():
     if request.method == 'GET':
         return render_template('create_user.html')
     if request.method == 'POST':
+        if request.form['uname']:
+            print("You've got a name!")
+            session['uname'] = request.args.get('uname')
+        if request.form['pass']:
+            print("You've got a password!")
+            session['pass'] = request.args.get('pass')
+
         if 'uname' not in session:
-        # If there isn't a github_username in the session, authentication hasn't been done
-            return render_template('create_user.html')
+            # If there isn't a username in the session
+            print("No UserName")
+            # return render_template('create_user.html')
         if 'pass' not in session:
-            return render_template('create_user.html')
+            print("no password")
+            # return render_template('create_user.html')
         the_username = request.form['uname']
         the_password = request.form['pass']
         
@@ -29,15 +44,19 @@ def create_user():
         cur.execute(SQL, data)
         db_row = cur.fetchone()
         if db_row != None:
+            print("In the database already")
             return render_template('already_user.html')
         
         SQL = "INSERT INTO user_name (username, password) VALUES (%s, %s);"
         data = (session['uname'],session['pass'])
         cur.execute(SQL, data)
-        
+        conn.commit()
+        print("Added user and pass")
+
         session['user'] = the_username
         return render_template('added_login.html')
     else: 
+        print("Something else went wrong")
         return render_template('create_user.html')
 
 @app.route('/')

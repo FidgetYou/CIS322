@@ -17,16 +17,17 @@
 		
 	<div class="row">
             <div class="col-lg-12">
-                <p> <label>LOST Login: Please tell us who you are.</p>
+
+                <p> <label>LOST Login: Please tell us who you are.</label> {{session.username}}</p>
                 
-                <form action="{{url_for('signup')}}" method="POST">
+                <form action="{{url_for('create_user')}}" method="POST">
                     <div class="input-group" style="width:340px">
                         <label>User Name: </label>
-			<input class="form-control input-lg" placeholder="What is your handle" name="userName" value="">
+			<input class="form-control input-lg" placeholder="What is your handle" name="uname">
                     </div>
                     <div class="input-group" style="width:340px">
                         <label> Password: </label>
-                        <input class="form-control input-lg" placeholder="Don't use PASSWORD" name="repo">
+                        <input class="form-control input-lg" placeholder="Don't use PASSWORD" name="pass">
                     </div>
                    
                     <div class="input-group" style="width:340px">
@@ -45,7 +46,8 @@
         <!--
         <div class="row">
         <div class="col-lg-12">
-            <button type="submit" class="btn btn-success" action="{{url_for('signup')}}" method="POST">Create User</button>
+            <button type="submit" class="btn btn-success" action="{{url_for('create_user')}}" method="POST">Create 
+User</button>
         </div>
         </div>
 	-->
