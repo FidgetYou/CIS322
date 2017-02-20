@@ -118,7 +118,7 @@ def wrong_login():
 def logout():
     return render_template('logout.html')
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods=['GET'])
 def dashboard():
     return render_template('dashboard.html')
 
