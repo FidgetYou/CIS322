@@ -11,10 +11,17 @@ import sys
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return render_template('login.html')
+@app.route('/create_user', methods=['GET', 'POST'])
+def create_user():
+    if request.method == 'GET':
+        return render_template('create_user.html')
+    if request.method == 'POST':
+        the_username = request.form['uname']
+        the_password = request.form['pass']
+        do some database stuff?
+        session['user'] = the_username
 
+@app.route('/')
 @app.route('/login')
 def login():
     return render_template('login.html')
