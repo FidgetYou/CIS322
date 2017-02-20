@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head><title>OSNAP Signup</title></head>
+	<body><h1>Please Sign Up:</h1>
+
+	<!--
+	<div class ="input-group" style="width:340px">
+		<label> Who are you? </br> </label>
+		<input class="form-control input-lg" placeholder="User Name" name="login">
+	
+
+		<form action = "{{url_for('report_filter')}}">
+			<input type = "text" name = "mytext"/>
+			<input type = "Submit" value = "Submit">
+		</form>
+	-->
+		
+	<div class="row">
+            <div class="col-lg-12">
+                <p> <label>LOST Login: Please tell us who you are.</p>
+                
+                <form action="{{url_for('signup')}}" method="POST">
+                    <div class="input-group" style="width:340px">
+                        <label>User Name: </label>
+			<input class="form-control input-lg" placeholder="What is your handle" name="userName" value="">
+                    </div>
+                    <div class="input-group" style="width:340px">
+                        <label> Password: </label>
+                        <input class="form-control input-lg" placeholder="Don't use PASSWORD" name="repo">
+                    </div>
+                   
+                    <div class="input-group" style="width:340px">
+                        <button type="submit" class="btn btn-success">Create User</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <!-- end of row -->
+
+        <br>
+        <br>
+
+        <!-- submit button -->
+        <!--
+        <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" class="btn btn-success" action="{{url_for('signup')}}" method="POST">Create User</button>
+        </div>
+        </div>
+	-->
+	</div>
+
+
+</body>
+</html>
