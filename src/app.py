@@ -28,12 +28,15 @@ def create_user():
         data = (session['uname'],session['pass'])
         cur.execute(SQL, data)
         db_row = cur.fetchone()
-        if db_row is None:
-            return render_template('create_user.html')
+        if db_row != None:
+            return render_template('already_user.html')
         
-
+        SQL = "INSERT INTO user_name (username, password) VALUES (%s, %s);"
+        data = (session['uname'],session['pass'])
+        cur.execute(SQL, data)
+        
         session['user'] = the_username
-        return render_template('login.html')
+        return render_template('added_login.html')
     else render_template('create_user.html')
 
 @app.route('/')
