@@ -1,5 +1,6 @@
-from flask import Flask, render_template, redirect, url_for, session, flash
-##from CONFIG import HOST, PORT, DEBUG, APP_SECRET_KEY, DB_LOCATION
+from flask import Flask, render_template, redirect, url_for, session, flash, request
+from config import dbname, dbhost, dbport
+import json
 ##from db_helper import UTC_OFFSET
 import psycopg2
 import datetime
@@ -11,17 +12,115 @@ import sys
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return render_template('login.html')
+app.secret_key = 'qwertyuiopasdfghjklzxcvbnm'
 
-@app.route('/login')
+conn = psycopg2.connect(dbname=dbname, host=dbhost, port=dbport)
+cur = conn.cursor()
+
+@app.route('/create_user', methods=['GET', 'POST'])
+def create_user():
+    if request.method == 'GET':
+        return render_template('create_user.html')
+    if request.method == 'POST':
+        if request.form['uname']:
+            print("You've got a name!")
+            print(request.form['uname'])
+            session['uname'] = request.args.get('uname')
+        else:
+            # If there isn't a username in the session
+            print("No UserName")
+            return render_template('create_user.html')
+        
+        if request.form['pass']:
+            print("You've got a password!")
+            session['pass'] = request.args.get('pass')
+        else:
+            print("No password")
+            return render_template('create_user.html')
+    
+            
+        the_username = "'" + request.form['uname'] + "'"
+        the_password = "'" + request.form['pass'] + "'"
+        print (the_username)
+        
+        SQL = "SELECT username FROM user_name WHERE username = %s;"
+        data = the_username
+        cur.execute('SELECT username FROM user_name WHERE username = %s', (data,))
+        db_row = cur.fetchone()
+        print (db_row)
+
+        if db_row is None:
+            SQL = "INSERT INTO user_name (username, password) VALUES (%s, %s);"
+            data = (the_username,the_password)
+            cur.execute(SQL, data)
+            conn.commit()
+            print("Added user and pass")
+
+            session['user'] = the_username
+            return render_template('added_login.html')
+        
+        else:
+            print("In the database already")
+            return render_template('already_user.html')
+        
+
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
+    if request.method == 'GET':
+        return render_template('login.html')
+    if request.method == 'POST':
+        if request.form['uname']:
+            print(request.form['uname'])
+            session['uname'] = request.args.get('uname')
+        else:
+            # If there isn't a username in the session
+            print("No UserName")
+            return render_template('login.html')
+        
+        if request.form['pass']:
+            session['pass'] = request.args.get('pass')
+        else:
+            print("No password")
+            return render_template('login.html')
+    
+            
+        the_username = "'" + request.form['uname'] + "'"
+        the_password = "'" + request.form['pass'] + "'"
+        
+        SQL = "SELECT username FROM user_name WHERE username = %s;"
+        dataIn = (the_username, the_password)
+        cur.execute('SELECT username, password FROM user_name WHERE username = %s AND password = %s', (dataIn))
+        db_row = cur.fetchone()
+
+        if db_row is None:
+            return render_template('wrong_login.html')
+        else:
+            session['uname'] = request.args.get('uname')
+            return render_template('dashboard.html')
+        
+
+
+
+@app.route('/added_login')
+def added_login():
+    return render_template('added_login.html')
+
+@app.route('/already_user')
+def already_user():
+    return render_template('already_user.html')
+
+@app.route('/wrong_login')
+def wrong_login():
+    return render_template('wrong_login.html')
 
 @app.route('/logout')
 def logout():
     return render_template('logout.html')
+
+@app.route('/dashboard', methods=['GET'])
+def dashboard():
+    return render_template('dashboard.html')
 
 @app.route('/report_filter')
 def report_filter():
@@ -144,9 +243,8 @@ def suspend_user():
     dat['timestamp'] = req['timestamp']
     dat['result'] = 'OK'
     data = json.dumps(dat)
-return data
+    return data
 
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
-

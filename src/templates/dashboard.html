@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head><title>OSNAP Login</title></head>
+	<body><h1>Please login:</h1>
+
+	<!--
+	<div class ="input-group" style="width:340px">
+		<label> Who are you? </br> </label>
+		<input class="form-control input-lg" placeholder="User Name" name="login">
+	
+
+		<form action = "{{url_for('report_filter')}}">
+			<input type = "text" name = "mytext"/>
+			<input type = "Submit" value = "Submit">
+		</form>
+	-->
+		
+	<div class="row">
+            <div class="col-lg-12">
+                <p> <label>Dashboard</label> </p>
+                <div id ="content">
+                {% if session['uname'] %}
+                If your name is <strong>{{session['uname']}}</strong> I didn't screw up too badly.<br>
+                {% else %}
+		I may have made a mistake letting you in here...
+		{% endif %}
+		</div>    
+
+
+
+            </div>
+
+        </div>
+        <!-- end of row -->
+
+        <br>
+        <br>
+
+        <!-- submit button -->
+        <!--
+        <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" class="btn btn-success" action="{{url_for('dashboard')}}" method="POST">Create 
+User</button>
+        </div>
+        </div>
+	-->
+	
+
+
+</body>
+</html>

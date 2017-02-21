@@ -1,22 +1,30 @@
 echo "This file was copy/typed from the lost repo."
 
+# BASH if statements! Cool!
+# Checks for correct amount of input
+
 if [ "$#" -ne 1 ]; then
     echo "Usage: ./preflight.sh <dataBaseName>"
     exit;
 fi
 
+# Don't forget: initdb $HOME/dbName
+#               pg_ctl -D /home/osnapdev/LOST -l logfile start
+# (when prompted) and then
+#               createdb dbName
+
+# Create the SQL tables and maybe import/input some data
+
 cd sql
 psql $1 -f create_tables.sql
-curl -O https://classes.cs.uoregon.edu//17W/cis322/files/osnap_legacy.tar.gz
-tar -xzf osnap_legacy.tar.gz
-bash ./import_data.sh $1 5432
-rm -rf osnap_legacy osnap_legacy.tar.gz
+#curl -O https://classes.cs.uoregon.edu//17W/cis322/files/osnap_legacy.tar.gz
+#tar -xzf osnap_legacy.tar.gz
+#bash ./import_data.sh $1 5432
+#rm -rf osnap_legacy osnap_legacy.tar.gz
 cd ..
 
-# This says it is for installing wsgi files
-# but I think I was going to go with the flask option
-# so I don't know if they actually need to be copied.
-# oh well, fingers crossed.
+
+# This is for installing/maving files to wsgi
 
 cp -R src/* $HOME/wsgi
 

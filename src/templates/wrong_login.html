@@ -18,15 +18,15 @@
 	<div class="row">
             <div class="col-lg-12">
                 <p> <label>LOST Login:</label> </p>
-                
+                <p> This login did not match our database </p>
                 <form action="{{url_for('login')}}" method="POST">
                     <div class="input-group" style="width:340px">
                         <label>User Name: </label>
-			<input class="form-control input-lg" placeholder="Is it LOST?" name="uname">
+			<input class="form-control input-lg" placeholder="Have you lost your login?" name="uname" value="">
                     </div>
                     <div class="input-group" style="width:340px">
                         <label> Password: </label>
-                        <input class="form-control input-lg" placeholder="I hope it's not password" name="pass">
+                        <input class="form-control input-lg" placeholder="Did you forget?" name="pass">
                     </div>
                    
                     <div class="input-group" style="width:340px">
