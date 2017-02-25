@@ -31,7 +31,7 @@ def create_user():
             print("No UserName")
             return render_template('create_user.html')
         
-        if request.form['pass']:
+        if request.form['pass'] or request.form['role']:
             print("You've got a password!")
             session['pass'] = request.args.get('pass')
         else:
@@ -41,6 +41,7 @@ def create_user():
             
         the_username = "'" + request.form['uname'] + "'"
         the_password = "'" + request.form['pass'] + "'"
+        the_jobtitle = "'" + request.form['role'] + "'"
         print (the_username)
         
         SQL = "SELECT username FROM user_name WHERE username = %s;"
@@ -50,8 +51,8 @@ def create_user():
         print (db_row)
 
         if db_row is None:
-            SQL = "INSERT INTO user_name (username, password) VALUES (%s, %s);"
-            data = (the_username,the_password)
+            SQL = "INSERT INTO user_name (username, password, role) VALUES (%s, %s, %s);"
+            data = (the_username,the_password,the_jobtitle)
             cur.execute(SQL, data)
             conn.commit()
             print("Added user and pass")
