@@ -14,6 +14,7 @@ app = Flask(__name__)
 
 app.secret_key = 'qwertyuiopasdfghjklzxcvbnm'
 
+##session = requests.Session()
 conn = psycopg2.connect(dbname=dbname, host=dbhost, port=dbport)
 cur = conn.cursor()
 
@@ -24,8 +25,7 @@ def create_user():
     if request.method == 'POST':
         if request.form['uname']:
             print("You've got a name!")
-            print(request.form['uname'])
-            session['uname'] = request.args.get('uname')
+            session['uname'] = request.form['uname']
         else:
             # If there isn't a username in the session
             print("No UserName")
@@ -33,7 +33,7 @@ def create_user():
         
         if request.form['pass'] or request.form['role']:
             print("You've got a password!")
-            session['pass'] = request.args.get('pass')
+            session['pass'] = request.form['pass']
         else:
             print("No password")
             return render_template('create_user.html')
@@ -55,9 +55,8 @@ def create_user():
             data = (the_username,the_password,the_jobtitle)
             cur.execute(SQL, data)
             conn.commit()
-            print("Added user and pass")
+            print("Added user " + the_username)
 
-            session['user'] = the_username
             return render_template('added_login.html')
         
         else:
@@ -72,15 +71,14 @@ def login():
         return render_template('login.html')
     if request.method == 'POST':
         if request.form['uname']:
-            print(request.form['uname'])
-            session['uname'] = request.args.get('uname')
+            session['uname'] = request.form['uname']
         else:
             # If there isn't a username in the session
             print("No UserName")
             return render_template('login.html')
         
         if request.form['pass']:
-            session['pass'] = request.args.get('pass')
+            session['pass'] = request.form['pass']
         else:
             print("No password")
             return render_template('login.html')
@@ -97,7 +95,6 @@ def login():
         if db_row is None:
             return render_template('wrong_login.html')
         else:
-            session['uname'] = request.args.get('uname')
             return render_template('dashboard.html')
         
 
