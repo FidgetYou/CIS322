@@ -127,7 +127,7 @@ def add_facility():
     if request.method == 'GET':
         SQL = "SELECT facility_name FROM facility"""
         cur.execute(SQL)
-        res = cur.fetchall()
+        fac = cur.fetchall()
         facility_names = []
         for f in fac:
             a = dict()
@@ -136,7 +136,7 @@ def add_facility():
         session['facilities'] = facility_names
         
         
-        return render_template('facility.html')
+        return render_template('add_facility.html')
 
     if request.method == 'POST':
         session['error'] = ""
@@ -157,11 +157,11 @@ def add_facility():
                 conn.commit()
 
             session['error'] = "Facility " + the_flity + " has been added to the database."
-            return render_template('facility.html')
+            return render_template('add_facility.html')
         
         else:
             session['error'] = "Please fill all of the boxes."
-            return render_template('facility.html')
+            return render_template('add_facility.html')
 
 
 
