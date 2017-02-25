@@ -45,8 +45,8 @@ def create_user():
         print (the_username)
         
         SQL = "SELECT username FROM user_name WHERE username = %s;"
-        data = the_username
-        cur.execute('SELECT username FROM user_name WHERE username = %s', (data,))
+        one_data = the_username
+        cur.execute('SELECT username FROM user_name WHERE username = %s', (one_data,))
         db_row = cur.fetchone()
         print (db_row)
 
@@ -134,13 +134,34 @@ def add_facility():
             a['facility_name']=a[0]
             facility_names.append(a)
         session['facilities'] = facility_names
-
+        
+        
         return render_template('facility.html')
+
     if request.method == 'POST':
+        session['error'] = ""
         if request.form['facil'] and request.form['fcode'] and request.form['finfo']:
-            print("I should probably do stuff")
+            the_flity = "'" + request.form['facil'] + "'"
+            the_fcode = "'" + request.form['fcode'] + "'"
+            the_finfo = "'" + request.form['finfo'] + "'"
+        
+            SQL = "SELECT facility_name, facility_code FROM facility WHERE facility_name = %s AND facility_code = %s;"
+            data = (the_flity,the_fcode)
+            cur.execute(SQL, data)
+            db_row = cur.fetchone()
+        
+            if db_row is None:
+                SQL = "INSERT INTO facility (facility_name, facility_code, facility_info) VALUES (%s, %s, %s);"
+                data = (the_flity, the_fcode, the_finfo)
+                cur.execute(SQL, data)
+                conn.commit()
+
+            session['error'] = "Facility " + the_flity + " has been added to the database."
+            return render_template('facility.html')
+        
         else:
             session['error'] = "Please fill all of the boxes."
+            return render_template('facility.html')
 
 
 
