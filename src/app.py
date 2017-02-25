@@ -120,6 +120,30 @@ def logout():
 def dashboard():
     return render_template('dashboard.html')
 
+
+
+@app.route('/add_facility', methods=['GET', 'POST'])
+def add_facility():
+    if request.method == 'GET':
+        SQL = "SELECT facility_name FROM facility"""
+        cur.execute(SQL)
+        res = cur.fetchall()
+        facility_names = []
+        for f in fac:
+            a = dict()
+            a['facility_name']=a[0]
+            facility_names.append(a)
+        session['facilities'] = facility_names
+
+        return render_template('facility.html')
+    if request.method == 'POST':
+        if request.form['facil'] and request.form['fcode'] and request.form['finfo']:
+            print("I should probably do stuff")
+        else:
+            session['error'] = "Please fill all of the boxes."
+
+
+
 @app.route('/report_filter')
 def report_filter():
     return render_template('report_filter.html')
