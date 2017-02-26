@@ -39,9 +39,9 @@
                     </div>
 
                     <div class="input-group" style="width:340px">
-                        <label> Asset Arrival Time: </label>
+                        <label> Asset's Location: </label>
                         <select name = "facilitymenu">
-			{% for entry in session.facility %}
+			{% for entry in session.facilities %}
 			<option value="{{ entry.facility_names }}">{{ entry.facility_names }}</option>
 			
 			{% endfor %}

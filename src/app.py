@@ -170,7 +170,7 @@ def add_facility():
 
 
 
-@app.route('/add_asset')
+@app.route('/add_asset', methods=['GET', 'POST'])
 def add_asset():
     
     if request.method == 'GET':
@@ -203,8 +203,10 @@ def add_asset():
     if request.method == 'POST':
         session['Aerror'] = ""
         if request.form['asset'] and request.form['ainfo']:
-            the_asset = "" + request.form['asset'] + ""
-            the_ainfo = "" + request.form['ainfo'] + ""
+            the_asset = "'" + request.form['asset'] + "'"
+            the_ainfo = "'" + request.form['ainfo'] + "'"
+            the_facil = "'" + request.form['facilitymenu'] + "'"
+            the_times = "'" + request.form['time'] + "'"
         
             SQL = "SELECT asset_tag FROM asset WHERE asset_tag = %s;"
             Adata = (the_asset)
@@ -223,12 +225,12 @@ def add_asset():
                 db_row1 = cur.fetchone()
 
                 SQL = "SELECT facility_pk FROM facility WHERE facility_name = %s;"
-                Adata = (request.form['facilitymenu'])
+                Adata = (the_facil)
                 cur.execute(SQL, Adata)
                 db_row2 = cur.fetchone()
         
                 SQL = "INSERT INTO asset_at (asset_fk, facility_fk, arrive) VALUES (%s, %s, %s);"
-                Cdata = (db_row1, db_row2, request.form['time'])
+                Cdata = (db_row1, db_row2, the_times)
                 cur.execute(SQL, Cdata)
                 conn.commit()
                 
