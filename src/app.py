@@ -223,7 +223,7 @@ def add_asset():
                 db_row1 = cur.fetchone()
 
                 SQL = "SELECT facility_pk FROM facility WHERE facility_name = %s;"
-                Adata = (request.form['facil'])
+                Adata = (request.form['facilitymenu'])
                 cur.execute(SQL, Adata)
                 db_row2 = cur.fetchone()
         

@@ -8,9 +8,9 @@
             <div class="col-lg-12">
 		<div><h2>Assets:</h2>
 		    <table>
-			{% for entry in session.asset %}
+			{% for entry in session.assets %}
 			<tr>
-				<td>{{ entry.facility_name }}</td>
+				<td>{{ entry.asset_names }}</td>
 			</tr>
 			{% endfor %}
 		    </table>
@@ -18,24 +18,34 @@
 		    
 		<div id ="content">
                 	{% if session['error'] %}
-               		 <br> <strong>{{session['error']}}</strong> <br>
+               		 <br> <strong>{{session['Aerror']}}</strong> <br>
 			{% endif %}
 		</div> 
 
-                <p> <label>LOST Facility Additions: Where's new?</label> {{session.username}}</p>
+                <p> <label>LOST Asset Additions: What's new?</label> {{session.username}}</p>
                 
-                <form action="{{url_for('add_facility')}}" method="POST">
+                <form action="{{url_for('add_asset')}}" method="POST">
                     <div class="input-group" style="width:340px">
-                        <label>Facility Name: </label>
-			<input class="form-control input-lg" placeholder="What are we calling it?" name="facil">
+                        <label>Asset Tag (Name?): </label>
+			<input class="form-control input-lg" placeholder="What are we calling it?" name="asset">
                     </div>
                     <div class="input-group" style="width:340px">
-                        <label> F-code? </label>
-                        <input class="form-control input-lg" placeholder="It's code... so." name="fcode">
+                        <label> Asset Info? </label>
+                        <input class="form-control input-lg" placeholder="Can you describe the thing?" name="ainfo">
                     </div>
                     <div class="input-group" style="width:340px">
-                        <label> Facility Description: </label>
-                        <input class="form-control input-lg" placeholder="Please don't leave this blank" name="finfo">
+                        <label> Asset Arrival Time: </label>
+                        <input type = "time" name="time">
+                    </div>
+
+                    <div class="input-group" style="width:340px">
+                        <label> Asset Arrival Time: </label>
+                        <select name = "facilitymenu">
+			{% for entry in session.facility %}
+			<option value="{{ entry.facility_names }}">{{ entry.facility_names }}</option>
+			
+			{% endfor %}
+			</select>
                     </div>
                    
                     <div class="input-group" style="width:340px">
@@ -54,7 +64,7 @@
         <!--
         <div class="row">
         <div class="col-lg-12">
-            <button type="submit" class="btn btn-success" action="{{url_for('add_facility')}}" method="POST">Facility</button>
+            <button type="submit" class="btn btn-success" action="{{url_for('add_asset')}}" method="POST">Facility</button>
         </div>
         </div>
 	-->
