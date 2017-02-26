@@ -26,6 +26,12 @@
 			{% endfor %}
 		    </table>
 		</div>
+		    
+		<div id ="content">
+                	{% if session['error'] %}
+               		 <br> <strong>{{session['error']}}</strong> <br>
+			{% endif %}
+		</div> 
 
                 <p> <label>LOST Facility Additions: Where's new?</label> {{session.username}}</p>
                 
@@ -63,7 +69,7 @@
         </div>
         </div>
 	-->
-	</div>
+	
 
 
 </body>
