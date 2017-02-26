@@ -136,8 +136,8 @@ def add_facility():
             facility_names.append(a)
         session['facilities'] = facility_names
         
-        
         return render_template('add_facility.html')
+
 
     if request.method == 'POST':
         session['error'] = ""
@@ -157,138 +157,94 @@ def add_facility():
                 cur.execute(SQL, data)
                 conn.commit()
 
-            
-            session['error'] = "Facility " + the_flity + " has been added to the database."
-            return redirect(url_for('add_facility'))
-        
+                session['error'] = "" + the_flity + " has been added to the database."
+                return render_template('add_facility.html')
+
+            else:
+                session['error'] = "The facility " + the_flity + " is already in the database."
+                return render_template('add_facility.html')
+                      
         else:
             session['error'] = "Please fill in ALL of the boxes."
             return render_template('add_facility.html')
 
 
 
-@app.route('/report_filter')
-def report_filter():
-    return render_template('report_filter.html')
-
-@app.route('/report_facility')
-def report_facility():
-    return render_template('report_facility.html')
-
-@app.route('/report_transit')
-def report_transit():
-    return render_template('report_transit.html')
-
-@app.route('/rest')
-def rest():
-    return render_template('rest.html')
-    """return render_template('welcome.html',dbname=dbname,dbhost=dbhost,dbport=dbport)"""
-
-@app.route('/rest/list_products', methods=('POST',))
-def list_products():
-    """This function is huge... much of it should be broken out into other supporting
-        functions"""
+@app.route('/add_asset')
+def add_asset():
     
-    # Check maybe process as plaintext
-    if request.method=='POST' and 'arguments' in request.form:
-        req=json.loads(request.form['arguments'])
-    # Unmatched, take the user somewhere else
-    else:
-        redirect('rest')
-    
-    # Setup a connection to the database
-    conn = psycopg2.connect(dbname=dbname,host=dbhost,port=dbport)
-    cur  = conn.cursor()
-    
-    # If execution gets here we have request json to work with
-    # Do I need to handle compartments in this query?
-    if len(req['compartments'])==0:
-        print("have not compartment")
-        # Just handle vendor and description
-        SQLstart = """select vendor,description,string_agg(c.abbrv||':'||l.abbrv,',')
-from products p
-left join security_tags t on p.product_pk=t.product_fk
-left join sec_compartments c on t.compartment_fk=c.compartment_pk
-left join sec_levels l on t.level_fk=l.level_pk"""
-        if req['vendor']=='' and req['description']=='':
-            # No filters, add the group by and query is ready to go
-            SQLstart += " group by vendor,description"
-            cur.execute(SQLstart)
+    if request.method == 'GET':
+
+        
+        SQL = "SELECT facility_name FROM facility"
+        cur.execute(SQL)
+        fac = cur.fetchall()
+        facility_names = []
+        for f in fac:
+            a = dict()
+            a['facility_name']=f[0]
+            facility_names.append(a)
+        session['facilities'] = facility_names
+
+        
+        SQL = "SELECT asset_tag FROM asset"
+        cur.execute(SQL)
+        fac = cur.fetchall()
+        asset_names = []
+        for f in fac:
+            a = dict()
+            a['asset_tag']=f[0]
+            asset_names.append(a)
+        session['assets'] = asset_names
+        
+        return render_template('add_asset.html')
+
+
+    if request.method == 'POST':
+        session['Aerror'] = ""
+        if request.form['asset'] and request.form['ainfo']:
+            the_asset = "" + request.form['asset'] + ""
+            the_ainfo = "" + request.form['ainfo'] + ""
+        
+            SQL = "SELECT asset_tag FROM asset WHERE asset_tag = %s;"
+            Adata = (the_asset)
+            cur.execute(SQL, Adata)
+            db_row = cur.fetchone()
+        
+            if db_row is None:
+                SQL = "INSERT INTO asset (asset_tag, asset_info) VALUES (%s, %s);"
+                Bdata = (the_asset, the_ainfo)
+                cur.execute(SQL, Bdata)
+                conn.commit()
+
+                SQL = "SELECT asset_pk FROM asset WHERE asset_tag = %s;"
+                Adata = (the_asset)
+                cur.execute(SQL, Adata)
+                db_row1 = cur.fetchone()
+
+                SQL = "SELECT facility_pk FROM facility WHERE facility_name = %s;"
+                Adata = (request.form['facil'])
+                cur.execute(SQL, Adata)
+                db_row2 = cur.fetchone()
+        
+                SQL = "INSERT INTO asset_at (asset_fk, facility_fk, arrive) VALUES (%s, %s, %s);"
+                Cdata = (db_row1, db_row2, request.form['time'])
+                cur.execute(SQL, Cdata)
+                conn.commit()
+                
+
+                session['Aerror'] = "" + the_asset + " has been added to the database."
+                return render_template('add_asset.html')
+
+            else:
+                session['Aerror'] = "The asset " + the_asset + " is already in the database."
+                return render_template('add_asset.html')
+                      
         else:
-            if not req['vendor']=='' and not req['description']=='':
-                req['vendor']="%"+req['vendor']+"%"
-                req['description']="%"+req['description']+"%"
-                SQLstart += " where description ilike %s and vendor ilike %s group by vendor,description"
-                cur.execute(SQLstart,(req['description'],req['vendor']))
-            elif req['vendor']=='':
-                req['description']="%"+req['description']+"%"
-                SQLstart += " where description ilike %s group by vendor,description"
-                cur.execute(SQLstart,(req['description'],))
-            elif req['description']=='':
-                req['vendor']="%"+req['vendor']+"%"
-                SQLstart += " where vendor ilike %s group by vendor,description"
-                cur.execute(SQLstart,(req['vendor'],))
-    else:
-        print("have compartment %s"%len(req['compartments']))
-        # Need to handle compartments too
-        SQLstart = """select vendor,description,string_agg(c.abbrv||':'||l.abbrv,',')
-from security_tags t
-left join sec_compartments c on t.compartment_fk=c.compartment_pk
-left join sec_levels l on t.level_fk=l.level_pk
-left join products p on t.product_fk=p.product_pk
-where product_fk is not NULL and c.abbrv||':'||l.abbrv = ANY(%s)"""
-        if req['vendor']=='' and req['description']=='':
-            # No filters, add the group by and query is ready to go
-            SQLstart += " group by vendor,description,product_fk having count(*)=%s"
-            cur.execute(SQLstart,(req['compartments'],len(req['compartments'])))
-        else:
-            if not req['vendor']=='' and not req['description']=='':
-                req['vendor']="%"+req['vendor']+"%"
-                req['description']="%"+req['description']+"%"
-                SQLstart += " and description ilike %s and vendor ilike %s group by vendor,description,product_fk having count(*)=%s"
-                cur.execute(SQLstart,(req['compartments'],req['description'],req['vendor'],len(req['compartments'])))
-            elif req['vendor']=='':
-                req['description']="%"+req['description']+"%"
-                SQLstart += " and description ilike %s group by vendor,description,product_fk having count(*)=%s"
-                cur.execute(SQLstart,(req['compartments'],req['description'],len(req['compartments'])))
-            elif req['description']=='':
-                req['vendor']="%"+req['vendor']+"%"
-                SQLstart += " and vendor ilike %s group by vendor,description,product_fk having count(*)=%s"
-                cur.execute(SQLstart,(req['compartments'],req['vendor'],len(req['compartments'])))
+            session['Aerror'] = "Please fill in ALL of the boxes."
+            return render_template('add_asset.html')
     
-    # One of the 8 cases should've run... process the results
-    dbres = cur.fetchall()
-    listing = list()
-    for row in dbres:
-        e = dict()
-        e['vendor'] = row[0]
-        e['description'] = row[1]
-        if row[2] is None:
-            e['compartments'] = list()
-        else:
-            e['compartments'] = row[2].split(',')
-        listing.append(e)
-    
-    # Prepare the response
-    dat = dict()
-    dat['timestamp'] = req['timestamp']
-    dat['listing'] = listing
-    data = json.dumps(dat)
-    
-    conn.close()
-    return data
-    
-@app.route('/rest/suspend_user', methods=('POST',))
-def suspend_user():
-    # Try to handle as plaintext
-    if request.method=='POST' and 'arguments' in request.form:
-        req=json.loads(request.form['arguments'])
 
-    dat = dict()
-    dat['timestamp'] = req['timestamp']
-    dat['result'] = 'OK'
-    data = json.dumps(dat)
-    return data
 
 
 if __name__ == '__main__':

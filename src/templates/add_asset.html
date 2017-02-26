@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head><title>OSNAP Add an Asset</title></head>
+	<body><h1>Something New?</h1>
+
+		
+	<div class="row">
+            <div class="col-lg-12">
+		<div><h2>Assets:</h2>
+		    <table>
+			{% for entry in session.asset %}
+			<tr>
+				<td>{{ entry.facility_name }}</td>
+			</tr>
+			{% endfor %}
+		    </table>
+		</div>
+		    
+		<div id ="content">
+                	{% if session['error'] %}
+               		 <br> <strong>{{session['error']}}</strong> <br>
+			{% endif %}
+		</div> 
+
+                <p> <label>LOST Facility Additions: Where's new?</label> {{session.username}}</p>
+                
+                <form action="{{url_for('add_facility')}}" method="POST">
+                    <div class="input-group" style="width:340px">
+                        <label>Facility Name: </label>
+			<input class="form-control input-lg" placeholder="What are we calling it?" name="facil">
+                    </div>
+                    <div class="input-group" style="width:340px">
+                        <label> F-code? </label>
+                        <input class="form-control input-lg" placeholder="It's code... so." name="fcode">
+                    </div>
+                    <div class="input-group" style="width:340px">
+                        <label> Facility Description: </label>
+                        <input class="form-control input-lg" placeholder="Please don't leave this blank" name="finfo">
+                    </div>
+                   
+                    <div class="input-group" style="width:340px">
+                        <button type="submit" class="btn btn-success">Facility</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <!-- end of row -->
+
+        <br>
+        <br>
+
+        <!-- submit button -->
+        <!--
+        <div class="row">
+        <div class="col-lg-12">
+            <button type="submit" class="btn btn-success" action="{{url_for('add_facility')}}" method="POST">Facility</button>
+        </div>
+        </div>
+	-->
+	
+
+
+</body>
+</html>
