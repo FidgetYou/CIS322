@@ -17,7 +17,7 @@
 		</div>
 		    
 		<div id ="content">
-                	{% if session['error'] %}
+                	{% if session['Aerror'] %}
                		 <br> <strong>{{session['Aerror']}}</strong> <br>
 			{% endif %}
 		</div> 
@@ -25,31 +25,31 @@
                 <p> <label>LOST Asset Additions: What's new?</label> {{session.username}}</p>
                 
                 <form action="{{url_for('add_asset')}}" method="POST">
-                    <div class="input-group" style="width:340px">
+                    <div class="input-group" style="width:640px">
                         <label>Asset Tag (Name?): </label>
 			<input class="form-control input-lg" placeholder="What are we calling it?" name="asset">
                     </div>
-                    <div class="input-group" style="width:340px">
+                    <div class="input-group" style="width:640px">
                         <label> Asset Info? </label>
                         <input class="form-control input-lg" placeholder="Can you describe the thing?" name="ainfo">
                     </div>
-                    <div class="input-group" style="width:340px">
+                    <div class="input-group" style="width:640px">
                         <label> Asset Arrival Time: </label>
-                        <input type = "time" name="time">
+                        <input type = "datetime-local" name="time">
                     </div>
 
-                    <div class="input-group" style="width:340px">
+                    <div class="input-group" style="width:640px">
                         <label> Asset's Location: </label>
                         <select name = "facilitymenu">
 			{% for entry in session.facilities %}
-			<option value="{{ entry.facility_names }}">{{ entry.facility_names }}</option>
+			<option value="{{ entry.facility_name }}"> {{ entry.facility_name }} </option>
 			
 			{% endfor %}
 			</select>
                     </div>
                    
-                    <div class="input-group" style="width:340px">
-                        <button type="submit" class="btn btn-success">Facility</button>
+                    <div class="input-group" style="width:640px">
+                        <button type="submit" class="btn btn-success">Add Asset</button>
                     </div>
                 </form>
             </div>

@@ -179,13 +179,14 @@ def add_asset():
         SQL = "SELECT facility_name FROM facility"
         cur.execute(SQL)
         fac = cur.fetchall()
-        facility_names = []
+        facility_name = []
         for f in fac:
             a = dict()
             a['facility_name']=f[0]
-            facility_names.append(a)
-        session['facilities'] = facility_names
+            facility_name.append(a)
+        session['facilities'] = facility_name
 
+        ##print (session['facilities'])
         
         SQL = "SELECT asset_tag FROM asset"
         cur.execute(SQL)
@@ -203,14 +204,21 @@ def add_asset():
     if request.method == 'POST':
         session['Aerror'] = ""
         if request.form['asset'] and request.form['ainfo']:
-            the_asset = "'" + request.form['asset'] + "'"
-            the_ainfo = "'" + request.form['ainfo'] + "'"
-            the_facil = "'" + request.form['facilitymenu'] + "'"
-            the_times = "'" + request.form['time'] + "'"
-        
+            the_asset = "" + request.form['asset'] + ""
+            the_ainfo = "" + request.form['ainfo'] + ""
+            the_facil = "" + request.form['facilitymenu'] + ""
+            print (request.form['time'])
+            the_times = datetime.datetime.strptime(request.form['time'], '%Y-%m-%dT%H:%M') 
+            print ("asset " + the_asset)
+            print ("ainfo " + the_ainfo)
+            print ("fcili " + the_facil)
+            print (the_times)
+
+
+
             SQL = "SELECT asset_tag FROM asset WHERE asset_tag = %s;"
-            Adata = (the_asset)
-            cur.execute(SQL, Adata)
+            Adata = the_asset
+            cur.execute(SQL, (Adata,))
             db_row = cur.fetchone()
         
             if db_row is None:
@@ -220,15 +228,17 @@ def add_asset():
                 conn.commit()
 
                 SQL = "SELECT asset_pk FROM asset WHERE asset_tag = %s;"
-                Adata = (the_asset)
-                cur.execute(SQL, Adata)
+                Adata = the_asset
+                cur.execute(SQL, (Adata,))
                 db_row1 = cur.fetchone()
+                print (db_row1)
 
                 SQL = "SELECT facility_pk FROM facility WHERE facility_name = %s;"
-                Adata = (the_facil)
-                cur.execute(SQL, Adata)
+                Adata = the_facil
+                cur.execute(SQL, (Adata,))
                 db_row2 = cur.fetchone()
-        
+                print (db_row2)        
+
                 SQL = "INSERT INTO asset_at (asset_fk, facility_fk, arrive) VALUES (%s, %s, %s);"
                 Cdata = (db_row1, db_row2, the_times)
                 cur.execute(SQL, Cdata)
