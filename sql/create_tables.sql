@@ -31,7 +31,8 @@ You wish there was info here. Comments aren't graded!       Woo..?
 CREATE TABLE facility(
 	facility_pk	serial primary key,
 	facility_name	varchar(32),
-	facility_code	varchar(6)
+	facility_code	varchar(8),
+	facility_info	varchar(150)
 );	
 
 /*

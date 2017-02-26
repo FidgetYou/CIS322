@@ -125,13 +125,14 @@ def dashboard():
 @app.route('/add_facility', methods=['GET', 'POST'])
 def add_facility():
     if request.method == 'GET':
-        SQL = "SELECT facility_name FROM facility"""
+        
+        SQL = "SELECT facility_name FROM facility"
         cur.execute(SQL)
         fac = cur.fetchall()
         facility_names = []
         for f in fac:
             a = dict()
-            a['facility_name']=a[0]
+            a['facility_name']=f[0]
             facility_names.append(a)
         session['facilities'] = facility_names
         
@@ -141,9 +142,9 @@ def add_facility():
     if request.method == 'POST':
         session['error'] = ""
         if request.form['facil'] and request.form['fcode'] and request.form['finfo']:
-            the_flity = "'" + request.form['facil'] + "'"
-            the_fcode = "'" + request.form['fcode'] + "'"
-            the_finfo = "'" + request.form['finfo'] + "'"
+            the_flity = "" + request.form['facil'] + ""
+            the_fcode = "" + request.form['fcode'] + ""
+            the_finfo = "" + request.form['finfo'] + ""
         
             SQL = "SELECT facility_name, facility_code FROM facility WHERE facility_name = %s AND facility_code = %s;"
             data = (the_flity,the_fcode)
@@ -156,11 +157,12 @@ def add_facility():
                 cur.execute(SQL, data)
                 conn.commit()
 
+            
             session['error'] = "Facility " + the_flity + " has been added to the database."
             return render_template('add_facility.html')
         
         else:
-            session['error'] = "Please fill all of the boxes."
+            session['error'] = "Please fill in ALL of the boxes."
             return render_template('add_facility.html')
 
 
