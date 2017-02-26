@@ -20,14 +20,19 @@
                 <p> <label>LOST Login:</label> </p>
                 <p> This login did not match our database </p>
                 <form action="{{url_for('login')}}" method="POST">
-                    <div class="input-group" style="width:340px">
-                        <label>User Name: </label>
-			<input class="form-control input-lg" placeholder="Have you lost your login?" name="uname" value="">
-                    </div>
-                    <div class="input-group" style="width:340px">
-                        <label> Password: </label>
-                        <input class="form-control input-lg" placeholder="Did you forget?" name="pass">
-                    </div>
+                	<div class="input-group" style="width:340px">
+                        	<label>User Name: </label>
+				<input class="form-control input-lg" placeholder="Have you lost your login?" name="uname" value="">
+                	</div>
+                	<div class="input-group" style="width:340px">
+                        	<label> Password: </label>
+                        	<input class="form-control input-lg" placeholder="Did you forget?" name="pass">
+                	</div>
+			
+			<div class="input-group" style="width:340px">
+                        	<label> Job Title: </label>
+                        	<input class="form-control input-lg" placeholder="What did they hire you to do?" name="pass">
+			</div>
                    
                     <div class="input-group" style="width:340px">
                         <button type="submit" class="btn btn-success">Login</button>
