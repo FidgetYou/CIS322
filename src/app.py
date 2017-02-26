@@ -159,7 +159,7 @@ def add_facility():
 
             
             session['error'] = "Facility " + the_flity + " has been added to the database."
-            return render_template('add_facility.html')
+            return redirect(url_for('add_facility'))
         
         else:
             session['error'] = "Please fill in ALL of the boxes."
