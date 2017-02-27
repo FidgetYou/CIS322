@@ -268,7 +268,7 @@ def dispose_asset():
         
         SQL = "SELECT role FROM user_name WHERE username = %s AND role = %s;"
         data = (session['uname'], 'Logistics Officer')
-        cur.execute(SQL, (data,))
+        cur.execute(SQL, data)
         db_row = cur.fetchone()
         
         if db_row is None:
@@ -283,7 +283,7 @@ def dispose_asset():
         
         SQL = "SELECT role FROM user_name WHERE username = %s AND role = %s;"
         data = (session['uname'], 'Logistics Officer')
-        cur.execute(SQL, (data,))
+        cur.execute(SQL, data)
         db_row = cur.fetchone()
         
         if db_row is None:
