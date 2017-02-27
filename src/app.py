@@ -251,8 +251,8 @@ def add_asset():
             return render_template('add_asset.html')
     
 
-    @app.route('/dispose_asset', methods=['GET', 'POST'])
-    def dispose_asset():
+@app.route('/dispose_asset', methods=['GET', 'POST'])
+def dispose_asset():
     
     if request.method == 'GET':
         
