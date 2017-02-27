@@ -39,9 +39,9 @@ def create_user():
             return render_template('create_user.html')
     
             
-        the_username = "'" + request.form['uname'] + "'"
-        the_password = "'" + request.form['pass'] + "'"
-        the_jobtitle = "'" + request.form['role'] + "'"
+        the_username = "" + request.form['uname'] + ""
+        the_password = "" + request.form['pass'] + ""
+        the_jobtitle = "" + request.form['role'] + ""
         print (the_username)
         
         SQL = "SELECT username FROM user_name WHERE username = %s;"
