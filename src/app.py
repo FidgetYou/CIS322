@@ -68,6 +68,7 @@ def create_user():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
+        session['uname'] = ""
         return render_template('login.html')
     if request.method == 'POST':
         if request.form['uname']:
