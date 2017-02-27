@@ -5,3 +5,4 @@ Config.py Might do something... I forget. I got it from the teacher's site.
 lost_config.json  ... Same story as the Config.py
 
 
+I'm sorry,  I ran out of time and was unable to do the last two steps. There is no Report Screen or asset_report.html.
