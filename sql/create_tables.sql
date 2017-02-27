@@ -16,6 +16,9 @@ CREATE TABLE user_name(
 	role		varchar(25)
 );
 
+
+INSERT INTO user_name (role) VALUES ('Logistics Officer');
+INSERT INTO user_name (role) VALUES ('Facilities Officer');
 /* 
 COMMENTS! The reasons for the use of a primary numbered pk holds from previous entries.
 */
