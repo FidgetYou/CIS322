@@ -273,7 +273,7 @@ def dispose_asset():
         
         if db_row is None:
             session['Derror'] = "" + session['uname'] + ": is not authorized to delete assets."
-            return redirect(url_for('dispose_asset'))
+            return render_template('dispose_asset.html')
         else:
             return render_template('dispose_asset.html')
 
