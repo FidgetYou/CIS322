@@ -158,8 +158,8 @@ def add_facility():
                 conn.commit()
 
                 session['error'] = "" + the_flity + " has been added to the database."
-                return render_template('add_facility.html')
-
+                return redirect(url_for('add_facility'))
+            
             else:
                 session['error'] = "The facility " + the_flity + " is already in the database."
                 return render_template('add_facility.html')
@@ -207,13 +207,7 @@ def add_asset():
             the_asset = "" + request.form['asset'] + ""
             the_ainfo = "" + request.form['ainfo'] + ""
             the_facil = "" + request.form['facilitymenu'] + ""
-            print (request.form['time'])
             the_times = datetime.datetime.strptime(request.form['time'], '%Y-%m-%dT%H:%M') 
-            print ("asset " + the_asset)
-            print ("ainfo " + the_ainfo)
-            print ("fcili " + the_facil)
-            print (the_times)
-
 
 
             SQL = "SELECT asset_tag FROM asset WHERE asset_tag = %s;"
@@ -231,13 +225,13 @@ def add_asset():
                 Adata = the_asset
                 cur.execute(SQL, (Adata,))
                 db_row1 = cur.fetchone()
-                print (db_row1)
+                #print (db_row1)
 
                 SQL = "SELECT facility_pk FROM facility WHERE facility_name = %s;"
                 Adata = the_facil
                 cur.execute(SQL, (Adata,))
                 db_row2 = cur.fetchone()
-                print (db_row2)        
+                #print (db_row2)        
 
                 SQL = "INSERT INTO asset_at (asset_fk, facility_fk, arrive) VALUES (%s, %s, %s);"
                 Cdata = (db_row1, db_row2, the_times)
@@ -246,7 +240,7 @@ def add_asset():
                 
 
                 session['Aerror'] = "" + the_asset + " has been added to the database."
-                return render_template('add_asset.html')
+                return redirect(url_for('add_asset'))
 
             else:
                 session['Aerror'] = "The asset " + the_asset + " is already in the database."
@@ -257,6 +251,81 @@ def add_asset():
             return render_template('add_asset.html')
     
 
+    @app.route('/dispose_asset', methods=['GET', 'POST'])
+    def dispose_asset():
+    
+    if request.method == 'GET':
+        
+        SQL = "SELECT asset_tag FROM asset"
+        cur.execute(SQL)
+        fac = cur.fetchall()
+        asset_names = []
+        for f in fac:
+            a = dict()
+            a['asset_tag']=f[0]
+            asset_names.append(a)
+        session['assets'] = asset_names
+        
+        SQL = "SELECT role FROM user_name WHERE username = %s AND role = %s;"
+        data = (session['uname'], 'Logistics Officer')
+        cur.execute(SQL, (data,))
+        db_row = cur.fetchone()
+        
+        if db_row is None:
+            session['Derror'] = "" + session['uname'] + ": is not authorized to delete assets."
+            return redirect(url_for('dispose_asset'))
+        else:
+            return render_template('dispose_asset.html')
+
+
+    if request.method == 'POST':
+        session['Derror'] = ""
+        
+        SQL = "SELECT role FROM user_name WHERE username = %s AND role = %s;"
+        data = (session['uname'], 'Logistics Officer')
+        cur.execute(SQL, (data,))
+        db_row = cur.fetchone()
+        
+        if db_row is None:
+            session['Derror'] = "" + session['uname'] + ": is not authorized to delete assets."
+            return redirect(url_for('dispose_asset'))
+        
+        if request.form['asset'] and request.form['time']:
+            the_asset = "" + request.form['asset'] + ""
+            the_times = datetime.datetime.strptime(request.form['time'], '%Y-%m-%dT%H:%M') 
+
+
+            SQL = "SELECT asset_tag FROM asset WHERE asset_tag = %s;"
+            Adata = the_asset
+            cur.execute(SQL, (Adata,))
+            db_row = cur.fetchone()
+        
+            if db_row is not None:
+
+                SQL = "SELECT asset.asset_tag asset_at.disposed FROM asset JOIN asset_at ON asset.asset_pk=asset_at.asset_fk WHERE asset_tag = %s AND disposed = 'false';"
+                Adata = the_asset
+                cur.execute(SQL, (Adata,))
+                db_row1 = cur.fetchone()
+                print (db_row1)
+                
+                if db_row1 is None:
+                    SQL = "INSERT INTO asset_at (depart, disposed) VALUES (%s, true);"
+                    Adata = the_times
+                    cur.execute(SQL, (Adata,))
+                    conn.commit()
+
+                    session['Derror'] = "" + the_asset + " has been deleted from the database."
+                    return redirect(url_for('dashboard'))
+                else:
+                    session['Derror'] = "The asset " + the_asset + " has already been disposed of."
+                    return render_template('dispose_asset.html')
+            else:
+                session['Derror'] = "The asset " + the_asset + " is not in the database."
+                return render_template('dispose_asset.html')
+                      
+        else:
+            session['Derror'] = "Please fill in ALL of the boxes."
+            return render_template('dispose_asset.html')
 
 
 if __name__ == '__main__':
