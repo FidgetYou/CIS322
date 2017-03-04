@@ -88,6 +88,9 @@ CREATE TABLE requests(
 Purveyor of comedy pyrite!
 
 Here comes the other tables.  The sequel: Now with more chairs!
+
+It kind of feels like a silly reason, but I left this as a seperate table because the requests table 
+already had so many entries in it.
 */
 
 CREATE TABLE transit(
