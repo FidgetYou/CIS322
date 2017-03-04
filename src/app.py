@@ -120,6 +120,11 @@ def login():
         if db_row is None:
             return render_template('wrong_login.html')
         else:
+            SQL = "SELECT username FROM user_name WHERE username = %s;"
+            dataIn = (the_username, the_password)
+            cur.execute('SELECT role.role FROM role WHERE user_name.username = %s AND user_name.role_fk = role.role_pk', (dataIn))
+            db_row = cur.fetchone()
+            session['role'] = db_row
             return render_template('dashboard.html')
         
 
