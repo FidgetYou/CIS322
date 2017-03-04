@@ -90,9 +90,11 @@ def create_user():
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    session.clear()
+    
     if request.method == 'GET':
         session['uname'] = ""
+        session['pass'] = ""
+        session['role'] = ""
         return render_template('login.html')
     if request.method == 'POST':
         if request.form['uname']:
@@ -118,7 +120,8 @@ def login():
         db_row = cur.fetchone()
 
         if db_row is None:
-            return render_template('wrong_login.html')
+            session['error'] = "That " + the_username + "/" + the_password + " combonation is invalid."
+            return render_template('login.html')
         else:
             SQL = "SELECT username FROM user_name WHERE username = %s;"
             dataIn = (the_username, the_password)
