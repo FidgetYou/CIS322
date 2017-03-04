@@ -21,6 +21,19 @@ cur = conn.cursor()
 @app.route('/create_user', methods=['GET', 'POST'])
 def create_user():
     if request.method == 'GET':
+        SQL = "SELECT role FROM role"
+        cur.execute(SQL)
+        rol = cur.fetchall()
+        roles = []
+        for f in rol:
+            a = dict()
+            a['facility_name']=f[0]
+            roles.append(a)
+        session['roles'] = roles
+        ##print ("roles session = ")
+        ##print (session['roles'])
+        
+
         return render_template('create_user.html')
     if request.method == 'POST':
         if request.form['uname']:

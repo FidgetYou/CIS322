@@ -6,19 +6,26 @@ If it was just built with the username as the primary key it wouldn't feel order
 I chose the password length to be 16 because the design spec said that it wouldn't be longer than 16.
 Unless I went with a hash to store passwords... Which I didn't. (Security isn't really my thing right now.)
 
-I considered adding a table for roles or job titles, but I didn't see a big need for a person to have more
-than one role. So I just added it as another field to the user_name table. This may change later.
+I didn't want to have to add a table just for job titles... But if there is only going to be two, I might as well.
+This way I can also make a drop down menu of job titles. You know, if I get around to it.
+Apparently Job titles don't get their own creation page. So I'm just inputting the two we have here.
 */
+CREATE TABLE role(
+	role_pk		serial primary key,
+	role		varchar(25)
+);
+
+INSERT INTO user_name (role) VALUES ('Logistics Officer');
+INSERT INTO user_name (role) VALUES ('Facilities Officer');
+
+
 CREATE TABLE user_name(
 	user_pk		serial primary key,
 	username	varchar(16),
 	password	varchar(16),
-	role		varchar(25)
+	role_fk		integer REFERENCES role (role_pk) not null
 );
 
-
-INSERT INTO user_name (role) VALUES ('Logistics Officer');
-INSERT INTO user_name (role) VALUES ('Facilities Officer');
 /* 
 COMMENTS! The reasons for the use of a primary numbered pk holds from previous entries.
 */
@@ -55,3 +62,7 @@ CREATE TABLE asset_at(
 	in_transit	boolean default false,
 	disposed	boolean default false
 );
+
+/*
+Assignment 8 additions.
+*/
