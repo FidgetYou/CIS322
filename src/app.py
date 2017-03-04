@@ -85,8 +85,8 @@ def login():
             return render_template('login.html')
     
             
-        the_username = "'" + request.form['uname'] + "'"
-        the_password = "'" + request.form['pass'] + "'"
+        the_username = "" + request.form['uname'] + ""
+        the_password = "" + request.form['pass'] + ""
         
         SQL = "SELECT username FROM user_name WHERE username = %s;"
         dataIn = (the_username, the_password)
@@ -136,6 +136,8 @@ def add_facility():
             a['facility_name']=f[0]
             facility_names.append(a)
         session['facilities'] = facility_names
+        ##print ("facility session = ")
+        ##print (session['facilities'])
         
         return render_template('add_facility.html')
 
@@ -191,13 +193,17 @@ def add_asset():
         
         SQL = "SELECT asset_tag FROM asset"
         cur.execute(SQL)
-        fac = cur.fetchall()
-        asset_names = []
-        for f in fac:
-            a = dict()
-            a['asset_tag']=f[0]
-            asset_names.append(a)
-        session['assets'] = asset_names
+        ac = cur.fetchall()
+
+        asset_name = []
+        for f in ac:
+            b = dict()
+            b['asset_tag']=f[0]
+            asset_name.append(b)
+
+        session['assets'] = asset_name
+        ##print ("session asset = ")
+        ##print (session['assets'])
         
         return render_template('add_asset.html')
 
