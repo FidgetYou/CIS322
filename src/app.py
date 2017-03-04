@@ -27,11 +27,11 @@ def create_user():
         roles = []
         for f in rol:
             a = dict()
-            a['facility_name']=f[0]
+            a['role']=f[0]
             roles.append(a)
         session['roles'] = roles
-        ##print ("roles session = ")
-        ##print (session['roles'])
+        print ("roles session = ")
+        print (session['roles'])
         
 
         return render_template('create_user.html')
@@ -54,7 +54,7 @@ def create_user():
             
         the_username = "" + request.form['uname'] + ""
         the_password = "" + request.form['pass'] + ""
-        the_jobtitle = "" + request.form['role'] + ""
+        the_jobtitle = "" + request.form['role_menu'] + ""
         #print (the_username)
         
         SQL = "SELECT username FROM user_name WHERE username = %s;"
@@ -333,7 +333,7 @@ def dispose_asset():
         
             if db_row is not None:
 
-                SQL = "SELECT asset.asset_tag asset_at.disposed FROM asset, asset_at JOIN asset_at ON asset.asset_pk=asset_at.asset_fk WHERE asset.asset_tag = %s AND asset_at.disposed = 'false';"
+                SQL = "SELECT asset.asset_tag, asset_at.disposed FROM asset, asset_at WHERE asset.asset_pk=asset_at.asset_fk AND asset.asset_tag = %s AND asset_at.disposed = 'false';"
                 Adata = the_asset
                 cur.execute(SQL, (Adata,))
                 db_row1 = cur.fetchone()
