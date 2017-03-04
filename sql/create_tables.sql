@@ -64,5 +64,36 @@ CREATE TABLE asset_at(
 );
 
 /*
-Assignment 8 additions.
+Assignment 8 additions. The jokes aren't really any funnier the second time around. Sorry.
+
+Tried to fit all of the needed request things in here. I think I got them all. But this seems to be rather complicated to track.
 */
+
+CREATE TABLE requests(
+	request_pk	serial primary key,
+	asset_fk	integer REFERENCES asset (asset_tag) not null,
+	requester	integer REFERENCES user_name (username) not null,
+	approver	integer REFERENCES user_name (username) default null,
+	source_fac	integer REFERENCES facility (facility_code) not null,
+	destination_fac	integer REFERENCES facility (facility_code) not null,
+	request_time	timestamp default null,
+	approve_time	timestamp default null,
+	approved	boolean default false,
+	rejected	boolean default false,
+	comments	varchar(300)
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
