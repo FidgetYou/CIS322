@@ -15,8 +15,8 @@ CREATE TABLE role(
 	role		varchar(25)
 );
 
-INSERT INTO user_name (role) VALUES ('Logistics Officer');
-INSERT INTO user_name (role) VALUES ('Facilities Officer');
+INSERT INTO role (role) VALUES ('Logistics Officer');
+INSERT INTO role (role) VALUES ('Facilities Officer');
 
 
 CREATE TABLE user_name(
