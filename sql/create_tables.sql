@@ -84,9 +84,20 @@ CREATE TABLE requests(
 );
 
 
+/* 
+Purveyor of comedy pyrite!
 
+Here comes the other tables.  The sequel: Now with more chairs!
+*/
 
-
+CREATE TABLE transit(
+	transit_pk	serial primary key,
+	asset_fk	integer REFERENCES asset (asset_tag) not null,
+	source_fac	integer REFERENCES facility (facility_code) not null,
+	destination_fac	integer REFERENCES facility (facility_code) not null,
+	load_time	timestamp default null,
+	unload_time	timestamp default null
+);
 
 
 
