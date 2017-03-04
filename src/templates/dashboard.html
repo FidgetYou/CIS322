@@ -10,13 +10,44 @@
                 <p> <label>Dashboard</label> </p>
                 <div id ="content">
                 {% if session['uname'] %}
-                If your name is <strong>{{session['uname']}}</strong> I didn't screw up too badly.<br>
+                If your name is <strong>{{session['uname']}}</strong> and your job is <strong>{{session['role']}}</strong> 
+			<br>I didn't screw up too badly.<br>
                 {% else %}
 		I may have made a mistake letting you in here...
 		{% endif %}
 		</div>    
 
 
+		<form action = "{{url_for('asset_report')}}">
+			<input type = "Submit" value = "What Assets?">
+		</form>
+		
+		<form action = "{{url_for('tranfer_report')}}">
+			<input type = "Submit" value = "What Transfers?">
+		</form>
+		    
+		<form action = "{{url_for('add_asset')}}">
+			<input type = "Submit" value = "Add Asset">
+		</form>
+		    
+		<form action = "{{url_for('add_facility')}}">
+			<input type = "Submit" value = "Add Facility">
+		</form>
+		    
+		{% if session['uname'] = "Logistics Officer" %}
+                <form action = "{{url_for('dispose_asset')}}">
+			<input type = "Submit" value = "Make Trash">
+		</form>
+		
+		<form action = "{{url_for('transfer_req')}}">
+			<input type = "Submit" value = "Make Tranfers">
+		</form>
+		{% endif %}
+		
+		    
+		<form action = "{{url_for('login')}}">
+			<input type = "Submit" value = "I'm Outtie!">
+		</form>
 
             </div>
 
