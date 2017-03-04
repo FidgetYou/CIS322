@@ -37,49 +37,60 @@ def create_user():
         return render_template('create_user.html')
     if request.method == 'POST':
         if request.form['uname']:
-            print("You've got a name!")
+            #print("You've got a name!")
             session['uname'] = request.form['uname']
         else:
             # If there isn't a username in the session
-            print("No UserName")
+            session['error'] = "No UserName"
             return render_template('create_user.html')
         
         if request.form['pass'] or request.form['role']:
-            print("You've got a password!")
+            #print("You've got a password!")
             session['pass'] = request.form['pass']
         else:
-            print("No password")
+            session['error'] = "No password"
             return render_template('create_user.html')
     
             
         the_username = "" + request.form['uname'] + ""
         the_password = "" + request.form['pass'] + ""
         the_jobtitle = "" + request.form['role'] + ""
-        print (the_username)
+        #print (the_username)
         
         SQL = "SELECT username FROM user_name WHERE username = %s;"
         one_data = the_username
         cur.execute('SELECT username FROM user_name WHERE username = %s', (one_data,))
         db_row = cur.fetchone()
-        print (db_row)
+        #print (db_row)
 
         if db_row is None:
-            SQL = "INSERT INTO user_name (username, password, role) VALUES (%s, %s, %s);"
-            data = (the_username,the_password,the_jobtitle)
+            try:
+                SQL = "SELECT role_pk FROM role WHERE role = %s;"
+                one_data = the_jobtitle
+                cur.execute(SQL, (one_data,))
+                role_fk = cur.fetchone()
+                #print (db_row)
+            except:
+                session['error'] = "" + the_jobtitle + " is invalid."
+                return render_template('login.html')
+        
+            SQL = "INSERT INTO user_name (username, password, role_fk) VALUES (%s, %s, %s);"
+            data = (the_username,the_password,role_fk)
             cur.execute(SQL, data)
             conn.commit()
             print("Added user " + the_username)
-
-            return render_template('added_login.html')
+            session['error'] = "" + the_username + " has been added"
+            return render_template('login.html')
         
         else:
-            print("In the database already")
-            return render_template('already_user.html')
+            session['error'] = "" + the_username + " has already been taken."
+            return render_template('create_user.html')
         
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    session.clear()
     if request.method == 'GET':
         session['uname'] = ""
         return render_template('login.html')
@@ -286,7 +297,7 @@ def dispose_asset():
             asset_names.append(a)
         session['assets'] = asset_names
         
-        SQL = "SELECT role FROM user_name WHERE username = %s AND role = %s;"
+        SQL = "SELECT role.role FROM role, user_name WHERE user_name.username = %s AND role.role = %s;"
         data = (session['uname'], 'Logistics Officer')
         cur.execute(SQL, data)
         db_row = cur.fetchone()
@@ -301,7 +312,7 @@ def dispose_asset():
     if request.method == 'POST':
         session['Derror'] = ""
         
-        SQL = "SELECT role FROM user_name WHERE username = %s AND role = %s;"
+        SQL = "SELECT role.role FROM role, user_name WHERE user_name.username = %s AND role.role = %s;"
         data = (session['uname'], 'Logistics Officer')
         cur.execute(SQL, data)
         db_row = cur.fetchone()
@@ -322,7 +333,7 @@ def dispose_asset():
         
             if db_row is not None:
 
-                SQL = "SELECT asset.asset_tag asset_at.disposed FROM asset JOIN asset_at ON asset.asset_pk=asset_at.asset_fk WHERE asset_tag = %s AND disposed = 'false';"
+                SQL = "SELECT asset.asset_tag asset_at.disposed FROM asset, asset_at JOIN asset_at ON asset.asset_pk=asset_at.asset_fk WHERE asset.asset_tag = %s AND asset_at.disposed = 'false';"
                 Adata = the_asset
                 cur.execute(SQL, (Adata,))
                 db_row1 = cur.fetchone()
