@@ -141,10 +141,57 @@ def asset_report():
 def transfer_report():
     return render_template('transfer_report.html')
 
-@app.route('/transfer_req')
+@app.route('/transfer_req', methods=['GET', 'POST'])
 def transfer_req():
-    return render_template('transfer_req.html')
+    if session['role'] != "Logistics Officer"
+        session['error'] = "You can't go in there! Why, you're not a Logistics Officer."
+        return render_template('dashboard.html')
+    
+    if request.method == 'GET':
+        
+        SQL = "SELECT facility_name FROM facility"
+        cur.execute(SQL)
+        fac = cur.fetchall()
+        facility_name = []
+        for f in fac:
+            a = dict()
+            a['facility_name']=f[0]
+            facility_name.append(a)
+        session['facilities'] = facility_name
 
+        ##print (session['facilities'])
+        
+        SQL = "SELECT asset.asset_tag, facility.facility_name FROM asset, asset_at, facility WHERE asset.asset_pk = asset_at.asset_fk AND facility.facility_pk = asset_at.facility_pk AND asset_at.disposed = false"
+        cur.execute(SQL)
+        ac = cur.fetchone()
+
+        asset_name = []
+        for f in ac:
+            b = dict()
+            b['asset_name']=f[0]
+            b['facility_name']=f[1]
+            asset_trsf.append(b)
+
+        session['assets_transfer'] = asset_trsf
+        ##session['facility_transfer'] = facil_trsf
+        print ("session asset = ")
+        print (session['assets_transfer'])
+        
+        ##SQL = "SELECT asset.asset_tag, facility.facility_name FROM asset, asset_at, facility WHERE asset.asset_pk = asset_at.asset_fk AND facility.facility_pk = asset_at.facility_pk AND asset_at.disposed = false"
+        ##cur.execute(SQL)
+        ##ac = cur.fetchone()
+        ##session['current_facility'] = ac
+        
+        return render_template('transfer_req.html')
+    
+    if request.method == 'POST':
+        session['error'] = ""
+        if request.form['facil'] and request.form['fcode'] and request.form['finfo']:
+            the_flity = "" + request.form['facil'] + ""
+            the_fcode = "" + request.form['fcode'] + ""
+            the_finfo = "" + request.form['finfo'] + ""
+    
+    
 @app.route('/logout')
 def logout():
     return render_template('logout.html')
