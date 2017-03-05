@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html>
-	<head><title>OSNAP Facility Add</title></head>
+	<head><title>OSNAP transfer Request</title></head>
 	<body><h1>Somewhere New?</h1>
 
 		
@@ -26,39 +26,44 @@
                 <p> <label>LOST Facility Additions: Where's new?</label> {{session.username}}</p>
                 
                 <form action="{{url_for('transfer_req')}}" method="POST">
-                    <div class="input-group" style="width:340px">
-                        <label>Facility Name: </label>
-			<input class="form-control input-lg" placeholder="What are we calling it?" name="facil">
-                    </div>
-                    <div class="input-group" style="width:340px">
-                        <label> F-code? </label>
-                        <input class="form-control input-lg" placeholder="It's code... so." name="fcode">
-                    </div>
-                    <div class="input-group" style="width:340px">
-                        <label> Facility Description: </label>
-                        <input class="form-control input-lg" placeholder="Please don't leave this blank" name="finfo">
-                    </div>
+                     <div class="input-group" style="width:640px">
+                        	<label> Asset Name: </label>
+                        	<select name = "asset_menu">
+				{% for entry in session.assets %}
+				<option value="{{ entry.asset }}"> {{ entry.asset }} </option>
+				{% endfor %}
+				</select>
+			</div>
+			
+			 <div class="input-group" style="width:640px">
+                        	<label> From Facility: </label>
+                        	<br>
+				 {{session.current_facility}}
+				 <br>
+			</div>
+                    
+                     	<div class="input-group" style="width:640px">
+				<label> To Facility: </label>
+                        	<select name = "facility_menu">
+				{% for entry in session.facilities %}
+				<option value="{{ entry.facility_name }}"> {{ entry.facility_name }} </option>
+				{% endfor %}
+				</select>
+			</div>
                    
                     <div class="input-group" style="width:340px">
-                        <button type="submit" class="btn btn-success">Facility</button>
+                        <button type="submit" class="btn btn-success">ADD</button>
                     </div>
                 </form>
             </div>
 
         </div>
-        <!-- end of row -->
+       
 
         <br>
         <br>
 
-        <!-- submit button -->
-        <!--
-        <div class="row">
-        <div class="col-lg-12">
-            <button type="submit" class="btn btn-success" action="{{url_for('add_facility')}}" method="POST">Facility</button>
-        </div>
-        </div>
-	-->
+       
 	
 
 
