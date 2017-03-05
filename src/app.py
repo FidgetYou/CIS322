@@ -149,6 +149,18 @@ def transfer_req():
 def logout():
     return render_template('logout.html')
 
+
+@app.route('/do_work', methods=['GET'])
+def do_work():
+    
+    if session['role'] = "Logistics Officer"
+        return render_template('transfer_req.html')
+    else:
+        return render_template('transfer_req.html')
+    
+    return render_template('dashboard.html')
+
+
 @app.route('/dashboard', methods=['GET'])
 def dashboard():
     
