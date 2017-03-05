@@ -180,7 +180,7 @@ def transfer_req():
                 b = dict()
                 b['asset_name']=f[0]
             else:
-                b['facility_name']=f[1]
+                b['facility_name']=f[0]
             asset_trsf.append(b)
 
         session['assets_transfer'] = asset_trsf
