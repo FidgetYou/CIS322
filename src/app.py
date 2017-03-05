@@ -174,7 +174,7 @@ def transfer_req():
         for f in ac:
             b = dict()
             b['asset_name']=f[0]
-            b['facility_name']=f[1]
+            ##b['facility_name']=f[1]
             asset_trsf.append(b)
 
         session['assets_transfer'] = asset_trsf
