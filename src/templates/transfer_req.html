@@ -22,7 +22,7 @@
                         	<label> Asset Name (Current Location): </label>
                         	<select name = "asset_menu">
 				{% for entry in session.assets_transfer %}
-				<option value="{{ entry.asset_name }}"> {{ entry.asset_name }} ({{ entry.facility_name }})  </option>
+				<option value="{{ entry[0] }}"> {{ entry[0] }} ({{ entry[1] }})  </option>
 				{% endfor %}
 				</select>
 			</div>
