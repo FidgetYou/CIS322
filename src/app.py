@@ -173,22 +173,25 @@ def transfer_req():
         print (ac)
         
         asset_trsf = []
-        ass = False
+        facil_trsf = []
+        ##ass = False
         for f in ac:
-            ass = not ass
-            if ass:
-                b = dict()
-                b['asset_name']=f[0]
-                print ("add asset = ")
-                print (f[0])
-            else:
-                b = dict()
-                b['facility_name']=f[0]
-                print ("add facility = ")
-                print (f[0])
+            ##ass = not ass
+            ##if ass:
+            b = dict()
+            b['asset_name']=f[0]
+            print ("add asset = ")
+            print (f[0])
+            #else:
+            c = dict()
+            c['facility_name']=f[1]
+            print ("add facility = ")
+            print (f[1])
             asset_trsf.append(b)
+            facil_trsf.append(c)
 
-        session['assets_transfer'] = asset_trsf
+        session['assets_transfer'] = (asset_trsf, facil_trsf)
+        
         ##session['facility_transfer'] = facil_trsf
         print ("session asset = ")
         print (session['assets_transfer'])
