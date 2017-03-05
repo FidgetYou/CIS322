@@ -173,10 +173,14 @@ def transfer_req():
         print (ac)
         
         asset_trsf = []
+        ass = false
         for f in ac:
-            b = dict()
-            b['asset_name']=f[0]
-            ##b['facility_name']=f[1]
+            ass = not ass
+            if ass:
+                b = dict()
+                b['asset_name']=f[0]
+            else:
+                b['facility_name']=f[1]
             asset_trsf.append(b)
 
         session['assets_transfer'] = asset_trsf
