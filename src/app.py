@@ -170,7 +170,7 @@ def transfer_req():
         cur.execute(SQL)
         ac = cur.fetchone()
 
-        asset_name = []
+        asset_trsf = []
         for f in ac:
             b = dict()
             b['asset_name']=f[0]
