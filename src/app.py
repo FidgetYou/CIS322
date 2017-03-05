@@ -184,7 +184,7 @@ def transfer_req():
             print (f[0])
             print ("what is b = ")
             print (b)
-            asset_trsf.append(b)
+            #asset_trsf.append(b)
             #else:
             #c = dict()
             b['facility_name']=f[1]
