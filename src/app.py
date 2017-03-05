@@ -125,7 +125,7 @@ def login():
         else:
             SQL = "SELECT username FROM user_name WHERE username = %s;"
             dataIn = (the_username, )
-            cur.execute('SELECT role.role FROM role WHERE user_name.username = %s AND user_name.role_fk = role.role_pk', (dataIn))
+            cur.execute('SELECT role.role FROM role, user_name WHERE user_name.username = %s AND user_name.role_fk = role.role_pk', (dataIn))
             db_row = cur.fetchone()
             session['role'] = db_row
             return render_template('dashboard.html')
