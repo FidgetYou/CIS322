@@ -179,8 +179,13 @@ def transfer_req():
             if ass:
                 b = dict()
                 b['asset_name']=f[0]
+                print ("add asset = ")
+                print (f[0])
             else:
+                b = dict()
                 b['facility_name']=f[0]
+                print ("add facility = ")
+                print (f[0])
             asset_trsf.append(b)
 
         session['assets_transfer'] = asset_trsf
