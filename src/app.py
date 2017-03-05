@@ -234,9 +234,9 @@ def transfer_req():
                 return render_template('transfer_req.html')
             
             SQL = "INSERT INTO requests (asset_fk, requester, source_fac, destination_fac) VALUES (%s, %s, %s, %s);"
-                    fourdata = (the_times, the_users, the_dest, the_facil)
-                    cur.execute(SQL, fourdata)
-                    conn.commit()
+            fourdata = (the_times, the_users, the_dest, the_facil)
+            cur.execute(SQL, fourdata)
+            conn.commit()
                     
             return redirect(url_for('transfer_req'))
         else:
