@@ -133,17 +133,17 @@ def login():
 
 
 
-@app.route('/added_login')
-def added_login():
-    return render_template('added_login.html')
+@app.route('/asset_report')
+def asset_report():
+    return render_template('asset_report.html')
 
-@app.route('/already_user')
-def already_user():
-    return render_template('already_user.html')
+@app.route('/transfer_report')
+def transfer_report():
+    return render_template('transfer_report.html')
 
-@app.route('/wrong_login')
-def wrong_login():
-    return render_template('wrong_login.html')
+@app.route('/transfer_req')
+def transfer_req():
+    return render_template('transfer_req.html')
 
 @app.route('/logout')
 def logout():
