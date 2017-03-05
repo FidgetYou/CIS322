@@ -43,7 +43,7 @@
 			<input type = "Submit" value = "Add Facility">
 		</form>
 		    
-		{% if session['uname'] == "Logistics Officer" %}
+		{% if session['role'] == "Logistics Officer" %}
                 <form action = "{{url_for('dispose_asset')}}">
 			<input type = "Submit" value = "Make Trash">
 		</form>
