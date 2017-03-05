@@ -143,7 +143,7 @@ def transfer_report():
 
 @app.route('/transfer_req', methods=['GET', 'POST'])
 def transfer_req():
-    if session['role'] != "Logistics Officer"
+    if session['role'] != "'Logistics Officer'"
         session['error'] = "You can't go in there! Why, you're not a Logistics Officer."
         return render_template('dashboard.html')
     
