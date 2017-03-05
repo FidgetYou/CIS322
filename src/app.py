@@ -151,6 +151,23 @@ def logout():
 
 @app.route('/dashboard', methods=['GET'])
 def dashboard():
+    
+    if session['role'] = "Logistics Officer"
+        SQL = "SELECT asset.asset_tag FROM asset, transit WHERE transit.asset_fk = asset.asset_pk AND (transit.load_time = null OR transit.unload_time = null"
+    else:
+        SQL = "SELECT asset.asset_tag FROM asset, requests WHERE requests.asset_fk = asset.asset_pk AND requests.approved = false AND requests.rejected = false "
+    cur.execute(SQL)
+    fac = cur.fetchall()
+    facility_name = []
+    for f in fac:
+        a = dict()
+        a['work']=f[0]
+        facility_name.append(a)
+    session['works'] = facility_name
+
+    ##print (session['facilities'])
+        
+
     return render_template('dashboard.html')
 
 
