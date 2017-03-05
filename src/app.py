@@ -173,7 +173,7 @@ def transfer_req():
         print (ac)
         
         asset_trsf = []
-        ass = false
+        ass = False
         for f in ac:
             ass = not ass
             if ass:
