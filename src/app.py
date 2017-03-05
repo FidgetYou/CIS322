@@ -250,8 +250,8 @@ def logout():
 
 @app.route('/do_work', methods=['GET'])
 def do_work():
-    
-    if session['role'] = "Logistics Officer"
+    logisticsOfficer = "Logistics Officer"
+    if session['role'] = "Logistics Officer":
         return render_template('transfer_req.html')
     else:
         return render_template('transfer_req.html')
