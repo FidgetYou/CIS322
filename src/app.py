@@ -168,8 +168,10 @@ def transfer_req():
         
         SQL = "SELECT asset.asset_tag, facility.facility_name FROM asset, asset_at, facility WHERE asset.asset_pk = asset_at.asset_fk AND facility.facility_pk = asset_at.facility_fk AND asset_at.disposed = false"
         cur.execute(SQL)
-        ac = cur.fetchone()
-
+        ac = cur.fetchall()
+        print ("what does a query return = ")
+        print (ac)
+        
         asset_trsf = []
         for f in ac:
             b = dict()
