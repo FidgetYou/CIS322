@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
-	<head><title>OSNAP Login</title></head>
-	<body><h1>Please login:</h1>
+	<head><title>OSNAP Dashboard</title></head>
+	<body><h1>Welcome!</h1>
 
 
 		
@@ -19,7 +19,7 @@
 
 		{% if session['works'] %}
 			{% for r in work %}
-				<tr><td><a href="{{url_for('test')}}?id={{r['id']}}">{{r['name']}}</a></td></tr>
+				<tr><td><a href="{{url_for('do_work')}}?id={{r['id']}}">{{r['name']}}</a></td></tr>
 			{% endfor %}
 		{% endif %}
 		    
