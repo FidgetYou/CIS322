@@ -127,7 +127,7 @@ def login():
             dataIn = (the_username, )
             cur.execute('SELECT role.role FROM role, user_name WHERE user_name.username = %s AND user_name.role_fk = role.role_pk', (dataIn))
             db_row = cur.fetchone()
-            session['role'] = db_row
+            session['role'] = filter(str.db_row, string.printable)
             session['error'] = ""
             return render_template('dashboard.html')
         
