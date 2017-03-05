@@ -182,15 +182,16 @@ def transfer_req():
             b['asset_name']=f[0]
             print ("add asset = ")
             print (f[0])
+            asset_trsf.append(b)
             #else:
-            c = dict()
-            c['facility_name']=f[1]
+            #c = dict()
+            b['facility_name']=f[1]
             print ("add facility = ")
             print (f[1])
             asset_trsf.append(b)
-            facil_trsf.append(c)
+            #facil_trsf.append(c)
 
-        session['assets_transfer'] = (asset_trsf, facil_trsf)
+        session['assets_transfer'] = asset_trsf
         
         ##session['facility_transfer'] = facil_trsf
         print ("session asset = ")
