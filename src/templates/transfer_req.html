@@ -7,40 +7,27 @@
 		
 	<div class="row">
             <div class="col-lg-12">
-		<div><h2>Facilities:</h2>
-		    <table>
-			{% for entry in session.facilities %}
-			<tr>
-				<td>{{ entry.facility_name }}</td>
-			</tr>
-			{% endfor %}
-		    </table>
-		</div>
-		    
+
 		<div id ="content">
                 	{% if session['error'] %}
                		 <br> <strong>{{session['error']}}</strong> <br>
 			{% endif %}
 		</div> 
 
-                <p> <label>LOST Facility Additions: Where's new?</label> {{session.username}}</p>
+                <p> <label>LOST Asset Transitions: Hey, {{session.username}} where do you want it?</label> </p>
                 
                 <form action="{{url_for('transfer_req')}}" method="POST">
+			
                      <div class="input-group" style="width:640px">
-                        	<label> Asset Name: </label>
+                        	<label> Asset Name (Current Location): </label>
                         	<select name = "asset_menu">
-				{% for entry in session.assets %}
-				<option value="{{ entry.asset }}"> {{ entry.asset }} </option>
+				{% for entry in session.assets_transfer %}
+				<option value="{{ entry.asset_name }}"> {{ entry.asset_name }} ({{ entry.facility_name }})  </option>
 				{% endfor %}
 				</select>
 			</div>
 			
-			 <div class="input-group" style="width:640px">
-                        	<label> From Facility: </label>
-                        	<br>
-				 {{session.current_facility}}
-				 <br>
-			</div>
+			 
                     
                      	<div class="input-group" style="width:640px">
 				<label> To Facility: </label>
