@@ -186,11 +186,61 @@ def transfer_req():
     
     if request.method == 'POST':
         session['error'] = ""
-        if request.form['facil'] and request.form['fcode'] and request.form['finfo']:
-            the_flity = "" + request.form['facil'] + ""
-            the_fcode = "" + request.form['fcode'] + ""
-            the_finfo = "" + request.form['finfo'] + ""
-    
+        if request.form['asset_menu'] and request.form['facility_menu']:
+            SQL = "SELECT facility_name FROM facility, asset, asset_at WHERE asset.asset_tag = %s AND asset.asset_pk = asset_at.asset_fk AND asset_at.facility_fk = facility.facility_pk;"
+            Adata = the_asset
+            cur.execute(SQL, (Adata,))
+            the_dest = cur.fetchone()
+            
+            the_asset = "" + request.form['asset_menu'] + ""
+            the_facil = "" + request.form['facility_menu'] + ""
+            the_users = session['uname']
+            
+            SQL = "SELECT facility_name FROM facility WHERE facility_name = %s;"
+            Adata = the_facil
+            cur.execute(SQL, (Adata,))
+            db_row = cur.fetchone()
+        
+            if db_row is None:
+                session['error'] = "That destination does not exist."
+                return render_template('transfer_req.html')
+            
+            SQL = "SELECT asset_tag FROM asset WHERE asset_tag = %s;"
+            Adata = the_asset
+            cur.execute(SQL, (Adata,))
+            db_row = cur.fetchone()
+        
+            if db_row is None:
+                session['error'] = "That asset does not exist."
+                return render_template('transfer_req.html')
+            
+            SQL = "SELECT asset.asset_tag FROM asset, asset_at WHERE asset.asset_pk = asset_at.asset_fk AND asset_at.disposed = false AND asset_at.in_transit = false AND asset.asset_tag = %s;"
+            Adata = the_asset
+            cur.execute(SQL, (Adata,))
+            db_row = cur.fetchone()
+        
+            if db_row is None:
+                session['error'] = "That is not at that facility."
+                return render_template('transfer_req.html')
+            
+            SQL = "SELECT facility.facility_name FROM asset, asset_at, facility WHERE asset.asset_pk = asset_at.asset_fk AND facility.facility_pk = asset_at.facility_fk AND asset_at.disposed = false AND asset_at.in_transit = false AND facility.facility_name = %s;"
+            Adata = the_facil
+            cur.execute(SQL, (Adata,))
+            db_row = cur.fetchone()
+        
+            if db_row is not None:
+                session['error'] = "The asset is already at that facility."
+                return render_template('transfer_req.html')
+            
+            SQL = "INSERT INTO requests (asset_fk, requester, source_fac, destination_fac) VALUES (%s, %s, %s, %s);"
+                    fourdata = (the_times, the_users, the_dest, the_facil)
+                    cur.execute(SQL, fourdata)
+                    conn.commit()
+                    
+            return redirect(url_for('transfer_req'))
+        else:
+            session['error'] = "Please fill in ALL of the boxes."
+            return render_template('transfer_req.html')
     
 @app.route('/logout')
 def logout():
