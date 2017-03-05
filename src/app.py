@@ -251,7 +251,7 @@ def logout():
 @app.route('/do_work', methods=['GET'])
 def do_work():
     logisticsOfficer = "Logistics Officer"
-    if session['role'] = "Logistics Officer":
+    if session['role'] = logisticsOfficer:
         return render_template('transfer_req.html')
     else:
         return render_template('transfer_req.html')
@@ -261,8 +261,8 @@ def do_work():
 
 @app.route('/dashboard', methods=['GET'])
 def dashboard():
-    
-    if session['role'] = "Logistics Officer"
+    logisticsOfficer = "Logistics Officer"
+    if session['role'] = logisticsOfficer
         SQL = "SELECT asset.asset_tag FROM asset, transit WHERE transit.asset_fk = asset.asset_pk AND (transit.load_time = null OR transit.unload_time = null"
     else:
         SQL = "SELECT asset.asset_tag FROM asset, requests WHERE requests.asset_fk = asset.asset_pk AND requests.approved = false AND requests.rejected = false "
