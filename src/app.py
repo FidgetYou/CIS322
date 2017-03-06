@@ -349,7 +349,7 @@ def approve_req():
         the_id = session['id']
         #if request.form['facil'] and request.form['fcode'] and request.form['finfo']:
         if request.form['submit'] == 'Deny':
-            SQL = "INSERT INTO requests (rejected) VALUES (true) WHERE requests.request_pk = %s;"
+            SQL = "UPDATE requests SET rejected = true WHERE request_pk = %s;"
             Adata = the_id
             cur.execute(SQL, (Adata,))
             conn.commit()
@@ -360,7 +360,7 @@ def approve_req():
         if request.form['submit'] == 'Approve':
             app_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M")
             
-            SQL = "INSERT INTO requests (approved, approve_time, approver) VALUES (true, %s, %s) WHERE requests.request_pk = %s;"
+            SQL = "UPDATE requests SET approved = true, approve_time = %s, approver = %s WHERE requests.request_pk = %s;"
             Bdata = (app_time, the_users, the_id)
             cur.execute(SQL, Bdata)
             conn.commit()
