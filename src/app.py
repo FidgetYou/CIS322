@@ -256,11 +256,36 @@ def transfer_req():
                 session['error'] = "The asset is already at that facility."
                 return render_template('transfer_req.html')
             
-            SQL = "INSERT INTO requests (asset_fk, requester, source_fac, destination_fac) VALUES (%s, %s, %s, %s);"
-            fourdata = (the_times, the_users, the_dest, the_facil)
+            
+            ## Insert all the Foreign Keys into Request table.
+            SQL = "SELECT facility_pk FROM facility WHERE facility_name = %s;"
+            Adata = the_facil
+            cur.execute(SQL, (Adata,))
+            dest_fac_fk = cur.fetchone()
+            
+            SQL = "SELECT user_pk FROM user_name WHERE user_pk = %s;"
+            Adata = the_users
+            cur.execute(SQL, (Adata,))
+            user_fk = cur.fetchone()
+            
+            SQL = "SELECT facility.facility_pk FROM facility, asset, asset_at WHERE asset.asset_tag = %s AND asset.asset_pk = asset_at.asset_fk AND asset_at.facility_fk = facility.facility_pk AND facility.facility_name = %s;"
+            Bdata = (the_asset, the_facil)
+            cur.execute(SQL, Bdata)
+            sour_fac_fk = cur.fetchone()
+            
+            SQL = "SELECT asset_pk FROM asset WHERE asset_pk = %s;"
+            Adata = the_asset
+            cur.execute(SQL, (Adata,))
+            ass_fk = cur.fetchone()
+            
+            req_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M")
+            
+            SQL = "INSERT INTO requests (asset_fk, requester, source_fac, destination_fac, request_time) VALUES (%s, s%, %s, %s, %s);"
+            fourdata = (ass_fk, user_fk, sour_fac_fk, dest_fac_fk, req_time)
             cur.execute(SQL, fourdata)
             conn.commit()
                     
+            session['error'] = "The transfer request has been created."
             return redirect(url_for('transfer_req'))
         else:
             session['error'] = "Please fill in ALL of the boxes."
