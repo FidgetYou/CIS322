@@ -291,6 +291,76 @@ def transfer_req():
             session['error'] = "Please fill in ALL of the boxes."
             return render_template('transfer_req.html')
     
+
+
+@app.route('/approve_req', methods=['GET', 'POST'])
+def approve_req():
+    facilitiesOfficer = "Facilities Officer"
+    if session['role'] != facilitiesOfficer:
+        session['error'] = "You can't go in there! Why, you're not a Facilities Officer."
+        return render_template('dashboard.html')
+    
+    if request.method == 'GET':
+        
+        SQL = "SELECT facility_name FROM facility"
+        cur.execute(SQL)
+        fac = cur.fetchall()
+        facility_name = []
+        for f in fac:
+            a = dict()
+            a['facility_name']=f[0]
+            facility_name.append(a)
+        session['facilities'] = facility_name
+
+        ##print (session['facilities'])
+        
+        SQL = "SELECT asset.asset_tag, facility.facility_name FROM asset, asset_at, facility WHERE asset.asset_pk = asset_at.asset_fk AND facility.facility_pk = asset_at.facility_fk AND asset_at.disposed = false"
+        cur.execute(SQL)
+        ac = cur.fetchall()
+        print ("what does a query return = ")
+        print (ac)
+        
+        asset_trsf = []
+        facil_trsf = []
+        ##ass = False
+        for f in ac:
+            ##ass = not ass
+            ##if ass:
+            b = dict()
+            b['asset_name']=f[0]
+            print ("add asset = ")
+            print (f[0])
+            print ("what is b = ")
+            print (b)
+            #asset_trsf.append(b)
+            #else:
+            #c = dict()
+            b['facility_name']=f[1]
+            print ("add facility = ")
+            print (f[1])
+            print ("what is b = ")
+            print (b)
+            asset_trsf.append(b)
+            #facil_trsf.append(c)
+
+        session['assets_transfer'] = asset_trsf
+        
+        ##session['facility_transfer'] = facil_trsf
+        print ("session asset = ")
+        print (session['assets_transfer'])
+        
+        ##SQL = "SELECT asset.asset_tag, facility.facility_name FROM asset, asset_at, facility WHERE asset.asset_pk = asset_at.asset_fk AND facility.facility_pk = asset_at.facility_pk AND asset_at.disposed = false"
+        ##cur.execute(SQL)
+        ##ac = cur.fetchone()
+        ##session['current_facility'] = ac
+        
+        return render_template('transfer_req.html')
+    
+    if request.method == 'POST':
+        session['error'] = ""
+        
+        
+        
 @app.route('/logout')
 def logout():
     return render_template('logout.html')
@@ -299,10 +369,12 @@ def logout():
 @app.route('/do_work', methods=['GET'])
 def do_work():
     logisticsOfficer = "Logistics Officer"
+    session['id'] = request.args['id']
+    
     if session['role'] == logisticsOfficer:
         return render_template('transfer_req.html')
     else:
-        return render_template('transfer_req.html')
+        return render_template('approve_req.html')
     
     return render_template('dashboard.html')
 
@@ -311,17 +383,30 @@ def do_work():
 def dashboard():
     logisticsOfficer = "Logistics Officer"
     if session['role'] == logisticsOfficer:
-        SQL = "SELECT asset.asset_tag FROM asset, transit WHERE transit.asset_fk = asset.asset_pk AND (transit.load_time = null OR transit.unload_time = null"
+        SQL = "SELECT asset.asset_tag, transit.transit_pk FROM asset, transit WHERE transit.asset_fk = asset.asset_pk AND (transit.load_time = null OR transit.unload_time = null"
     else:
-        SQL = "SELECT asset.asset_tag FROM asset, requests WHERE requests.asset_fk = asset.asset_pk AND requests.approved = false AND requests.rejected = false "
+        SQL = "SELECT asset.asset_tag, requests.request_pk FROM asset, requests WHERE requests.asset_fk = asset.asset_pk AND requests.approved = false AND requests.rejected = false "
     cur.execute(SQL)
     fac = cur.fetchall()
-    facility_name = []
+    
+    asset_name = []
     for f in fac:
-        a = dict()
-        a['work']=f[0]
-        facility_name.append(a)
-    session['works'] = facility_name
+        
+        b = dict()
+        b['asset_name']=f[0]
+        #print ("add asset = ")
+        #print (f[0])
+        #print ("what is b = ")
+        #print (b)
+        
+        b['id']=f[1]
+        #print ("add id = ")
+        #print (f[1])
+        #print ("what is b = ")
+        #print (b)
+        asset_name.append(b)
+        
+    session['works'] = asset_name
 
     ##print (session['facilities'])
         
