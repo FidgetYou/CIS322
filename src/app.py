@@ -385,21 +385,21 @@ def dashboard():
         
         b = dict()
         b['asset_name']=f[0]
-        #print ("add asset = ")
-        #print (f[0])
-        #print ("what is b = ")
-        #print (b)
+        print ("add asset = ")
+        print (f[0])
+        print ("what is b = ")
+        print (b)
         
         b['id']=f[1]
-        #print ("add id = ")
-        #print (f[1])
-        #print ("what is b = ")
-        #print (b)
+        print ("add id = ")
+        print (f[1])
+        print ("what is b = ")
+        print (b)
         asset_name.append(b)
         
     session['works'] = asset_name
 
-    ##print (session['facilities'])
+    print (session['works'])
         
 
     return render_template('dashboard.html')
