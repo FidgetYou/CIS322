@@ -341,7 +341,7 @@ def approve_req():
         request_txt = request_txt + "" + ac[0] + "."
         session['request_text'] = request_txt
         
-        return render_template('approve_req.html')
+         return redirect(url_for('approve_req'))
     
     if request.method == 'POST':
         session['error'] = ""
