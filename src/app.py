@@ -263,21 +263,29 @@ def transfer_req():
             Adata = the_facil
             cur.execute(SQL, (Adata,))
             dest_fac_fk = cur.fetchone()
+            print ("test dest")
+            print (cur.fetchone())
             
             SQL = "SELECT user_pk FROM user_name WHERE username = %s;"
             Adata = the_users
             cur.execute(SQL, (Adata,))
             user_fk = cur.fetchone()
+            print ("test userFK")
+            print (cur.fetchone())
             
             SQL = "SELECT facility.facility_pk FROM facility, asset, asset_at WHERE asset.asset_tag = %s AND asset.asset_pk = asset_at.asset_fk AND asset_at.facility_fk = facility.facility_pk AND facility.facility_name = %s;"
             Bdata = (the_asset, the_facil)
             cur.execute(SQL, Bdata)
             sour_fac_fk = cur.fetchone()
+            print ("test sour")
+            print (cur.fetchone())
             
             SQL = "SELECT asset_pk FROM asset WHERE asset_tag = %s;"
             Adata = the_asset
             cur.execute(SQL, (Adata,))
             ass_fk = cur.fetchone()
+            print ("test ass")
+            print (cur.fetchone())
             
             req_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M")
             
