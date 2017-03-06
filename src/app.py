@@ -347,9 +347,9 @@ def approve_req():
         session['error'] = ""
         #if request.form['facil'] and request.form['fcode'] and request.form['finfo']:
         print ("form = ")
-        print (request.form['app'])
+        print (request.form['submit'])
         print ("args = ")
-        print (request.args['app'])
+        print (request.args['submit'])
         
         return redirect(url_for('approve_req'))
         
