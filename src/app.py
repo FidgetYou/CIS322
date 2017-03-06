@@ -264,7 +264,7 @@ def transfer_req():
             cur.execute(SQL, (Adata,))
             dest_fac_fk = cur.fetchone()
             
-            SQL = "SELECT user_pk FROM user_name WHERE user_pk = %s;"
+            SQL = "SELECT user_pk FROM user_name WHERE username = %s;"
             Adata = the_users
             cur.execute(SQL, (Adata,))
             user_fk = cur.fetchone()
