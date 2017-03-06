@@ -302,59 +302,36 @@ def approve_req():
     
     if request.method == 'GET':
         
-        SQL = "SELECT facility_name FROM facility"
-        cur.execute(SQL)
-        fac = cur.fetchall()
-        facility_name = []
-        for f in fac:
-            a = dict()
-            a['facility_name']=f[0]
-            facility_name.append(a)
-        session['facilities'] = facility_name
-
-        ##print (session['facilities'])
+        the_id = session['id']
+        SQL = "SELECT requester FROM requests WHERE request_pk = %s AND approved = false AND rejected = false"
+        Adata = the_id
+        cur.execute(SQL, (Adata,))
+        db_row = cur.fetchone()
         
-        SQL = "SELECT asset.asset_tag, facility.facility_name FROM asset, asset_at, facility WHERE asset.asset_pk = asset_at.asset_fk AND facility.facility_pk = asset_at.facility_fk AND asset_at.disposed = false"
-        cur.execute(SQL)
-        ac = cur.fetchall()
+        if db_row is None:
+            session['error'] = "This is an ivalid request."
+            return render_template('approve_req.html')
+        
+        SQL = "SELECT user_name.username, asset.asset_tag, facility.facility_name, requests.request_time FROM asset, requests, facility, user_name WHERE requests.asset_fk = asset.asset_pk AND requests.requester = user_name.user_pk AND requests.source_fac = facility.facility_pk AND requests.request_pk = %s "
+        Adata = the_id
+        cur.execute(SQL, (Adata,))
+        ac = cur.fetchone()
         print ("what does a query return = ")
         print (ac)
         
-        asset_trsf = []
-        facil_trsf = []
-        ##ass = False
-        for f in ac:
-            ##ass = not ass
-            ##if ass:
-            b = dict()
-            b['asset_name']=f[0]
-            print ("add asset = ")
-            print (f[0])
-            print ("what is b = ")
-            print (b)
-            #asset_trsf.append(b)
-            #else:
-            #c = dict()
-            b['facility_name']=f[1]
-            print ("add facility = ")
-            print (f[1])
-            print ("what is b = ")
-            print (b)
-            asset_trsf.append(b)
-            #facil_trsf.append(c)
-
-        session['assets_transfer'] = asset_trsf
+        request_txt = "" + ac[0] + " suggested at " + ac[3] + " that " + ac[1] + " be moved from " + ac[2] + " to "
         
-        ##session['facility_transfer'] = facil_trsf
-        print ("session asset = ")
-        print (session['assets_transfer'])
+        SQL = "SELECT facility.facility_name FROM requests, facility WHERE requests.destination_fac = facility.facility_pk AND requests.request_pk = %s "
+        Adata = the_id
+        cur.execute(SQL, (Adata,))
+        ac = cur.fetchone()
+        print ("what does a query return = ")
+        print (ac)
         
-        ##SQL = "SELECT asset.asset_tag, facility.facility_name FROM asset, asset_at, facility WHERE asset.asset_pk = asset_at.asset_fk AND facility.facility_pk = asset_at.facility_pk AND asset_at.disposed = false"
-        ##cur.execute(SQL)
-        ##ac = cur.fetchone()
-        ##session['current_facility'] = ac
+        request_txt = request_txt + "" + ac[0] + "."
+        session['request_text'] = request_txt
         
-        return render_template('transfer_req.html')
+        return render_template('approve_req.html')
     
     if request.method == 'POST':
         session['error'] = ""
