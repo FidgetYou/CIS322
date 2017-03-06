@@ -91,12 +91,13 @@ def create_user():
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    session['uname'] = ""
+    session['pass'] = ""
+    session['role'] = ""
     
     if request.method == 'GET':
-        session['uname'] = ""
-        session['pass'] = ""
-        session['role'] = ""
         return render_template('login.html')
+    
     if request.method == 'POST':
         if request.form['uname']:
             session['uname'] = request.form['uname']
@@ -237,6 +238,15 @@ def transfer_req():
         
             if db_row is None:
                 session['error'] = "That asset does not exist."
+                return render_template('transfer_req.html')
+            
+            SQL = "SELECT asset.asset_fk FROM asset, requests WHERE asset.asset_tag = %s AND requests.asset_fk = asset.asset_fk;"
+            Adata = the_asset
+            cur.execute(SQL, (Adata,))
+            db_row = cur.fetchone()
+        
+            if db_row is not None:
+                session['error'] = "This asset has already requested for transfer."
                 return render_template('transfer_req.html')
             
             SQL = "SELECT asset.asset_tag FROM asset, asset_at WHERE asset.asset_pk = asset_at.asset_fk AND asset_at.disposed = false AND asset_at.in_transit = false AND asset.asset_tag = %s;"
@@ -405,7 +415,7 @@ def dashboard():
     if session['role'] == logisticsOfficer:
         SQL = "SELECT asset.asset_tag, transit.transit_pk FROM asset, transit WHERE transit.asset_fk = asset.asset_pk AND transit.load_time = null "
     else:
-        SQL = "SELECT asset.asset_tag, requests.request_pk FROM asset, requests WHERE requests.asset_fk = asset.asset_pk AND requests.approved = false AND requests.rejected = false "
+        SQL = "SELECT asset.asset_tag, requests.request_pk FROM asset, requests WHERE requests.asset_fk = asset.asset_pk AND requests.approved = false AND requests.rejected = false AND requests.approver = null "
     cur.execute(SQL)
     fac = cur.fetchall()
     
