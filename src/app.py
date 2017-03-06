@@ -240,7 +240,7 @@ def transfer_req():
                 session['error'] = "That asset does not exist."
                 return render_template('transfer_req.html')
             
-            SQL = "SELECT asset.asset_tag FROM asset, requests WHERE asset.asset_tag = %s AND requests.asset_fk = asset.asset_fk;"
+            SQL = "SELECT asset.asset_tag FROM asset, requests WHERE asset.asset_tag = %s AND requests.asset_fk = asset.asset_pk;"
             Adata = the_asset
             cur.execute(SQL, (Adata,))
             db_row = cur.fetchone()
