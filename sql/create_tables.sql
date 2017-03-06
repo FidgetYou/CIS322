@@ -71,11 +71,11 @@ Tried to fit all of the needed request things in here. I think I got them all. B
 
 CREATE TABLE requests(
 	request_pk	serial primary key,
-	asset_fk	integer REFERENCES asset (asset_tag) not null,
-	requester	integer REFERENCES user_name (username) not null,
-	approver	integer REFERENCES user_name (username) default null,
-	source_fac	integer REFERENCES facility (facility_code) not null,
-	destination_fac	integer REFERENCES facility (facility_code) not null,
+	asset_fk	integer REFERENCES asset (asset_pk) not null,
+	requester	integer REFERENCES user_name (user_pk) not null,
+	approver	integer REFERENCES user_name (user_pk) default null,
+	source_fac	integer REFERENCES facility (facility_pk) not null,
+	destination_fac	integer REFERENCES facility (facility_pk) not null,
 	request_time	timestamp default null,
 	approve_time	timestamp default null,
 	approved	boolean default false,
@@ -95,9 +95,9 @@ already had so many entries in it.
 
 CREATE TABLE transit(
 	transit_pk	serial primary key,
-	asset_fk	integer REFERENCES asset (asset_tag) not null,
-	source_fac	integer REFERENCES facility (facility_code) not null,
-	destination_fac	integer REFERENCES facility (facility_code) not null,
+	asset_fk	integer REFERENCES asset (asset_pk) not null,
+	source_fac	integer REFERENCES facility (facility_pk) not null,
+	destination_fac	integer REFERENCES facility (facility_pk) not null,
 	load_time	timestamp default null,
 	unload_time	timestamp default null
 );
