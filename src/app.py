@@ -310,7 +310,7 @@ def approve_req():
         return render_template('dashboard.html')
     
     if request.method == 'GET':
-        
+        the_users = session['uname']
         the_id = session['id']
         SQL = "SELECT requester FROM requests WHERE request_pk = %s AND approved = false AND rejected = false"
         Adata = the_id
@@ -318,15 +318,15 @@ def approve_req():
         db_row = cur.fetchone()
         
         if db_row is None:
-            session['error'] = "This is an ivalid request."
+            session['error'] = "This is an invalid request."
             return render_template('approve_req.html')
         
         SQL = "SELECT user_name.username, asset.asset_tag, facility.facility_name, requests.request_time FROM asset, requests, facility, user_name WHERE requests.asset_fk = asset.asset_pk AND requests.requester = user_name.user_pk AND requests.source_fac = facility.facility_pk AND requests.request_pk = %s "
         Adata = the_id
         cur.execute(SQL, (Adata,))
         ac = cur.fetchone()
-        print ("what does a query return = ")
-        print (ac)
+        #print ("what does a query return = ")
+        #print (ac)
 
         rTime = str(ac[3])
         request_txt = "" + ac[0] + " suggested at " + rTime + " that " + ac[1] + " be moved from " + ac[2] + " to "
@@ -335,8 +335,8 @@ def approve_req():
         Adata = the_id
         cur.execute(SQL, (Adata,))
         ac = cur.fetchone()
-        print ("what does a query return = ")
-        print (ac)
+        #print ("what does a query return = ")
+        #print (ac)
         
         request_txt = request_txt + "" + ac[0] + "."
         session['request_text'] = request_txt
@@ -346,12 +346,31 @@ def approve_req():
     if request.method == 'POST':
         session['error'] = ""
         #if request.form['facil'] and request.form['fcode'] and request.form['finfo']:
-        print ("form = ")
-        print (request.form['submit'])
-        print ("args = ")
-        print (request.args['submit'])
+        if request.form['submit'] == 'Deny':
+            SQL = "INSERT INTO requests (rejected) VALUES (true) WHERE requests.request_pk = %s;"
+            Adata = the_id
+            cur.execute(SQL, (Adata,))
+            conn.commit()
+            
+            session['error'] = "Okay, we won't move that."
+            return render_template('dashboard.html')
         
-        return redirect(url_for('approve_req'))
+        if request.form['submit'] == 'Approve':
+            app_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M")
+            
+            SQL = "INSERT INTO requests (approved, approve_time, approver) VALUES (true, %s, %s) WHERE requests.request_pk = %s;"
+            Bdata = (app_time, the_users, the_id)
+            cur.execute(SQL, Bdata)
+            conn.commit()
+            
+            SQL = "INSERT INTO transit (asset_fk, source_fac, destination_fac) SELECT asset_fk, source_fac, destination_fac FROM requests WHERE requests.request_pk = %s;"
+            Bdata = (the_id, )
+            cur.execute(SQL, Bdata)
+            conn.commit()
+            
+            return render_template('dashboard.html')
+        
+        return render_template('approve_req.html')
         
 @app.route('/logout')
 def logout():
