@@ -132,7 +132,7 @@ def login():
             ##session['role'] = "".join(filter(lambda x:x in string.printable, db_row))
             session['role'] = db_row[0]
             session['error'] = ""
-            return render_template('dashboard.html')
+            return redirect(url_for('dashboard'))
         
 
 
@@ -327,8 +327,9 @@ def approve_req():
         ac = cur.fetchone()
         print ("what does a query return = ")
         print (ac)
-        
-        request_txt = "" + ac[0] + " suggested at " + ac[3] + " that " + ac[1] + " be moved from " + ac[2] + " to "
+
+        rTime = str(ac[3])
+        request_txt = "" + ac[0] + " suggested at " + rTime + " that " + ac[1] + " be moved from " + ac[2] + " to "
         
         SQL = "SELECT facility.facility_name FROM requests, facility WHERE requests.destination_fac = facility.facility_pk AND requests.request_pk = %s "
         Adata = the_id
