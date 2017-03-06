@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html>
+	<head><title>OSNAP Approve</title></head>
+	<body><h1>Request Approval</h1>
+
+	<div id ="content">
+                {% if session['error'] %}
+               		 <br> <strong>{{session['error']}}</strong> <br>
+		{% endif %}
+	</div> 
+			
+	<div class="row">
+            <div class="col-lg-12">
+                <p> <label>Can you give me your approval?</label> </p>
+                <div id ="content">
+                {% if session['uname'] %}
+                    If your name is <strong>{{session['uname']}}</strong> and your job is <strong>{{session['role']}}</strong> 
+			        <br>You need to get to work!<br>
+                {% else %}
+		            I may have made a mistake letting you in here...
+		        {% endif %}
+		</div>    
+
+		{% if session['works'] %}
+			{% for r in work %}
+				<tr><td><a href="{{url_for('do_work')}}?id={{r['id']}}">{{r['name']}}</a></td></tr>
+			{% endfor %}
+		{% endif %}
+		    
+		<form action = "{{url_for('approve_req')}}">
+			<input type = "Submit" name = "Approve?" value = "app">
+		</form>
+		
+		<form action = "{{url_for('approve_req')}}">
+			<input type = "Submit" name = "Deny?" value = "den">
+		</form>
+		    
+		<form action = "{{url_for('dashboard')}}">
+			<input type = "Submit" name = "Go Back" value = "Go Back">
+		</form>
+		    
+	
+
+            </div>
+
+        </div>
+        <!-- end of row -->
+
+        <br>
+        <br>
+
+       
+	
+
+
+</body>
+</html>
