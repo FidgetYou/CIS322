@@ -410,12 +410,12 @@ def do_work():
 
 @app.route('/dashboard', methods=['GET'])
 def dashboard():
-    session['works'] = ""
+    #session['works'] = ""
     logisticsOfficer = "Logistics Officer"
     if session['role'] == logisticsOfficer:
-        SQL = "SELECT asset.asset_tag, transit.transit_pk FROM asset, transit WHERE transit.asset_fk = asset.asset_pk AND transit.load_time = null "
+        SQL = "SELECT asset.asset_tag, transit.transit_pk FROM asset, transit WHERE asset.asset_pk = transit.asset_fk AND transit.load_time = null "
     else:
-        SQL = "SELECT asset.asset_tag, requests.request_pk FROM asset, requests WHERE requests.asset_fk = asset.asset_pk AND requests.approved = false AND requests.rejected = false AND requests.approver = null "
+        SQL = "SELECT asset.asset_tag, requests.request_pk FROM asset, requests WHERE asset.asset_pk = requests.asset_fk AND requests.approved = false AND requests.rejected = false AND requests.approver = null "
     cur.execute(SQL)
     fac = cur.fetchall()
     
@@ -424,16 +424,16 @@ def dashboard():
         
         b = dict()
         b['asset_name']=f[0]
-        print ("add asset = ")
-        print (f[0])
-        print ("what is b = ")
-        print (b)
+        #print ("add asset = ")
+        #print (f[0])
+        #print ("what is b = ")
+        #print (b)
         
         b['id']=f[1]
-        print ("add id = ")
-        print (f[1])
-        print ("what is b = ")
-        print (b)
+        #print ("add id = ")
+        #print (f[1])
+        ##print ("what is b = ")
+        #print (b)
         asset_name.append(b)
         
     session['works'] = asset_name
