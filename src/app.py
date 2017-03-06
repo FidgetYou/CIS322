@@ -374,7 +374,7 @@ def do_work():
 def dashboard():
     logisticsOfficer = "Logistics Officer"
     if session['role'] == logisticsOfficer:
-        SQL = "SELECT asset.asset_tag, transit.transit_pk FROM asset, transit WHERE transit.asset_fk = asset.asset_pk AND (transit.load_time = null OR transit.unload_time = null"
+        SQL = "SELECT asset.asset_tag, transit.transit_pk FROM asset, transit WHERE transit.asset_fk = asset.asset_pk AND (transit.load_time = null OR transit.unload_time = null)"
     else:
         SQL = "SELECT asset.asset_tag, requests.request_pk FROM asset, requests WHERE requests.asset_fk = asset.asset_pk AND requests.approved = false AND requests.rejected = false "
     cur.execute(SQL)
