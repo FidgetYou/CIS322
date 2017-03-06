@@ -240,7 +240,7 @@ def transfer_req():
                 session['error'] = "That asset does not exist."
                 return render_template('transfer_req.html')
             
-            SQL = "SELECT asset.asset_fk FROM asset, requests WHERE asset.asset_tag = %s AND requests.asset_fk = asset.asset_fk;"
+            SQL = "SELECT asset.asset_tag FROM asset, requests WHERE asset.asset_tag = %s AND requests.asset_fk = asset.asset_fk;"
             Adata = the_asset
             cur.execute(SQL, (Adata,))
             db_row = cur.fetchone()
@@ -375,7 +375,7 @@ def approve_req():
             cur.execute(SQL, (Adata,))
             ac = cur.fetchone()
             user_fk = ac[0]
-            
+            print ("approved?")
             SQL = "UPDATE requests SET approved = true, approve_time = %s, approver = %s WHERE requests.request_pk = %s;"
             Bdata = (app_time, user_fk, the_id)
             cur.execute(SQL, Bdata)
