@@ -331,6 +331,30 @@ def approve_req():
             session['error'] = "This is an invalid request."
             return render_template('approve_req.html')
         
+        if request.method == 'GET':
+        the_users = session['uname']
+        the_id = session['id']
+        SQL = "SELECT requester FROM requests WHERE request_pk = %s AND approved = true"
+        Adata = the_id
+        cur.execute(SQL, (Adata,))
+        db_row = cur.fetchone()
+        
+        if db_row is not None:
+            session['error'] = "This is an invalid request."
+            return render_template('approve_req.html')
+        
+        if request.method == 'GET':
+        the_users = session['uname']
+        the_id = session['id']
+        SQL = "SELECT requester FROM requests WHERE request_pk = %s AND rejected = true"
+        Adata = the_id
+        cur.execute(SQL, (Adata,))
+        db_row = cur.fetchone()
+        
+        if db_row is not None:
+            session['error'] = "This is an invalid request."
+            return render_template('approve_req.html')
+        
         SQL = "SELECT user_name.username, asset.asset_tag, facility.facility_name, requests.request_time FROM asset, requests, facility, user_name WHERE requests.asset_fk = asset.asset_pk AND requests.requester = user_name.user_pk AND requests.source_fac = facility.facility_pk AND requests.request_pk = %s "
         Adata = the_id
         cur.execute(SQL, (Adata,))
