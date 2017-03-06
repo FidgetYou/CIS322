@@ -394,6 +394,9 @@ def approve_req():
 def logout():
     return render_template('logout.html')
 
+@app.route('/update_transit')
+def update_transit():
+    return render_template('update_transit.html')
 
 @app.route('/do_work', methods=['GET'])
 def do_work():
@@ -401,7 +404,7 @@ def do_work():
     session['id'] = request.args['id']
     
     if session['role'] == logisticsOfficer:
-        return render_template('transfer_req.html')
+        return render_template('update_transit.html')
     else:
         return render_template('approve_req.html')
     
