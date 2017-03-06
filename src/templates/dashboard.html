@@ -22,8 +22,8 @@
 		</div>    
 
 		{% if session['works'] %}
-			{% for r in work %}
-				<tr><td><a href="{{url_for('do_work')}}?id={{r['id']}}">{{r['name']}}</a></td></tr>
+			{% for entry in session.works %}
+				<tr><td><a href="{{url_for('do_work')}}?id={{entry.id}}">{{entry.asset_name}}</a></td></tr>
 			{% endfor %}
 		{% endif %}
 		    
