@@ -345,6 +345,8 @@ def approve_req():
     
     if request.method == 'POST':
         session['error'] = ""
+        the_users = session['uname']
+        the_id = session['id']
         #if request.form['facil'] and request.form['fcode'] and request.form['finfo']:
         if request.form['submit'] == 'Deny':
             SQL = "INSERT INTO requests (rejected) VALUES (true) WHERE requests.request_pk = %s;"
