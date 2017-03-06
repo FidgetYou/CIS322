@@ -360,8 +360,14 @@ def approve_req():
         if request.form['submit'] == 'Approve':
             app_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M")
             
+            SQL = "SELECT username_pk FROM user_name WHERE username = %s "
+            Adata = the_users
+            cur.execute(SQL, (Adata,))
+            ac = cur.fetchone()
+            user_fk = ac[0]
+            
             SQL = "UPDATE requests SET approved = true, approve_time = %s, approver = %s WHERE requests.request_pk = %s;"
-            Bdata = (app_time, the_users, the_id)
+            Bdata = (app_time, user_fk, the_id)
             cur.execute(SQL, Bdata)
             conn.commit()
             
