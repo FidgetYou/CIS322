@@ -413,9 +413,9 @@ def dashboard():
     #session['works'] = ""
     logisticsOfficer = "Logistics Officer"
     if session['role'] == logisticsOfficer:
-        SQL = "SELECT asset.asset_tag, transit.transit_pk FROM asset, transit WHERE asset.asset_pk = transit.asset_fk AND transit.load_time = null "
+        SQL = "SELECT asset.asset_tag, transit.transit_pk FROM asset, transit WHERE asset.asset_pk = transit.asset_fk "
     else:
-        SQL = "SELECT asset.asset_tag, requests.request_pk FROM asset, requests WHERE asset.asset_pk = requests.asset_fk AND requests.approved = false AND requests.rejected = false AND requests.approver = null "
+        SQL = "SELECT asset.asset_tag, requests.request_pk FROM asset, requests WHERE asset.asset_pk = requests.asset_fk AND requests.approved = false AND requests.rejected = false "
     cur.execute(SQL)
     fac = cur.fetchall()
     
