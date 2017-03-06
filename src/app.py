@@ -274,7 +274,7 @@ def transfer_req():
             cur.execute(SQL, Bdata)
             sour_fac_fk = cur.fetchone()
             
-            SQL = "SELECT asset_pk FROM asset WHERE asset_pk = %s;"
+            SQL = "SELECT asset_pk FROM asset WHERE asset_tag = %s;"
             Adata = the_asset
             cur.execute(SQL, (Adata,))
             ass_fk = cur.fetchone()
