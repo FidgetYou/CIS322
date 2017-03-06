@@ -210,15 +210,16 @@ def transfer_req():
     
     if request.method == 'POST':
         session['error'] = ""
+        the_asset = "" + request.form['asset_menu'] + ""
+        the_facil = "" + request.form['facility_menu'] + ""
+        the_users = session['uname']
+        
         if request.form['asset_menu'] and request.form['facility_menu']:
             SQL = "SELECT facility_name FROM facility, asset, asset_at WHERE asset.asset_tag = %s AND asset.asset_pk = asset_at.asset_fk AND asset_at.facility_fk = facility.facility_pk;"
             Adata = the_asset
             cur.execute(SQL, (Adata,))
             the_dest = cur.fetchone()
             
-            the_asset = "" + request.form['asset_menu'] + ""
-            the_facil = "" + request.form['facility_menu'] + ""
-            the_users = session['uname']
             
             SQL = "SELECT facility_name FROM facility WHERE facility_name = %s;"
             Adata = the_facil
