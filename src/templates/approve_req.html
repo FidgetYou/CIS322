@@ -26,11 +26,11 @@
 		{{ session['request_text'] }}
 		
 		    
-		<form action = "{{url_for('approve_req')}}">
+		<form action = "{{url_for('approve_req')}}" method="POST">
 			<input type = "Submit" name = "app" value = "Approve?">
 		</form>
 		
-		<form action = "{{url_for('approve_req')}}">
+		<form action = "{{url_for('approve_req')}}" method="POST">
 			<input type = "Submit" name = "den" value = "Deny?">
 		</form>
 		    
