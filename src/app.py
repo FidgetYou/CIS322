@@ -400,9 +400,10 @@ def do_work():
 
 @app.route('/dashboard', methods=['GET'])
 def dashboard():
+    session['works'] = ""
     logisticsOfficer = "Logistics Officer"
     if session['role'] == logisticsOfficer:
-        SQL = "SELECT asset.asset_tag, transit.transit_pk FROM asset, transit WHERE transit.asset_fk = asset.asset_pk AND (transit.load_time = null OR transit.unload_time = null)"
+        SQL = "SELECT asset.asset_tag, transit.transit_pk FROM asset, transit WHERE transit.asset_fk = asset.asset_pk AND transit.load_time = null "
     else:
         SQL = "SELECT asset.asset_tag, requests.request_pk FROM asset, requests WHERE requests.asset_fk = asset.asset_pk AND requests.approved = false AND requests.rejected = false "
     cur.execute(SQL)
