@@ -280,10 +280,8 @@ def transfer_req():
             ass_fk = cur.fetchone()
             
             req_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M")
-            print ("the time is")
-            print (req_time)
             
-            SQL = "INSERT INTO requests (asset_fk, requester, source_fac, destination_fac, request_time) VALUES (%s, s%, %s, %s, %s);"
+            SQL = "INSERT INTO requests (asset_fk, requester, source_fac, destination_fac, request_time) VALUES (%s, %s, %s, %s, %s);"
             fourdata = (ass_fk, user_fk, sour_fac_fk, dest_fac_fk, req_time)
             cur.execute(SQL, fourdata)
             conn.commit()
