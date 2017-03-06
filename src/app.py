@@ -360,7 +360,7 @@ def approve_req():
         if request.form['submit'] == 'Approve':
             app_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M")
             
-            SQL = "SELECT username_pk FROM user_name WHERE username = %s "
+            SQL = "SELECT user_pk FROM user_name WHERE username = %s "
             Adata = the_users
             cur.execute(SQL, (Adata,))
             ac = cur.fetchone()
