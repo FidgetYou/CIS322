@@ -346,10 +346,10 @@ def approve_req():
     if request.method == 'POST':
         session['error'] = ""
         #if request.form['facil'] and request.form['fcode'] and request.form['finfo']:
-        print ("args = ")
-        print (request.args['app'])
         print ("form = ")
         print (request.form['app'])
+        print ("args = ")
+        print (request.args['app'])
         
         return redirect(url_for('approve_req'))
         
