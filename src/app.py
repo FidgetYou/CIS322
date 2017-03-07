@@ -181,18 +181,18 @@ def transfer_req():
             ##if ass:
             b = dict()
             b['asset_name']=f[0]
-            print ("add asset = ")
-            print (f[0])
-            print ("what is b = ")
-            print (b)
+            #print ("add asset = ")
+            #print (f[0])
+            #print ("what is b = ")
+            #print (b)
             #asset_trsf.append(b)
             #else:
             #c = dict()
             b['facility_name']=f[1]
-            print ("add facility = ")
-            print (f[1])
-            print ("what is b = ")
-            print (b)
+            #print ("add facility = ")
+            ##print (f[1])
+            #print ("what is b = ")
+            #print (b)
             asset_trsf.append(b)
             #facil_trsf.append(c)
 
@@ -331,15 +331,117 @@ def approve_req():
             session['error'] = "This is an invalid request."
             return render_template('approve_req.html')
         
-        if request.method == 'GET':
-        the_users = session['uname']
-        the_id = session['id']
+        
         SQL = "SELECT requester FROM requests WHERE request_pk = %s AND approved = true"
         Adata = the_id
         cur.execute(SQL, (Adata,))
         db_row = cur.fetchone()
         
         if db_row is not None:
+            session['error'] = "This is an invalid request."
+            return render_template('approve_req.html')
+        
+        SQL = "SELECT requester FROM requests WHERE request_pk = %s AND rejected = true"
+        Adata = the_id
+        cur.execute(SQL, (Adata,))
+        db_row = cur.fetchone()
+        
+        if db_row is not None:
+            session['error'] = "This is an invalid request."
+            return render_template('approve_req.html')
+        
+        
+        ## Building the request line of text.
+        SQL = "SELECT user_name.username, asset.asset_tag, facility.facility_name, requests.request_time FROM asset, requests, facility, user_name WHERE requests.asset_fk = asset.asset_pk AND requests.requester = user_name.user_pk AND requests.source_fac = facility.facility_pk AND requests.request_pk = %s "
+        Adata = the_id
+        cur.execute(SQL, (Adata,))
+        ac = cur.fetchone()
+        #print ("what does a query return = ")
+        #print (ac)
+
+        rTime = str(ac[3])
+        request_txt = "" + ac[0] + " suggested at " + rTime + " that " + ac[1] + " be moved from " + ac[2] + " to "
+        
+        # With two facility names, I can't seem to get all of the results into one query.
+        SQL = "SELECT facility.facility_name FROM requests, facility WHERE requests.destination_fac = facility.facility_pk AND requests.request_pk = %s "
+        Adata = the_id
+        cur.execute(SQL, (Adata,))
+        ac = cur.fetchone()
+        #print ("what does a query return = ")
+        #print (ac)
+        
+        request_txt = request_txt + "" + ac[0] + "."
+        session['request_text'] = request_txt
+        
+        return render_template('approve_req.html')
+    
+    if request.method == 'POST':
+        session['error'] = ""
+        the_users = session['uname']
+        the_id = session['id']
+        #if request.form['facil'] and request.form['fcode'] and request.form['finfo']:
+        if request.form['submit'] == 'Deny':
+            SQL = "UPDATE requests SET rejected = true WHERE request_pk = %s;"
+            Adata = the_id
+            cur.execute(SQL, (Adata,))
+            conn.commit()
+            
+            session['error'] = "Okay, we won't move that."
+            return render_template('dashboard.html')
+        
+        if request.form['submit'] == 'Approve':
+            app_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M")
+            
+            SQL = "SELECT user_pk FROM user_name WHERE username = %s "
+            Adata = the_users
+            cur.execute(SQL, (Adata,))
+            ac = cur.fetchone()
+            user_fk = ac[0]
+            print ("approved?")
+            SQL = "UPDATE requests SET approved = true, approve_time = %s, approver = %s WHERE requests.request_pk = %s;"
+            Bdata = (app_time, user_fk, the_id)
+            cur.execute(SQL, Bdata)
+            conn.commit()
+            
+            SQL = "INSERT INTO transit (asset_fk, source_fac, destination_fac) SELECT asset_fk, source_fac, destination_fac FROM requests WHERE requests.request_pk = %s;"
+            Bdata = (the_id, )
+            cur.execute(SQL, Bdata)
+            conn.commit()
+            
+            return render_template('dashboard.html')
+        
+        return render_template('approve_req.html')
+        
+@app.route('/logout')
+def logout():
+    return render_template('login.html')
+
+@app.route('/update_transit')
+def update_transit():
+    logisticsOfficer = "Logistics Officer"
+    if session['role'] != logisticsOfficer:
+        session['error'] = "You can't go in there! Why, you're not a Logistics Officer."
+        return render_template('dashboard.html')
+    
+    if request.method == 'GET':
+        the_users = session['uname']
+        the_id = session['id']
+        SQL = "SELECT asset_fk FROM transit WHERE transit_pk = %s AND load_time = null AND unload_time = null "
+        Adata = the_id
+        cur.execute(SQL, (Adata,))
+        db_row = cur.fetchone()
+        
+        if db_row is None:
+            session['error'] = "This is an invalid request."
+            return render_template('update_transit.html')
+        
+        
+        SQL = "SELECT asset.asset_tag FROM asset, asset_at, transit WHERE transit.transit_pk = %s AND asset.asset_pk = transit.asset_fk AND asset.asset_pk = asset_at.asset_fk AND asset_at.in_transit = false AND asset_at.disposed = false "
+        Adata = the_id
+        cur.execute(SQL, (Adata,))
+        db_row = cur.fetchone()
+        
+        if db_row is None:
             session['error'] = "This is an invalid request."
             return render_template('approve_req.html')
         
@@ -413,15 +515,10 @@ def approve_req():
             return render_template('dashboard.html')
         
         return render_template('approve_req.html')
-        
-@app.route('/logout')
-def logout():
-    return render_template('logout.html')
-
-@app.route('/update_transit')
-def update_transit():
     return render_template('update_transit.html')
 
+## It seemed easier to have the html web page only use one route.
+## So, this function figures out who is working and sends them to the appropriate page.
 @app.route('/do_work', methods=['GET'])
 def do_work():
     logisticsOfficer = "Logistics Officer"
