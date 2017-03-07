@@ -26,7 +26,7 @@
 				<tr><td><a href="{{url_for('do_work')}}?id={{entry.id}}">{{entry.asset_name}}</a></td></tr><br>
 			{% endfor %}
 		{% endif %}
-		    
+		    <!-- end of row 
 		<form action = "{{url_for('asset_report')}}">
 			<input type = "Submit" value = "What Assets?">
 		</form>
@@ -34,7 +34,7 @@
 		<form action = "{{url_for('transfer_report')}}">
 			<input type = "Submit" value = "What Transfers?">
 		</form>
-		    
+		    -->
 		<form action = "{{url_for('add_asset')}}">
 			<input type = "Submit" value = "Add Asset">
 		</form>
@@ -43,14 +43,20 @@
 			<input type = "Submit" value = "Add Facility">
 		</form>
 		    
+		<form action = "{{url_for('create_user')}}">
+			<input type = "Submit" value = "Add Worker">
+		</form>
+		    
 		{% if session['role'] == "Logistics Officer" %}
+		    
+		<form action = "{{url_for('transfer_req')}}">
+			<input type = "Submit" value = "Make Tranfers">
+		</form>
+		    
                 <form action = "{{url_for('dispose_asset')}}">
 			<input type = "Submit" value = "Make Trash">
 		</form>
 		
-		<form action = "{{url_for('transfer_req')}}">
-			<input type = "Submit" value = "Make Tranfers">
-		</form>
 		{% endif %}
 		
 		    
