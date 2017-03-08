@@ -331,9 +331,7 @@ def approve_req():
             session['error'] = "This is an invalid request."
             return render_template('approve_req.html')
         
-        if request.method == 'GET':
-        the_users = session['uname']
-        the_id = session['id']
+        
         SQL = "SELECT requester FROM requests WHERE request_pk = %s AND approved = true"
         Adata = the_id
         cur.execute(SQL, (Adata,))
@@ -343,9 +341,7 @@ def approve_req():
             session['error'] = "This is an invalid request."
             return render_template('approve_req.html')
         
-        if request.method == 'GET':
-        the_users = session['uname']
-        the_id = session['id']
+        
         SQL = "SELECT requester FROM requests WHERE request_pk = %s AND rejected = true"
         Adata = the_id
         cur.execute(SQL, (Adata,))
