@@ -23,7 +23,8 @@ CREATE TABLE user_name(
 	user_pk		serial primary key,
 	username	varchar(16),
 	password	varchar(16),
-	role_fk		integer REFERENCES role (role_pk) not null
+	role_fk		integer REFERENCES role (role_pk) not null,
+	active		boolean default false
 );
 
 /* 
