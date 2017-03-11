@@ -75,7 +75,7 @@ def create_user():
                 session['error'] = "" + the_jobtitle + " is invalid."
                 return render_template('login.html')
         
-            SQL = "INSERT INTO user_name (username, password, role_fk) VALUES (%s, %s, %s);"
+            SQL = "INSERT INTO user_name (username, password, role_fk, active) VALUES (%s, %s, %s, true);"
             data = (the_username,the_password,role_fk)
             cur.execute(SQL, data)
             conn.commit()
