@@ -472,8 +472,11 @@ def update_transit():
         session['error'] = ""
         the_users = session['uname']
         the_id = session['id']
+        
         #if request.form['facil'] and request.form['fcode'] and request.form['finfo']:
-        if request.form['submit'] == 'Deny':
+        if request.form['submit'] == 'Load':
+            the_times = datetime.datetime.strptime(request.form['load'], '%Y-%m-%dT%H:%M') 
+
             SQL = "UPDATE requests SET rejected = true WHERE request_pk = %s;"
             Adata = the_id
             cur.execute(SQL, (Adata,))
@@ -482,7 +485,9 @@ def update_transit():
             session['error'] = "Okay, we won't move that."
             return render_template('dashboard.html')
         
-        if request.form['submit'] == 'Approve':
+        if request.form['submit'] == 'Unload':
+            the_times = datetime.datetime.strptime(request.form['unload'], '%Y-%m-%dT%H:%M') 
+
             app_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M")
             
             SQL = "SELECT user_pk FROM user_name WHERE username = %s "
