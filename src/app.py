@@ -426,7 +426,7 @@ def update_transit():
     if request.method == 'GET':
         the_users = session['uname']
         the_id = session['id']
-        SQL = "SELECT asset_fk FROM transit WHERE transit_pk = %s AND load_time = null AND unload_time = null "
+        SQL = "SELECT asset_fk FROM transit WHERE transit_pk = %s AND unload_time = null "
         Adata = the_id
         cur.execute(SQL, (Adata,))
         db_row = cur.fetchone()
@@ -445,19 +445,8 @@ def update_transit():
             session['error'] = "This is an invalid request."
             return render_template('approve_req.html')
         
-        if request.method == 'GET':
-        the_users = session['uname']
-        the_id = session['id']
-        SQL = "SELECT requester FROM requests WHERE request_pk = %s AND rejected = true"
-        Adata = the_id
-        cur.execute(SQL, (Adata,))
-        db_row = cur.fetchone()
         
-        if db_row is not None:
-            session['error'] = "This is an invalid request."
-            return render_template('approve_req.html')
-        
-        SQL = "SELECT user_name.username, asset.asset_tag, facility.facility_name, requests.request_time FROM asset, requests, facility, user_name WHERE requests.asset_fk = asset.asset_pk AND requests.requester = user_name.user_pk AND requests.source_fac = facility.facility_pk AND requests.request_pk = %s "
+        SQL = "SELECT user_name.username, asset.asset_tag, facility.facility_name, requests.approve_time FROM asset, requests, facility, user_name WHERE requests.asset_fk = asset.asset_pk AND requests.approver = user_name.user_pk AND requests.source_fac = facility.facility_pk AND requests.request_pk = %s "
         Adata = the_id
         cur.execute(SQL, (Adata,))
         ac = cur.fetchone()
@@ -465,7 +454,7 @@ def update_transit():
         #print (ac)
 
         rTime = str(ac[3])
-        request_txt = "" + ac[0] + " suggested at " + rTime + " that " + ac[1] + " be moved from " + ac[2] + " to "
+        transit_txt = "" + ac[0] + " approved at " + rTime + " that " + ac[1] + " be moved from " + ac[2] + " to "
         
         SQL = "SELECT facility.facility_name FROM requests, facility WHERE requests.destination_fac = facility.facility_pk AND requests.request_pk = %s "
         Adata = the_id
@@ -474,8 +463,8 @@ def update_transit():
         #print ("what does a query return = ")
         #print (ac)
         
-        request_txt = request_txt + "" + ac[0] + "."
-        session['request_text'] = request_txt
+        transit_txt = transit_txt + "" + ac[0] + "."
+        session['transit_text'] = transit_txt
         
         return render_template('approve_req.html')
     
