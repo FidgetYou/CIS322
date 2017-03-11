@@ -477,38 +477,31 @@ def update_transit():
         if request.form['submit'] == 'Load':
             the_times = datetime.datetime.strptime(request.form['load'], '%Y-%m-%dT%H:%M') 
 
-            SQL = "UPDATE requests SET rejected = true WHERE request_pk = %s;"
+            SQL = "UPDATE transit SET load_time = the_times WHERE transit_pk = %s;"
             Adata = the_id
             cur.execute(SQL, (Adata,))
             conn.commit()
             
-            session['error'] = "Okay, we won't move that."
+            session['error'] = "Load time has been set."
             return render_template('dashboard.html')
         
         if request.form['submit'] == 'Unload':
             the_times = datetime.datetime.strptime(request.form['unload'], '%Y-%m-%dT%H:%M') 
 
-            app_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M")
+            #app_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M")
             
-            SQL = "SELECT user_pk FROM user_name WHERE username = %s "
-            Adata = the_users
+            SQL = "UPDATE transit SET unload_time = the_times WHERE transit_pk = %s;"
+            Adata = the_id
             cur.execute(SQL, (Adata,))
-            ac = cur.fetchone()
-            user_fk = ac[0]
-            print ("approved?")
-            SQL = "UPDATE requests SET approved = true, approve_time = %s, approver = %s WHERE requests.request_pk = %s;"
-            Bdata = (app_time, user_fk, the_id)
-            cur.execute(SQL, Bdata)
             conn.commit()
             
-            SQL = "INSERT INTO transit (asset_fk, source_fac, destination_fac) SELECT asset_fk, source_fac, destination_fac FROM requests WHERE requests.request_pk = %s;"
-            Bdata = (the_id, )
-            cur.execute(SQL, Bdata)
-            conn.commit()
-            
+            session['error'] = "Un-Load time has been set."
             return render_template('dashboard.html')
         
-        return render_template('approve_req.html')
+        session['error'] = "I don't know what button you pushed."
+        return render_template('update_transit.html')
+    
+    session['error'] = "I don't know what you're trying to do."
     return render_template('update_transit.html')
 
 ## It seemed easier to have the html web page only use one route.
