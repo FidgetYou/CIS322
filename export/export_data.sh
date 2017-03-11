@@ -1,1 +1,1 @@
-python3 snapped.py $1 $2 5432
+python3 ex-porter.py $1 5432 $2
