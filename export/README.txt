@@ -2,7 +2,9 @@ README.txt There is always one.
 
 export_data.sh - Here we have a bash/command line script that should check for and remove a given directory.
     Then recreate the directory so that it can be filled with some files and run the accompanying python file.
-    usage shoudl be something like:  bash export_data.sh <dbname> <output dir>  (minus the <> )
+    usage should be something like:  
+    
+    bash export_data.sh <dbname> <output dir>  (minus the <> )
     
 
 ex-porter.py - This is the python file. It should take the info from the previously mentioned database
