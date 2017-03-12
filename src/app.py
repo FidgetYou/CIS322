@@ -778,6 +778,10 @@ def dispose_asset():
                     Adata = the_asset
                     cur.execute(SQL, (Adata,))
                     db_ass = cur.fetchone()
+
+                    the_info = list(db_ass)
+                    the_info.append(the_times)
+                    the_info2 = tuple(the_info)
                     
                     SQL = "UPDATE asset_at SET disposed = true FROM asset WHERE asset_at.asset_fk = asset.asset_pk AND asset.asset_tag = %s;"
                     Adata = the_asset
@@ -791,7 +795,7 @@ def dispose_asset():
                     
                     SQL = "INSERT INTO asset_at (asset_fk, facility_fk, depart, in_transit, disposed) VALUES (%s, %s, %s, false, true); "
                     #db_ass.append(the_times)
-                    cur.execute(SQL, (db_ass, the_times))
+                    cur.execute(SQL, the_info2)
                     conn.commit()
 
                     session['Derror'] = "" + the_asset + " has been disposed of."
