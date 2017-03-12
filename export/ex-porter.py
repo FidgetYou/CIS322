@@ -72,7 +72,7 @@ SQL = "SELECT asset.asset_pk, asset.asset_tag, user_name.username, requests.requ
 cur.execute(SQL)
 ac = cur.fetchall()
 
-SQL = "SELECT asset.asset_pk, user_name.username, requests.approve_time, facility.facility_code, transit.load_time, transit.unload_time FROM facility, user_name, requests, transit WHERE asset.asset_pk = requests.asset_fk AND user_name.user_pk = requests.approver AND facility.facility_pk = destination_fac ORDER BY asset.asset_pk "
+SQL = "SELECT asset.asset_pk, user_name.username, requests.approve_time, facility.facility_code, transit.load_time, transit.unload_time FROM asset, facility, user_name, requests, transit WHERE asset.asset_pk = requests.asset_fk AND user_name.user_pk = requests.approver AND facility.facility_pk = destination_fac ORDER BY asset.asset_pk "
 cur.execute(SQL)
 dc = cur.fetchall()
 
