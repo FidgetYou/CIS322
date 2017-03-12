@@ -1,8 +1,4 @@
-# Here lies a great many dead things. 
-# Though I do not count myself as included here, 
-# the love of the art and the time to appreciate it are.
-# P.S. I'm bored.  ...And not in a good way.
-# Comment, Like, and Subscribe if you agree! :-P
+# My ex-porter exported X ports.
 
 import psycopg2
 import sys
@@ -72,15 +68,25 @@ with open(export_files[2], 'w') as out:
 out.close()  
 
         
-SQL = "SELECT asset.asset_tag, facility.facility_code, facility_name FROM facility "
+SQL = "SELECT asset.asset_pk, asset.asset_tag, user_name.username, requests.request_time, facility.facility_code FROM asset, facility, requests, user_name WHERE asset.asset_pk = requests.asset_fk AND user_name.user_pk = requests.requester AND facility.facility_pk = source_fac ORDER BY asset.asset_pk "
 cur.execute(SQL)
 ac = cur.fetchall()
 
-with open(export_files[3], 'w') as out:
-    writer = csv.writer(out)
-    for f in ac:
-        writer.writerow(f)
-out.close()        
+SQL = "SELECT asset.asset_pk, user_name.username, requests.approve_time, facility.facility_code, transit.load_time, transit.unload_time FROM facility, user_name, requests, transit WHERE asset.asset_pk = requests.asset_fk AND user_name.user_pk = requests.approver AND facility.facility_pk = destination_fac ORDER BY asset.asset_pk "
+cur.execute(SQL)
+dc = cur.fetchall()
+
+# ac=Alternating Current, dc= Direct Current, fc= Fluctuating Current...?
+if length(ac) == length(dc):
+    with open(export_files[3], 'w') as out:
+        writer = csv.writer(out)
+        for i in xrange(len(ac)):
+            fc.append([ac[i][1], ac[i][2], ac[i][3], dc[i][1], dc[i][2], ac[i][4], dc[i][3], dc[i][4], dc[i][5]])
+            writer.writerow(fc)
+    out.close()
+    
+else:
+    sys.exit("I may have selected the DB incorrectly.")
 
 
 cur.close()
