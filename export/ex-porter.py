@@ -77,7 +77,7 @@ cur.execute(SQL)
 dc = cur.fetchall()
 
 # ac=Alternating Current, dc= Direct Current, fc= Fluctuating Current...?
-if length(ac) == length(dc):
+if len(ac) == len(dc):
     with open(export_files[3], 'w') as out:
         writer = csv.writer(out)
         for i in xrange(len(ac)):
