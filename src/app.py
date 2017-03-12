@@ -766,7 +766,7 @@ def dispose_asset():
         
             if db_row is not None:
 
-                SQL = "SELECT asset.asset_tag, asset_at.disposed FROM asset, asset_at WHERE asset.asset_pk=asset_at.asset_fk AND asset.asset_tag = %s AND asset_at.disposed = false;"
+                SQL = "SELECT asset.asset_tag, asset_at.disposed FROM asset, asset_at WHERE asset.asset_pk=asset_at.asset_fk AND asset.asset_tag = %s AND asset_at.disposed = true;"
                 Adata = the_asset
                 cur.execute(SQL, (Adata,))
                 db_row1 = cur.fetchone()
