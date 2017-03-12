@@ -262,11 +262,11 @@ def transfer_req():
                 session['error'] = "That is not at that facility."
                 return render_template('transfer_req.html')
             
-            SQL = "SELECT facility.facility_name FROM asset, asset_at, facility WHERE asset.asset_pk = asset_at.asset_fk AND facility.facility_pk = asset_at.facility_fk AND asset_at.disposed = false AND asset_at.in_transit = false AND facility.facility_name = %s;"
-            Adata = the_facil
-            cur.execute(SQL, (Adata,))
+            SQL = "SELECT facility.facility_name FROM asset, asset_at, facility WHERE asset.asset_pk = asset_at.asset_fk AND facility.facility_pk = asset_at.facility_fk AND asset_at.disposed = false AND asset_at.in_transit = false AND facility.facility_name = %s AND asset.asset_tag = %s;"
+            Bdata = (the_facil, the_asset)
+            cur.execute(SQL, Bdata)
             test5 = cur.fetchone()
-            print(test5)
+            #print(test5)
         
             if test5 is not None:
                 session['error'] = "The asset is already at that facility."
