@@ -504,9 +504,9 @@ def update_transit():
 
             #app_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M")
             
-            SQL = "UPDATE transit SET unload_time = the_times WHERE transit_pk = %s;"
-            Adata = the_id
-            cur.execute(SQL, (Adata,))
+            SQL = "UPDATE transit SET unload_time = %s WHERE transit_pk = %s;"
+            Bdata = (the_times, the_id)
+            cur.execute(SQL, Bdata)
             conn.commit()
             
             session['error'] = "Un-Load time has been set."
