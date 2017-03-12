@@ -25,7 +25,7 @@ except:
     sys.exit("Unable to connect to the database.")
 
     
-SQL = "SELECT user_name.username, user_name.password, role.role, user_name.active FROM asset, role WHERE asset.role_fk = role.role_pk "
+SQL = "SELECT user_name.username, user_name.password, role.role, user_name.active FROM user_name, role WHERE user_name.role_fk = role.role_pk "
 cur.execute(SQL)
 ac = cur.fetchall()
 #print ("what does a query return = ")
