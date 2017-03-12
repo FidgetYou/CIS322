@@ -742,19 +742,30 @@ def dispose_asset():
         
             if db_row is not None:
 
-                SQL = "SELECT asset.asset_tag, asset_at.disposed FROM asset, asset_at WHERE asset.asset_pk=asset_at.asset_fk AND asset.asset_tag = %s AND asset_at.disposed = 'false';"
+                SQL = "SELECT asset.asset_tag, asset_at.disposed FROM asset, asset_at WHERE asset.asset_pk=asset_at.asset_fk AND asset.asset_tag = %s AND asset_at.disposed = 'false'"
                 Adata = the_asset
                 cur.execute(SQL, (Adata,))
                 db_row1 = cur.fetchone()
-                print (db_row1)
+                #print (db_row1)
                 
                 if db_row1 is None:
-                    SQL = "INSERT INTO asset_at (depart, disposed) VALUES (%s, true);"
-                    Adata = the_times
+                    SQL = "SELECT asset.asset_pk, facility.facility_pk FROM asset, facility WHERE asset.asset_tag = %s AND asset_at.asset_fk = asset.asset_tag AND asset_at.facility_fk = facility.facility_pk"
+                    Adata = the_asset
+                    cur.execute(SQL, (Adata,))
+                    db_ass = cur.fetchone()
+                    
+                    SQL = "UPDATE asset_at SET disposed = true WHERE asset_at.asset_fk = asset.asset_pk AND asset.asset_tag = %s;"
+                    Adata = the_asset
                     cur.execute(SQL, (Adata,))
                     conn.commit()
+                    
+                    
+                    SQL = "INSERT INTO asset_at (asset_fk, facility_fk, depart, in_transit, disposed) VALUES (%s, %s, %s, false, true) "
+                    db_ass.append(the_times)
+                    cur.execute(SQL, bd_ass)
+                    conn.commit()
 
-                    session['Derror'] = "" + the_asset + " has been deleted from the database."
+                    session['Derror'] = "" + the_asset + " has been disposed of."
                     return redirect(url_for('dashboard'))
                 else:
                     session['Derror'] = "The asset " + the_asset + " has already been disposed of."
