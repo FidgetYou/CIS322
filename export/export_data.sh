@@ -19,6 +19,7 @@ if [ -d "$2" ]; then
     rm -r "$2"
   fi
 fi
+ourpath="$(pwd)"
 
 mkdir $2
 cd $2
@@ -26,5 +27,7 @@ touch users.csv
 touch facilities.csv
 touch assets.csv
 touch transfers.csv
+
+cd ourpath
 
 python3 ./ex-porter.py $1 5432 $2
