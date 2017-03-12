@@ -480,7 +480,7 @@ def update_transit():
         transit_txt = transit_txt + "" + ac[0] + "."
         session['transit_text'] = transit_txt
         
-        return render_template('approve_req.html')
+        return render_template('update_transit.html')
     
     if request.method == 'POST':
         session['error'] = ""
@@ -491,9 +491,9 @@ def update_transit():
         if request.form['submit'] == 'Load':
             the_times = datetime.datetime.strptime(request.form['load'], '%Y-%m-%dT%H:%M') 
 
-            SQL = "UPDATE transit SET load_time = the_times WHERE transit_pk = %s;"
-            Adata = the_id
-            cur.execute(SQL, (Adata,))
+            SQL = "UPDATE transit SET load_time = %s WHERE transit_pk = %s;"
+            Bdata = (the_times, the_id)
+            cur.execute(SQL, Bdata)
             conn.commit()
             
             session['error'] = "Load time has been set."
@@ -544,9 +544,9 @@ def dashboard():
     logisticsOfficer = "Logistics Officer"
     try:
         if session['role'] == logisticsOfficer:
-            SQL = "SELECT asset.asset_tag, transit.transit_pk FROM asset, transit WHERE asset.asset_pk = transit.asset_fk "
+            SQL = "SELECT asset.asset_tag, transit.transit_pk FROM asset, transit WHERE asset.asset_pk = transit.asset_fk;"
         else:
-            SQL = "SELECT asset.asset_tag, requests.request_pk FROM asset, requests WHERE asset.asset_pk = requests.asset_fk AND requests.approved = false AND requests.rejected = false "
+            SQL = "SELECT asset.asset_tag, requests.request_pk FROM asset, requests WHERE asset.asset_pk = requests.asset_fk AND requests.approved = false AND requests.rejected = false;"
     except:
         session['error'] = "You haven't logged in yet."
         return render_template('login.html')
