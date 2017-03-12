@@ -790,8 +790,8 @@ def dispose_asset():
                     conn.commit()
                     
                     SQL = "INSERT INTO asset_at (asset_fk, facility_fk, depart, in_transit, disposed) VALUES (%s, %s, %s, false, true); "
-                    db_ass.append(the_times)
-                    cur.execute(SQL, bd_ass)
+                    #db_ass.append(the_times)
+                    cur.execute(SQL, (bd_ass, the_times)
                     conn.commit()
 
                     session['Derror'] = "" + the_asset + " has been disposed of."
