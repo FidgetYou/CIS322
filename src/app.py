@@ -774,7 +774,7 @@ def dispose_asset():
                 print (db_row1)
                 
                 if db_row1 is None:
-                    SQL = "SELECT asset.asset_pk, facility.facility_pk FROM asset, facility, asset_at WHERE asset.asset_tag = %s AND asset_at.asset_fk = asset.asset_tag AND asset_at.facility_fk = facility.facility_pk;"
+                    SQL = "SELECT asset.asset_pk, facility.facility_pk FROM asset, facility, asset_at WHERE asset.asset_tag = %s AND asset_at.asset_fk = asset.asset_pk AND asset_at.facility_fk = facility.facility_pk;"
                     Adata = the_asset
                     cur.execute(SQL, (Adata,))
                     db_ass = cur.fetchone()
