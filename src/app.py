@@ -149,9 +149,13 @@ def transfer_report():
 @app.route('/transfer_req', methods=['GET', 'POST'])
 def transfer_req():
     logisticsOfficer = "Logistics Officer"
-    if session['role'] != logisticsOfficer:
-        session['error'] = "You can't go in there! Why, you're not a Logistics Officer."
-        return render_template('dashboard.html')
+    try:
+        if session['role'] != logisticsOfficer:
+            session['error'] = "You can't go in there! Why, you're not a Logistics Officer."
+            return render_template('dashboard.html')
+    except:
+        session['error'] = "You have not logged in yet."
+        return render_template('login.html')
     
     if request.method == 'GET':
         
@@ -315,9 +319,14 @@ def transfer_req():
 @app.route('/approve_req', methods=['GET', 'POST'])
 def approve_req():
     facilitiesOfficer = "Facilities Officer"
-    if session['role'] != facilitiesOfficer:
-        session['error'] = "You can't go in there! Why, you're not a Facilities Officer."
-        return render_template('dashboard.html')
+    try:
+        if session['role'] != facilitiesOfficer:
+            session['error'] = "You can't go in there! Why, you're not a Facilities Officer."
+            return render_template('dashboard.html')
+    except:
+        session['error'] = "You haven't logged in yet."
+        return render_template('login.html')
+    
     
     if request.method == 'GET':
         the_users = session['uname']
@@ -419,9 +428,13 @@ def logout():
 @app.route('/update_transit')
 def update_transit():
     logisticsOfficer = "Logistics Officer"
+    try:
     if session['role'] != logisticsOfficer:
         session['error'] = "You can't go in there! Why, you're not a Logistics Officer."
         return render_template('dashboard.html')
+    except:
+        session['error'] = "You haven't logged in yet."
+        return render_template('login.html')
     
     if request.method == 'GET':
         the_users = session['uname']
@@ -504,6 +517,7 @@ def update_transit():
     session['error'] = "I don't know what you're trying to do."
     return render_template('update_transit.html')
 
+
 ## It seemed easier to have the html web page only use one route.
 ## So, this function figures out who is working and sends them to the appropriate page.
 @app.route('/do_work', methods=['GET'])
@@ -511,10 +525,14 @@ def do_work():
     logisticsOfficer = "Logistics Officer"
     session['id'] = request.args['id']
     
-    if session['role'] == logisticsOfficer:
-        return render_template('update_transit.html')
-    else:
-        return render_template('approve_req.html')
+    try:
+        if session['role'] == logisticsOfficer:
+            return render_template('update_transit.html')
+        else:
+            return render_template('approve_req.html')
+    except:
+        session['error'] = "You haven't logged in yet."
+        return render_template('login.html')
     
     return render_template('dashboard.html')
 
@@ -523,10 +541,15 @@ def do_work():
 def dashboard():
     #session['works'] = ""
     logisticsOfficer = "Logistics Officer"
-    if session['role'] == logisticsOfficer:
-        SQL = "SELECT asset.asset_tag, transit.transit_pk FROM asset, transit WHERE asset.asset_pk = transit.asset_fk "
-    else:
-        SQL = "SELECT asset.asset_tag, requests.request_pk FROM asset, requests WHERE asset.asset_pk = requests.asset_fk AND requests.approved = false AND requests.rejected = false "
+    try:
+        if session['role'] == logisticsOfficer:
+            SQL = "SELECT asset.asset_tag, transit.transit_pk FROM asset, transit WHERE asset.asset_pk = transit.asset_fk "
+        else:
+            SQL = "SELECT asset.asset_tag, requests.request_pk FROM asset, requests WHERE asset.asset_pk = requests.asset_fk AND requests.approved = false AND requests.rejected = false "
+    except:
+        session['error'] = "You haven't logged in yet."
+        return render_template('login.html')
+    
     cur.execute(SQL)
     fac = cur.fetchall()
     
