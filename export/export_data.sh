@@ -1,3 +1,11 @@
+# Checks for correct amount of input
+# Pretyy sure I got it from the teacher.
+if [ "$#" -ne 2 ]; then
+    echo "Usage: ./preflight.sh <dataBaseName> <folder>"
+    exit;
+fi
+
+
 # I found this on Stack Overflow
 
 if [ -d "$2" ]; then 
@@ -19,4 +27,4 @@ touch facilities.csv
 touch assets.csv
 touch transfers.csv
 
-python3 ex-porter.py $1 5432 $2
+python3 ./ex-porter.py $1 5432 $2
