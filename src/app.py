@@ -229,45 +229,45 @@ def transfer_req():
             SQL = "SELECT facility_name FROM facility WHERE facility_name = %s;"
             Adata = the_facil
             cur.execute(SQL, (Adata,))
-            db_row = cur.fetchone()
+            test1 = cur.fetchone()
         
-            if db_row is None:
+            if test1 is None:
                 session['error'] = "That destination does not exist."
                 return render_template('transfer_req.html')
             
             SQL = "SELECT asset_tag FROM asset WHERE asset_tag = %s;"
             Adata = the_asset
             cur.execute(SQL, (Adata,))
-            db_row = cur.fetchone()
+            test2 = cur.fetchone()
         
-            if db_row is None:
+            if test2 is None:
                 session['error'] = "That asset does not exist."
                 return render_template('transfer_req.html')
             
             SQL = "SELECT asset.asset_tag FROM asset, requests WHERE asset.asset_tag = %s AND requests.asset_fk = asset.asset_pk;"
             Adata = the_asset
             cur.execute(SQL, (Adata,))
-            db_row = cur.fetchone()
+            test3 = cur.fetchone()
         
-            if db_row is not None:
-                session['error'] = "This asset has already requested for transfer."
+            if test3 is not None:
+                session['error'] = "This asset has already been requested for transfer."
                 return render_template('transfer_req.html')
             
             SQL = "SELECT asset.asset_tag FROM asset, asset_at WHERE asset.asset_pk = asset_at.asset_fk AND asset_at.disposed = false AND asset_at.in_transit = false AND asset.asset_tag = %s;"
             Adata = the_asset
             cur.execute(SQL, (Adata,))
-            db_row = cur.fetchone()
+            test4 = cur.fetchone()
         
-            if db_row is None:
+            if test4 is None:
                 session['error'] = "That is not at that facility."
                 return render_template('transfer_req.html')
             
             SQL = "SELECT facility.facility_name FROM asset, asset_at, facility WHERE asset.asset_pk = asset_at.asset_fk AND facility.facility_pk = asset_at.facility_fk AND asset_at.disposed = false AND asset_at.in_transit = false AND facility.facility_name = %s;"
             Adata = the_facil
             cur.execute(SQL, (Adata,))
-            db_row = cur.fetchone()
+            test5 = cur.fetchone()
         
-            if db_row is not None:
+            if test5 is not None:
                 session['error'] = "The asset is already at that facility."
                 return render_template('transfer_req.html')
             
