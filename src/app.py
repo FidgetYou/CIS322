@@ -429,9 +429,9 @@ def logout():
 def update_transit():
     logisticsOfficer = "Logistics Officer"
     try:
-    if session['role'] != logisticsOfficer:
-        session['error'] = "You can't go in there! Why, you're not a Logistics Officer."
-        return render_template('dashboard.html')
+        if session['role'] != logisticsOfficer:
+            session['error'] = "You can't go in there! Why, you're not a Logistics Officer."
+            return render_template('dashboard.html')
     except:
         session['error'] = "You haven't logged in yet."
         return render_template('login.html')
