@@ -266,6 +266,7 @@ def transfer_req():
             Adata = the_facil
             cur.execute(SQL, (Adata,))
             test5 = cur.fetchone()
+            print(test5)
         
             if test5 is not None:
                 session['error'] = "The asset is already at that facility."
