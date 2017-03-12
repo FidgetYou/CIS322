@@ -426,7 +426,7 @@ def approve_req():
 def logout():
     return render_template('login.html')
 
-@app.route('/update_transit')
+@app.route('/update_transit', methods=['GET', 'POST'])
 def update_transit():
     logisticsOfficer = "Logistics Officer"
     try:
@@ -766,14 +766,15 @@ def dispose_asset():
         
             if db_row is not None:
 
-                SQL = "SELECT asset.asset_tag, asset_at.disposed FROM asset, asset_at WHERE asset.asset_pk=asset_at.asset_fk AND asset.asset_tag = %s AND asset_at.disposed = 'false'"
+                SQL = "SELECT asset.asset_tag, asset_at.disposed FROM asset, asset_at WHERE asset.asset_pk=asset_at.asset_fk AND asset.asset_tag = %s AND asset_at.disposed = false;"
                 Adata = the_asset
                 cur.execute(SQL, (Adata,))
                 db_row1 = cur.fetchone()
-                #print (db_row1)
+                print("delete?")
+                print (db_row1)
                 
                 if db_row1 is None:
-                    SQL = "SELECT asset.asset_pk, facility.facility_pk FROM asset, facility WHERE asset.asset_tag = %s AND asset_at.asset_fk = asset.asset_tag AND asset_at.facility_fk = facility.facility_pk"
+                    SQL = "SELECT asset.asset_pk, facility.facility_pk FROM asset, facility WHERE asset.asset_tag = %s AND asset_at.asset_fk = asset.asset_tag AND asset_at.facility_fk = facility.facility_pk;"
                     Adata = the_asset
                     cur.execute(SQL, (Adata,))
                     db_ass = cur.fetchone()
@@ -782,12 +783,13 @@ def dispose_asset():
                     Adata = the_asset
                     cur.execute(SQL, (Adata,))
                     conn.commit()
+                    
                     SQL = "UPDATE asset_at SET depart = %s WHERE asset_at.asset_fk = asset.asset_pk AND asset.asset_tag = %s;"
                     Bdata = (the_times, the_asset)
                     cur.execute(SQL, Bdata)
                     conn.commit()
                     
-                    SQL = "INSERT INTO asset_at (asset_fk, facility_fk, depart, in_transit, disposed) VALUES (%s, %s, %s, false, true) "
+                    SQL = "INSERT INTO asset_at (asset_fk, facility_fk, depart, in_transit, disposed) VALUES (%s, %s, %s, false, true); "
                     db_ass.append(the_times)
                     cur.execute(SQL, bd_ass)
                     conn.commit()
