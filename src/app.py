@@ -758,7 +758,10 @@ def dispose_asset():
                     Adata = the_asset
                     cur.execute(SQL, (Adata,))
                     conn.commit()
-                    
+                    SQL = "UPDATE asset_at SET depart = %s WHERE asset_at.asset_fk = asset.asset_pk AND asset.asset_tag = %s;"
+                    Bdata = (the_times, the_asset)
+                    cur.execute(SQL, Bdata)
+                    conn.commit()
                     
                     SQL = "INSERT INTO asset_at (asset_fk, facility_fk, depart, in_transit, disposed) VALUES (%s, %s, %s, false, true) "
                     db_ass.append(the_times)
