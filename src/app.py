@@ -235,13 +235,13 @@ def transfer_req():
                 session['error'] = "That destination does not exist."
                 return render_template('transfer_req.html')
             
-            SQL = "SELECT asset_tag FROM asset WHERE asset_tag = %s;"
+            SQL = "SELECT asset.asset_tag FROM asset, asset_at WHERE asset.asset_tag = %s AND asset_at.disposed = false;"
             Adata = the_asset
             cur.execute(SQL, (Adata,))
             test2 = cur.fetchone()
         
             if test2 is None:
-                session['error'] = "That asset does not exist."
+                session['error'] = "That asset has been disposed of."
                 return render_template('transfer_req.html')
             
             SQL = "SELECT asset.asset_tag FROM asset, requests WHERE asset.asset_tag = %s AND requests.asset_fk = asset.asset_pk;"
