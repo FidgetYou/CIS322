@@ -779,12 +779,12 @@ def dispose_asset():
                     cur.execute(SQL, (Adata,))
                     db_ass = cur.fetchone()
                     
-                    SQL = "UPDATE asset_at SET disposed = true FROM asset_at, asset WHERE asset_at.asset_fk = asset.asset_pk AND asset.asset_tag = %s;"
+                    SQL = "UPDATE asset_at SET disposed = true FROM asset WHERE asset_at.asset_fk = asset.asset_pk AND asset.asset_tag = %s;"
                     Adata = the_asset
                     cur.execute(SQL, (Adata,))
                     conn.commit()
                     
-                    SQL = "UPDATE asset_at SET depart = %s FROM asset_at, asset WHERE asset_at.asset_fk = asset.asset_pk AND asset.asset_tag = %s;"
+                    SQL = "UPDATE asset_at SET depart = %s FROM asset WHERE asset_at.asset_fk = asset.asset_pk AND asset.asset_tag = %s;"
                     Bdata = (the_times, the_asset)
                     cur.execute(SQL, Bdata)
                     conn.commit()
