@@ -114,9 +114,11 @@ if import_files:
         the_fac = "" + csv_list[i][2] + "" 
         arrive = "" + csv_list[i][3] + "" 
         if csv_list[i][4]:
-            depart = csv_list[i][4]
+            #depart = csv_list[i][4]
+            depart = None
         else:
-            depart = "" + csv_list[i][4] + "" 
+            #depart = "" + csv_list[i][4] + "" 
+            depart = None
             
             
         SQL = "INSERT INTO asset (asset_tag, asset_info) VALUES (%s, %s);"
