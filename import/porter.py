@@ -176,12 +176,12 @@ if import_files:
         asset_tag = "" + csv_list[i][0] + ""
         request_by = "" + csv_list[i][1] + ""     
         request_dt = "" + csv_list[i][2] + "" 
-        approve_by = "" + csv_list[i][3] + "" 
-        approve_dt = "" + csv_list[i][4] + "" 
+        #approve_by = "" + csv_list[i][3] + "" 
+        #approve_dt = "" + csv_list[i][4] + "" 
         source = "" + csv_list[i][5] + ""
         destination = "" + csv_list[i][6] + ""     
-        load_dt = "" + csv_list[i][7] + "" 
-        unload_dt = "" + csv_list[i][8] + "" 
+        #load_dt = "" + csv_list[i][7] + "" 
+        #unload_dt = "" + csv_list[i][8] + "" 
         
         if csv_list[i][7]:
             load_dt = csv_list[i][7]
