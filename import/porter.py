@@ -113,9 +113,11 @@ if import_files:
         the_des = "" + csv_list[i][1] + ""     
         the_fac = "" + csv_list[i][2] + "" 
         arrive = "" + csv_list[i][3] + "" 
-        depart = "" + csv_list[i][4] + "" 
-        if depart == "":
-            depart = 'null'
+        if csv_list[i][4]:
+            depart = csv_list[i][4]
+        else:
+            depart == "" + csv_list[i][4] + "" 
+            
             
         SQL = "INSERT INTO asset (asset_tag, asset_info) VALUES (%s, %s);"
         data = (the_tag, the_des)
