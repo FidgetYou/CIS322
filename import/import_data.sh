@@ -6,7 +6,7 @@ if [ "$#" -ne 2 ]; then
 fi
 ourpath="$(pwd)"
 dropdb $1
-pg_ctl -D $ourpath -l logfile start
+pg_ctl -D /home/osnapdev/import -l logfile start
 createdb $1
 bash ../preflight.sh $1
 
