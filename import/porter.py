@@ -113,7 +113,11 @@ if import_files:
         the_tag = "" + csv_list[i][0] + ""
         the_des = "" + csv_list[i][1] + ""     
         the_fac = "" + csv_list[i][2] + "" 
-        arrive = "" + csv_list[i][3] + "" 
+        if csv_list[i][3]:
+            arrive = csv_list[i][3]
+        else:
+            arrive = None
+        #rrive = "" + csv_list[i][3] + "" 
         if csv_list[i][4]:
             depart = csv_list[i][4]
             #depart = None
@@ -167,14 +171,22 @@ if import_files:
         load_dt = "" + csv_list[i][7] + "" 
         unload_dt = "" + csv_list[i][8] + "" 
         
-        if load_dt == "":
-            load_dt = null
-        if unload_dt == "":
-            unload_dt = null
-        if approve_by == "":
-            approve_by = null
-        if approve_dt == "":
-            approve_dt = null
+        if csv_list[i][7]:
+            load_dt = csv_list[i][7]
+        else:
+            load_dt = None
+        if csv_list[i][8]:
+            unload_dt = csv_list[i][8]
+        else:
+            unload_dt = None
+        if csv_list[i][3]:
+            approve_by = csv_list[i][3]
+        else:
+            approve_by = None
+        if csv_list[i][4]:
+            approve_dt = csv_list[i][4]
+        else:
+            approve_dt = None
             
         SQL = """INSERT INTO requests (asset_fk, requester, approver, source_fac, destination_fac, request_time, approve_time ) 
         VALUES 
