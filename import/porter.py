@@ -117,8 +117,8 @@ if import_files:
             #depart = csv_list[i][4]
             depart = None
         else:
-            #depart = "" + csv_list[i][4] + "" 
-            depart = None
+            depart = "" + csv_list[i][4] + "" 
+            #depart = None
             
             
         SQL = "INSERT INTO asset (asset_tag, asset_info) VALUES (%s, %s);"
