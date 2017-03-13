@@ -33,3 +33,5 @@ cd
 cd $ourpath
 # ls
 python3 ./ex-porter.py $1 5432 $2
+
+mv *.csv $2
