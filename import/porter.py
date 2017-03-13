@@ -5,7 +5,7 @@ import datetime
 from os.path import expanduser
 #home = expanduser("~")
 
-import_files = [ 'users.csv', 'facilities.csv', 'assets.csv', 'transfers.csv' ]
+import_files = [ '/users.csv', '/facilities.csv', '/assets.csv', '/transfers.csv' ]
 #arg3 = "./osnap_legacy/" + sys.argv[3]
 #arg1 = "" + home + sys.argv[1]
 users_head = ( 'username', 'password', 'role', 'active')
@@ -88,8 +88,8 @@ if import_files:
     f.close()
     
     for i in range (1, len(csv_list)):
-        the_name = "" + csv_list[i][0] + ""
-        the_code = "" + csv_list[i][1] + ""       
+        the_code = "" + csv_list[i][0] + ""
+        the_name = "" + csv_list[i][1] + ""       
             
         SQL = "INSERT INTO facility (facility_name, facility_code) VALUES (%s, %s);"
         data = (the_name, the_code)
@@ -136,6 +136,20 @@ if import_files:
             cur.execute(SQL, (Adata,))
             conn.commit()
     
+    
+    
+    
+    
+    
+    
+    arg3 = "" + sys.argv[3] + import_files[3]
+    try:
+        with open(arg3, 'r') as f:
+            reader = csv.reader(f)
+            csv_list = list(reader)
+    except:
+        sys.exit("Unable to find the file " + arg3)    
+    f.close()
     
     for i in range (1, len(csv_list)):
         asset_tag = "" + csv_list[i][0] + ""
