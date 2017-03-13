@@ -8,6 +8,9 @@ ourpath="$(pwd)"
 dropdb $1
 pg_ctl -D /home/osnapdev/import -l logfile start
 createdb $1
-bash ../preflight.sh $1
+
+cd ..
+bash ./preflight.sh $1
+cd import
 
 python3 ./porter.py $1 5432 $2
