@@ -4,9 +4,9 @@ if [ "$#" -ne 2 ]; then
     echo "Usage: ./import_data.sh <dataBaseName> <folder>"
     exit;
 fi
-
+ourpath="$(pwd)"
 dropdb $1
-pg_ctl -D $2 -l logfile start
+pg_ctl -D $ourpath -l logfile start
 createdb $1
 bash ../preflight.sh $1
 
