@@ -116,7 +116,7 @@ if import_files:
         if csv_list[i][4]:
             depart = csv_list[i][4]
         else:
-            depart == "" + csv_list[i][4] + "" 
+            depart = "" + csv_list[i][4] + "" 
             
             
         SQL = "INSERT INTO asset (asset_tag, asset_info) VALUES (%s, %s);"
