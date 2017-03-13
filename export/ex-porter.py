@@ -68,25 +68,41 @@ with open(export_files[2], 'w') as out:
 out.close()  
 
         
-SQL = "SELECT asset.asset_pk, asset.asset_tag, user_name.username, requests.request_time, facility.facility_code FROM asset, facility, requests, user_name WHERE asset.asset_pk = requests.asset_fk AND user_name.user_pk = requests.requester AND facility.facility_pk = source_fac ORDER BY asset.asset_pk "
+#SQL = "SELECT asset.asset_pk, asset.asset_tag, user_name.username, requests.request_time, facility.facility_code FROM asset, facility, requests, user_name WHERE asset.asset_pk = requests.asset_fk AND user_name.user_pk = requests.requester AND facility.facility_pk = source_fac ORDER BY asset.asset_pk "
+#cur.execute(SQL)
+#ac = cur.fetchall()
+
+#SQL = "SELECT asset.asset_pk, user_name.username, requests.approve_time, facility.facility_code, transit.load_time, transit.unload_time FROM asset, facility, user_name, requests, transit WHERE asset.asset_pk = requests.asset_fk AND user_name.user_pk = requests.approver AND facility.facility_pk = requests.destination_fac ORDER BY asset.asset_pk "
+#SQL = "SELECT asset.asset_pk, user_name.username, requests.approve_time, facility.facility_code, transit.load_time, transit.unload_time FROM asset, facility, user_name, requests, transit WHERE asset.asset_pk = requests.asset_fk AND user_name.user_pk = requests.approver AND facility.facility_pk = requests.destination_fac ORDER BY asset.asset_pk "
+#cur.execute(SQL)
+#dc = cur.fetchall()
+
+#SQL = "SELECT requests.request_pk, asset.asset_tag, user_name.username, requests.request_time, facility.facility_code FROM asset, facility, requests, user_name WHERE requests.asset_fk = asset.asset_pk AND requests.requester = user_name.user_pk AND requests.source_fac = facility.facility_pk ORDER BY asset.asset_pk;"
+#cur.execute(SQL)
+#ac = cur.fetchall()
+SQL = "SELECT asset.asset_tag, u.username, r.request_time, uu.username, r.approve_time, f.facility_code, ff.facility_code, transit.load_time, transit.unload_time
+FROM requests r
+LEFT JOIN asset a ON r.asset_fk = a.asset_pk
+LEFT JOIN user_name u ON r.requester = u.user_pk
+LEFT JOIN user_name uu ON r.approver = uu.user_pk
+LEFT JOIN facility f ON r.source_fac = f.user_pk
+LEFT JOIN facility ff ON r.destination_fac = ff.user_pk
+LEFT JOIN transit t ON t.asset_fk = a.asset_pk"
 cur.execute(SQL)
 ac = cur.fetchall()
-
-SQL = "SELECT asset.asset_pk, user_name.username, requests.approve_time, facility.facility_code, transit.load_time, transit.unload_time FROM asset, facility, user_name, requests, transit WHERE asset.asset_pk = requests.asset_fk AND user_name.user_pk = requests.approver AND facility.facility_pk = requests.destination_fac ORDER BY asset.asset_pk "
-cur.execute(SQL)
-dc = cur.fetchall()
 
 # ac=Alternating Current, dc= Direct Current, fc= Fluctuating Current...?
 print ("ac")
 print (ac)
-print ("dc")
-print (dc)
-if len(ac) == len(dc):
+#print ("dc")
+#print (dc)
+if ac:
     with open(export_files[3], 'w') as out:
         writer = csv.writer(out)
-        for i in xrange(len(ac)):
-            fc.append([ac[i][1], ac[i][2], ac[i][3], dc[i][1], dc[i][2], ac[i][4], dc[i][3], dc[i][4], dc[i][5]])
-            writer.writerow(fc)
+        #for i in xrange(len(ac)):
+        for i in ac:
+            #fc.append([ac[i][1], ac[i][2], ac[i][3], dc[i][1], dc[i][2], ac[i][4], dc[i][3], dc[i][4], dc[i][5]])
+            writer.writerow(ac)
     out.close()
     
 else:
