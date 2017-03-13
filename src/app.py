@@ -302,7 +302,7 @@ def transfer_req():
             print ("test ass")
             print (ass_fk)
             
-            req_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M")
+            req_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M").isoformat()
             
             SQL = "INSERT INTO requests (asset_fk, requester, source_fac, destination_fac, request_time) VALUES (%s, %s, %s, %s, %s);"
             fourdata = (ass_fk, user_fk, sour_fac_fk, dest_fac_fk, req_time)
@@ -400,7 +400,7 @@ def approve_req():
             return render_template('dashboard.html')
         
         if request.form['submit'] == 'Approve':
-            app_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M")
+            app_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M").isoformat()
             
             SQL = "SELECT user_pk FROM user_name WHERE username = %s "
             Adata = the_users
@@ -489,7 +489,7 @@ def update_transit():
         
         #if request.form['facil'] and request.form['fcode'] and request.form['finfo']:
         if request.form['submit'] == 'Load':
-            the_times = datetime.datetime.strptime(request.form['load'], '%Y-%m-%dT%H:%M') 
+            the_times = datetime.datetime.strptime(request.form['load'], '%Y-%m-%dT%H:%M').isoformat()
 
             SQL = "UPDATE transit SET load_time = %s WHERE transit_pk = %s;"
             Bdata = (the_times, the_id)
@@ -500,9 +500,9 @@ def update_transit():
             return render_template('dashboard.html')
         
         if request.form['submit'] == 'Unload':
-            the_times = datetime.datetime.strptime(request.form['unload'], '%Y-%m-%dT%H:%M') 
+            the_times = datetime.datetime.strptime(request.form['unload'], '%Y-%m-%dT%H:%M').isoformat()
 
-            #app_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M")
+            #app_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M").isoformat()
             
             SQL = "UPDATE transit SET unload_time = %s WHERE transit_pk = %s;"
             Bdata = (the_times, the_id)
@@ -671,7 +671,7 @@ def add_asset():
             the_asset = "" + request.form['asset'] + ""
             the_ainfo = "" + request.form['ainfo'] + ""
             the_facil = "" + request.form['facilitymenu'] + ""
-            the_times = datetime.datetime.strptime(request.form['time'], '%Y-%m-%dT%H:%M') 
+            the_times = datetime.datetime.strptime(request.form['time'], '%Y-%m-%dT%H:%M').isoformat()
 
 
             SQL = "SELECT asset_tag FROM asset WHERE asset_tag = %s;"
@@ -756,7 +756,7 @@ def dispose_asset():
         
         if request.form['asset'] and request.form['time']:
             the_asset = "" + request.form['asset'] + ""
-            the_times = datetime.datetime.strptime(request.form['time'], '%Y-%m-%dT%H:%M') 
+            the_times = datetime.datetime.strptime(request.form['time'], '%Y-%m-%dT%H:%M').isoformat()
 
 
             SQL = "SELECT asset_tag FROM asset WHERE asset_tag = %s;"
