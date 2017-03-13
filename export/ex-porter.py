@@ -100,7 +100,7 @@ if ac:
         writer = csv.writer(out)
         writer.writerow(transfers_head)
         for i in ac:
-            writer.writerow(ac)
+            writer.writerow(i)
     out.close()
     
 else:
