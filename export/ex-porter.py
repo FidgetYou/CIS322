@@ -85,8 +85,8 @@ FROM requests r
 LEFT JOIN asset a ON r.asset_fk = a.asset_pk
 LEFT JOIN user_name u ON r.requester = u.user_pk
 LEFT JOIN user_name uu ON r.approver = uu.user_pk
-LEFT JOIN facility f ON r.source_fac = f.user_pk
-LEFT JOIN facility ff ON r.destination_fac = ff.user_pk
+LEFT JOIN facility f ON r.source_fac = f.facility_pk
+LEFT JOIN facility ff ON r.destination_fac = ff.facility_pk
 LEFT JOIN transit t ON t.asset_fk = a.asset_pk"""
 cur.execute(SQL)
 ac = cur.fetchall()
