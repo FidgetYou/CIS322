@@ -1,7 +1,7 @@
 # Checks for correct amount of input
 # Pretyy sure I got it from the teacher.
 if [ "$#" -ne 2 ]; then
-    echo "Usage: ./preflight.sh <dataBaseName> <folder>"
+    echo "Usage: ./export_data.sh <dataBaseName> <folder>"
     exit;
 fi
 
