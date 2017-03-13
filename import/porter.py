@@ -115,7 +115,7 @@ if import_files:
         arrive = "" + csv_list[i][3] + "" 
         depart = "" + csv_list[i][4] + "" 
         if depart == "":
-            depart = "null"
+            depart = null
             
         SQL = "INSERT INTO asset (asset_tag, asset_info) VALUES (%s, %s);"
         data = (the_tag, the_des)
@@ -163,13 +163,13 @@ if import_files:
         unload_dt = "" + csv_list[i][8] + "" 
         
         if load_dt == "":
-            load_dt = "null"
+            load_dt = null
         if unload_dt == "":
-            unload_dt = "null"
+            unload_dt = null
         if approve_by == "":
-            approve_by = "null"
+            approve_by = null
         if approve_dt == "":
-            approve_dt = "null"
+            approve_dt = null
             
         SQL = """INSERT INTO requests (asset_fk, requester, approver, source_fac, destination_fac, request_time, approve_time ) 
         VALUES 
