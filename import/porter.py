@@ -109,6 +109,7 @@ if import_files:
     f.close()
     
     for i in range (1, len(csv_list)):
+        print (csv_list[i])
         the_tag = "" + csv_list[i][0] + ""
         the_des = "" + csv_list[i][1] + ""     
         the_fac = "" + csv_list[i][2] + "" 
