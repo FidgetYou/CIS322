@@ -8,6 +8,11 @@ from os.path import expanduser
 home = expanduser("~")
 
 export_files = [ 'users.csv', 'facilities.csv', 'assets.csv', 'transfers.csv' ]
+users_head = ( 'username', 'password', 'role', 'active')
+facilities_head = ( 'fcode', 'common_name' )
+assets_head = ( 'asset_tag', 'description', 'facility', 'acquired', 'disposed' )
+transfers_head = ( 'asset_tag', 'request_by', 'request_dt', 'approve_by', 'approve_dt', 'source', 'destination', 'load_dt', 'unload_dt' )
+
 #arg3 = "$HOME/" + sys.argv[3]
 #arg1 = "" + home + sys.argv[1]
 
@@ -36,6 +41,7 @@ ac = cur.fetchall()
 
 with open(export_files[0], 'w') as out:
     writer = csv.writer(out)
+    writer.writerow(users_head)
     for f in ac:
         writer.writerow(f)
 out.close()          
@@ -52,6 +58,7 @@ ac = cur.fetchall()
 
 with open(export_files[1], 'w') as out:
     writer = csv.writer(out)
+    writer.writerow(facilities_head)
     for f in ac:
         writer.writerow(f)
 out.close()  
@@ -63,6 +70,7 @@ ac = cur.fetchall()
 
 with open(export_files[2], 'w') as out:
     writer = csv.writer(out)
+    writer.writerow(assets_head)
     for f in ac:
         writer.writerow(f)
 out.close()  
@@ -99,6 +107,7 @@ print (ac)
 if ac:
     with open(export_files[3], 'w') as out:
         writer = csv.writer(out)
+        writer.writerow(transfers_head)
         #for i in xrange(len(ac)):
         for i in ac:
             #fc.append([ac[i][1], ac[i][2], ac[i][3], dc[i][1], dc[i][2], ac[i][4], dc[i][3], dc[i][4], dc[i][5]])
