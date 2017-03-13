@@ -117,7 +117,7 @@ if import_files:
             #depart = csv_list[i][4]
             depart = None
         else:
-            depart = "" + csv_list[i][4] + "" 
+            depart = csv_list[i][4] 
             #depart = None
             
             
