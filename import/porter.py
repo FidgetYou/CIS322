@@ -129,7 +129,7 @@ if import_files:
         
         SQL = """INSERT INTO asset_at (asset_fk, facility_fk, arrive, depart) VALUES 
         ( (SELECT asset_pk from asset WHERE asset_tag = %s),
-        (SELECT facility_pk from facility WHERE facility_name = %s),
+        (SELECT facility_pk from facility WHERE facility_code = %s),
         %s, %s );"""
         data = (the_tag, the_fac, arrive, depart)
         cur.execute(SQL, data)
