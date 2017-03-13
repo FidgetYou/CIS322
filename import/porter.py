@@ -115,7 +115,7 @@ if import_files:
         arrive = "" + csv_list[i][3] + "" 
         depart = "" + csv_list[i][4] + "" 
         if depart == "":
-            depart = "NULL"
+            depart = "null"
             
         SQL = "INSERT INTO asset (asset_tag, asset_info) VALUES (%s, %s);"
         data = (the_tag, the_des)
@@ -130,7 +130,7 @@ if import_files:
         cur.execute(SQL, data)
         conn.commit()
         
-        if depart == "NULL":
+        if depart == "null":
             SQL = "UPDATE asset_at SET disposed = true FROM asset WHERE asset_at.asset_fk = asset.asset_pk AND asset.asset_tag = %s;"
             Adata = the_tag
             cur.execute(SQL, (Adata,))
@@ -163,13 +163,13 @@ if import_files:
         unload_dt = "" + csv_list[i][8] + "" 
         
         if load_dt == "":
-            load_dt = "NULL"
+            load_dt = "null"
         if unload_dt == "":
-            unload_dt = "NULL"
+            unload_dt = "null"
         if approve_by == "":
-            approve_by = "NULL"
+            approve_by = "null"
         if approve_dt == "":
-            approve_dt = "NULL"
+            approve_dt = "null"
             
         SQL = """INSERT INTO requests (asset_fk, requester, approver, source_fac, destination_fac, request_time, approve_time ) 
         VALUES 
