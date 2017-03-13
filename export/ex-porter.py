@@ -80,14 +80,14 @@ out.close()
 #SQL = "SELECT requests.request_pk, asset.asset_tag, user_name.username, requests.request_time, facility.facility_code FROM asset, facility, requests, user_name WHERE requests.asset_fk = asset.asset_pk AND requests.requester = user_name.user_pk AND requests.source_fac = facility.facility_pk ORDER BY asset.asset_pk;"
 #cur.execute(SQL)
 #ac = cur.fetchall()
-SQL = "SELECT asset.asset_tag, u.username, r.request_time, uu.username, r.approve_time, f.facility_code, ff.facility_code, transit.load_time, transit.unload_time
+SQL = """SELECT asset.asset_tag, u.username, r.request_time, uu.username, r.approve_time, f.facility_code, ff.facility_code, transit.load_time, transit.unload_time
 FROM requests r
 LEFT JOIN asset a ON r.asset_fk = a.asset_pk
 LEFT JOIN user_name u ON r.requester = u.user_pk
 LEFT JOIN user_name uu ON r.approver = uu.user_pk
 LEFT JOIN facility f ON r.source_fac = f.user_pk
 LEFT JOIN facility ff ON r.destination_fac = ff.user_pk
-LEFT JOIN transit t ON t.asset_fk = a.asset_pk"
+LEFT JOIN transit t ON t.asset_fk = a.asset_pk"""
 cur.execute(SQL)
 ac = cur.fetchall()
 
