@@ -5,4 +5,8 @@ if [ "$#" -ne 2 ]; then
     exit;
 fi
 
+dropdb $1
+pg_ctl -D $2 -l logfile start
+createdb $1
+
 python3 ./porter.py $1 5432 $2
