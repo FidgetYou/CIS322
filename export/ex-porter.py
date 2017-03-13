@@ -66,7 +66,7 @@ out.close()
         
 SQL = """SELECT asset.asset_tag, asset.asset_info, facility.facility_code, asset_at.arrive, asset_at.depart 
 FROM asset
-LEFT JOIN asset_at ON asset_at.asset_fk = asset.asset_pk
+LEFT JOIN asset_at ON asset.asset_pk = asset_at.asset_fk
 LEFT JOIN facility ON asset_at.facility_fk = facility_pk
 """
 #WHERE asset.asset_pk = asset_at.asset_fk AND asset_at.facility_fk = facility.facility_pk;"""
