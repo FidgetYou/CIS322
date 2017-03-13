@@ -131,9 +131,21 @@ if import_files:
         cur.execute(SQL, data)
         conn.commit()
         
+        SQL = "SELECT asset_pk from asset WHERE asset_tag = %s"
+        data = (the_tag, )
+        cur.execute(SQL, data)
+        derp1 = cur.fetchall()
+        
+        SQL = "SELECT facility_pk from facility WHERE facility_code = %s"
+        data = (the_fac, )
+        cur.execute(SQL, data)
+        derp2 = cur.fetchall()
+        
+        
+        
         SQL = """INSERT INTO asset_at (asset_fk, facility_fk, arrive, depart) VALUES 
-        ( (SELECT asset_pk from asset WHERE asset_tag = %s),
-        (SELECT facility_pk from facility WHERE facility_code = %s),
+        ( (SELECT asset_pk from asset WHERE asset_tag = %s LIMIT 1),
+        (SELECT facility_pk from facility WHERE facility_code = %s LIMIT 1),
         %s, %s );"""
         data = (the_tag, the_fac, arrive, depart)
         cur.execute(SQL, data)
@@ -190,7 +202,7 @@ if import_files:
             
         SQL = """INSERT INTO requests (asset_fk, requester, approver, source_fac, destination_fac, request_time, approve_time ) 
         VALUES 
-        ( (SELECT asset_pk from asset WHERE asset_tag = %s),
+        ( (SELECT asset_pk from asset WHERE asset_tag = %s LIMIT 1),
         (SELECT user_pk from user_name WHERE user_pk = %s),
         (SELECT user_pk from user_name WHERE user_pk = %s),
         (SELECT facility_pk from facility WHERE facility_name = %s),
