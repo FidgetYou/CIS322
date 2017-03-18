@@ -9,6 +9,9 @@ Unless I went with a hash to store passwords... Which I didn't. (Security isn't 
 I didn't want to have to add a table just for job titles... But if there is only going to be two, I might as well.
 This way I can also make a drop down menu of job titles. You know, if I get around to it.
 Apparently Job titles don't get their own creation page. So I'm just inputting the two we have here.
+
+I added an 'active' column to the user_name table. This seemed like the easiest way to keep track of
+whether an employee was active or not.
 */
 CREATE TABLE role(
 	role_pk		serial primary key,
