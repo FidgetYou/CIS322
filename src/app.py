@@ -302,10 +302,15 @@ def transfer_req():
             print ("test ass")
             print (ass_fk)
             
-            req_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M").isoformat()
+            #req_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M").isoformat()
             
+            now = datetime.datetime.now()
+            print(now)
+            str_now = now.date().isoformat()
+            print (str_now)
+
             SQL = "INSERT INTO requests (asset_fk, requester, source_fac, destination_fac, request_time) VALUES (%s, %s, %s, %s, %s);"
-            fourdata = (ass_fk, user_fk, sour_fac_fk, dest_fac_fk, req_time)
+            fourdata = (ass_fk, user_fk, sour_fac_fk, dest_fac_fk, str_now)
             cur.execute(SQL, fourdata)
             conn.commit()
                     
