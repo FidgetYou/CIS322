@@ -64,16 +64,18 @@ def create_user():
         db_row = cur.fetchone()
         #print (db_row)
 
+        
+        try:
+            SQL = "SELECT role_pk FROM role WHERE role = %s;"
+            one_data = the_jobtitle
+            cur.execute(SQL, (one_data,))
+            role_fk = cur.fetchone()
+            #print (db_row)
+        except:
+            session['error'] = "" + the_jobtitle + " is invalid."
+            return render_template('login.html')
+            
         if db_row is None:
-            try:
-                SQL = "SELECT role_pk FROM role WHERE role = %s;"
-                one_data = the_jobtitle
-                cur.execute(SQL, (one_data,))
-                role_fk = cur.fetchone()
-                #print (db_row)
-            except:
-                session['error'] = "" + the_jobtitle + " is invalid."
-                return render_template('login.html')
         
             SQL = "INSERT INTO user_name (username, password, role_fk, active) VALUES (%s, %s, %s, true);"
             data = (the_username,the_password,role_fk)
@@ -84,8 +86,12 @@ def create_user():
             return render_template('login.html')
         
         else:
-            session['error'] = "" + the_username + " has already been taken."
-            return render_template('create_user.html')
+            SQL = "UPDATE user_name SET active = true, password = %s WHERE username = %s;"
+            Bdata = (the_password, the_username)
+            cur.execute(SQL, Bdata)
+            conn.commit()
+            #session['error'] = "" + the_username + " has already been taken."
+            #return render_template('create_user.html')
         
 
 @app.route('/', methods=['GET', 'POST'])
@@ -116,11 +122,16 @@ def login():
         the_username = "" + request.form['uname'] + ""
         the_password = "" + request.form['pass'] + ""
         
-        SQL = "SELECT username FROM user_name WHERE username = %s;"
-        dataIn = (the_username, the_password)
-        cur.execute('SELECT username, password FROM user_name WHERE username = %s AND password = %s', (dataIn))
-        db_row = cur.fetchone()
+        #SQL = "SELECT username FROM user_name WHERE username = %s;"
+        #dataIn = (the_username, the_password)
+        #cur.execute('SELECT username, password FROM user_name WHERE username = %s AND password = %s', (dataIn))
+        #db_row = cur.fetchone()
 
+        SQL = "SELECT username, password FROM user_name WHERE username = %s AND password = %s AND active = true;"
+        dataIn = (the_username, the_password)
+        cur.execute(SQL, dataIn)
+        db_row = cur.fetchone()
+            
         if db_row is None:
             session['error'] = "That " + the_username + "/" + the_password + " combonation is invalid."
             return render_template('login.html')
