@@ -61,7 +61,7 @@ if __name__ == '__main__':
     
     req = Request(route,data.encode('ascii'),method='POST')
     
-    the_responce = urlopen(req)
+    res = urlopen(req)
     #the_reply = json.loads(the_responce.read().decode('ascii'))
     result = str(res.read())[1:]
     print(result)
