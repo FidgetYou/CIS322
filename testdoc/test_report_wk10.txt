@@ -1,0 +1,56 @@
+test plan followed by Alister Maguire. 
+
+
+
+
+step 1:
+    I created two users without any issues (using the web interface).
+
+
+step 2:
+    I logged into the system without issue. 
+
+
+step 3:
+    I added two facilities without issue. 
+
+
+step 4:
+    I added two assets without issue. 
+
+
+step 5:
+    
+	part a) I ran into an error when I tried to make a transfer. It
+            
+		was an internal server error. The odd thing is that I 
+            
+		was able to transfer an item to its current location
+            
+		without this error coming up, but, if I tried to transfer
+            
+		an item to a different facility, the error would show up. 
+            
+		I looked in the error logs, and I believe this is the issue:
+            
+		"req_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M").isoformat(), 
+             
+		referer: http://localhost:8080/transfer_req
+             
+		AttributeError: 'str' object has no attribute 'isoformat', 
+             
+		referer: http://localhost:8080/transfer_req"
+
+    
+	part b) I logged out and logged back in as a facilities officer, but
+            
+		the transfer (to the same location) didn't show up anywhere. 
+
+    
+	part c) I couldn't get this far.
+
+step 6: I disposed of an asset without any issues. 
+
+
+
+step 7: N/A
