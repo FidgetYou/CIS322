@@ -30,7 +30,7 @@ if __name__ == '__main__':
     
     
     the_addy = sys.argv[1]
-    the_addy = "http://127.0.0.1:8080/activate_user"
+    #the_addy = "http://127.0.0.1:8080/activate_user"
     the_user = sys.argv[2]
     the_pass = sys.argv[3]
     the_role = sys.argv[4]
@@ -45,14 +45,14 @@ if __name__ == '__main__':
     
     """
 
-    info = dict()
-    info['name'] = the_user
-    info['pass'] = the_pass
-    info['role'] = the_role
+    args = dict()
+    args['name'] = the_user
+    args['pass'] = the_pass
+    args['role'] = the_role
     
-    post_info = dict()
-    post_info['arguments']=json.dumps(info)
-    post_info['signature']=''
+    #post_info = dict()
+    #post_info['arguments']=json.dumps(info)
+    #post_info['signature']=''
     
     data = urlencode(info)
     print("Sending:")
