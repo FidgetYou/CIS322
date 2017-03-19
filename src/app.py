@@ -87,6 +87,40 @@ def activate_user():
         #the_data['error'] = error_str
         #data = json.dumps(dat)
         return error_str
+    
+    
+@app.route('/revoke_user', methods=['POST'])
+def revoke_user():
+    
+    error_str = " "
+    #the_data = dict()
+    
+    if request.method=='POST':
+        #the_req = json.loads(request.form['arguments'])
+
+        the_username = request.form['name']
+
+        if error_str == " ":
+        
+            SQL = "SELECT username FROM user_name WHERE username = %s;"
+            one_data = the_username
+            cur.execute('SELECT username FROM user_name WHERE username = %s', (one_data,))
+            db_row = cur.fetchone()
+            #print (db_row)
+
+            if db_row is not None:
+                SQL = "UPDATE user_name SET active = false WHERE username = %s;"
+                Bdata = (the_username, )
+                cur.execute(SQL, Bdata)
+                conn.commit()
+                error_str = "" + the_username + "'s access has been removed."
+                #return render_template('create_user.html')
+            else:
+                error_str = "" + the_username + "is not an employee."
+        
+        return error_str
+    
+    
 
 @app.route('/create_user', methods=['GET', 'POST'])
 def create_user():
