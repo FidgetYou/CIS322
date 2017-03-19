@@ -26,7 +26,7 @@ if __name__ == '__main__':
     #print (sys.argv[3])
     #print (sys.argv[4])
     
-    the_addy = sys.argv[1] + "create_user"
+    the_addy = sys.argv[1] + "create_user_from_cp"
     the_user = sys.argv[2]
     the_pass = sys.argv[3]
     the_role = sys.argv[4]
