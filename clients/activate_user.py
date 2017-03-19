@@ -1,7 +1,9 @@
+from flask import Flask, render_template, redirect, url_for, session, flash, request
 import sys
 import json
 import datetime
 import argparse
+import requests
 
 from urllib.request import Request, urlopen
 from urllib.parse   import urlencode
@@ -18,43 +20,43 @@ from urllib.parse   import urlencode
 
 if __name__ == '__main__':
     
-    print (sys.argv[0])
-    print (sys.argv[1])
-    print (sys.argv[2])
-    print (sys.argv[3])
-    print (sys.argv[4])
-    """
-    parser = argparse.ArgumentParser()
-    parser.add_argument('route', type=str)
-    parser.add_argument('name', type=str)
-    parser.add_argument('password', type=str)
-    parser.add_argument('role', type=str)
-    args = parser.parse_args()
-    route = args.route
-
-    arg_dict = dict()
-    arg_dict['name'] = args.name
-    arg_dict['role'] = args.role
-    arg_dict['password'] = args.password
-
-
-    # Print a message to let the user know what is being tried
-    print("Activating user: %s"%arg_dict['name'])
-
+    #print (sys.argv[0])
+    #print (sys.argv[1])
+    #print (sys.argv[2])
+    #print (sys.argv[3])
+    #print (sys.argv[4])
+    
+    the_addy = sys.argv[1] + "create_user"
+    the_user = sys.argv[2]
+    the_pass = sys.argv[3]
+    the_role = sys.argv[4]
+    
     # Setup the data to send
-    sargs = dict()
-    sargs['arguments']=json.dumps(arg_dict)
-    sargs['signature']=''
-    data = urlencode(sargs)
-    print("sending:\n%s"%data)
+    #sargs = dict()
+    """
+    url = the_addy
+    query = {'field': value}
+    res = requests.post(url, data=query)
+    print(res.text)
     
-    # Make the resquest
-    req = Request(route,data.encode('ascii'),method='POST')
-    print('requst made')
+    """
+
+    info = dict()
+    info['name'] = the_name
+    info['pass'] = the_pass
+    info['role'] = the_role
     
-    res = urlopen(req)
-    # Parse the response
-    resp = json.loads(res.read().decode('ascii'))
-print("Call to LOST returned: %s"%resp['result'])
-"""
+    post_info = dict()
+    post_info['arguments']=json.dumps(info)
+    post_info['signature']=''
+    data = urlencode(post_info)
+    print("Sending:")
+    print(data)
+    
+    the_request = Request(route,data.encode('ascii'),method='POST')
+    
+    the_responce = urlopen(the_request)
+    the_reply = json.loads(the_responce.read().decode('ascii'))
+    print(the_reply['error'])
+
     
