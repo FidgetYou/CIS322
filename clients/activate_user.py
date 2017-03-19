@@ -27,6 +27,7 @@ if __name__ == '__main__':
     #print (sys.argv[4])
     
     the_addy = sys.argv[1]
+    the_addy = "http://127.0.0.1:8080/"
     the_user = sys.argv[2]
     the_pass = sys.argv[3]
     the_role = sys.argv[4]
