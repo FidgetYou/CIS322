@@ -42,7 +42,7 @@ if __name__ == '__main__':
     """
 
     info = dict()
-    info['name'] = the_name
+    info['name'] = the_user
     info['pass'] = the_pass
     info['role'] = the_role
     
