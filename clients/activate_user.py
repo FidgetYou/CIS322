@@ -53,7 +53,7 @@ if __name__ == '__main__':
     print("Sending:")
     print(data)
     
-    the_request = Request(route,data.encode('ascii'),method='POST')
+    the_request = Request(the_addy,data.encode('ascii'),method='POST')
     
     the_responce = urlopen(the_request)
     the_reply = json.loads(the_responce.read().decode('ascii'))
