@@ -1,9 +1,9 @@
-from flask import Flask, render_template, redirect, url_for, session, flash, request
+#from flask import Flask, render_template, redirect, url_for, session, flash, request
 import sys
 import json
 import datetime
 import argparse
-import requests
+#import requests
 
 from urllib.request import Request, urlopen
 from urllib.parse   import urlencode
@@ -53,8 +53,9 @@ if __name__ == '__main__':
     data = urlencode(post_info)
     print("Sending:")
     print(data)
+    route = the_addy
     
-    the_request = Request(the_addy,data.encode('ascii'),method='POST')
+    the_request = Request(route,data.encode('ascii'),method='POST')
     
     the_responce = urlopen(the_request)
     the_reply = json.loads(the_responce.read().decode('ascii'))
