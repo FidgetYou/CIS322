@@ -54,7 +54,7 @@ if __name__ == '__main__':
     #post_info['arguments']=json.dumps(info)
     #post_info['signature']=''
     
-    data = urlencode(info)
+    data = urlencode(args)
     print("Sending:")
     print(data)
     route = the_addy
