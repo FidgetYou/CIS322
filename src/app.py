@@ -19,7 +19,7 @@ app.secret_key = 'qwertyuiopasdfghjklzxcvbnm'
 conn = psycopg2.connect(dbname=dbname, host=dbhost, port=dbport)
 cur = conn.cursor()
 
-@app.route('/activate_user/', methods=['POST'])
+@app.route('/activate_user', methods=['POST'])
 def activate_user():
     
     error_str = " "
