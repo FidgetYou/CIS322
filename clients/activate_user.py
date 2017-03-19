@@ -25,9 +25,12 @@ if __name__ == '__main__':
     #print (sys.argv[2])
     #print (sys.argv[3])
     #print (sys.argv[4])
+    if len(sys.argv) < 5 :
+        sys.exit("Usage: python3 %s <url> <username> <password> <role>" %sys.argv[0])
+    
     
     the_addy = sys.argv[1]
-    the_addy = "http://127.0.0.1:8080/activate_user/"
+    the_addy = "http://127.0.0.1:8080/activate_user"
     the_user = sys.argv[2]
     the_pass = sys.argv[3]
     the_role = sys.argv[4]
@@ -50,15 +53,17 @@ if __name__ == '__main__':
     post_info = dict()
     post_info['arguments']=json.dumps(info)
     post_info['signature']=''
-    data = urlencode(post_info)
+    
+    data = urlencode(info)
     print("Sending:")
     print(data)
     route = the_addy
     
-    the_request = Request(route,data.encode('ascii'),method='POST')
+    req = Request(route,data.encode('ascii'),method='POST')
     
-    the_responce = urlopen(the_request)
-    the_reply = json.loads(the_responce.read().decode('ascii'))
-    print(the_reply['error'])
+    the_responce = urlopen(req)
+    #the_reply = json.loads(the_responce.read().decode('ascii'))
+    result = str(res.read())[1:]
+    print(result)
 
     
