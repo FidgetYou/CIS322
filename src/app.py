@@ -23,28 +23,19 @@ cur = conn.cursor()
 def activate_user():
     
     error_str = " "
-    the_data = dict()
+    #the_data = dict()
     
-    if request.method=='POST' and 'arguments' in request.form:
-        the_req = json.loads(request.form['arguments'])
-        
-        if the_req['name']:
-            the_username = "" + the_req['name'] + ""
-        else:
-             error_str = "No UserName"
-            #return render_template('create_user.html')
-        
-        if the_req['pass']:
-            the_password = "" + the_req['pass'] + ""
-        else:
-             error_str = "No password"
-            #return render_template('create_user.html')
+    if request.method=='POST':
+        #the_req = json.loads(request.form['arguments'])
+
+        the_username = request.form['name']
+        the_password = request.form['pass']
             
-        if the_req['role']:
-            if the_req['role'] == 'logofc':
-                role_pk   = "Logistics Officer"
-            elif the_req['role'] == 'facofc':
-                role_pk   = "Facilities Officer"
+        if request.form['role']:
+            if request.form['role'] == 'logofc':
+                the_jobtitle = "Logistics Officer"
+            elif request.form['role'] == 'facofc':
+                the_jobtitle = "Facilities Officer"
             else:
                 error_str = "That's not a real job"
         else:
