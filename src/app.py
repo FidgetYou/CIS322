@@ -84,9 +84,9 @@ def activate_user():
             else:
                 print(error_str)
         
-        the_data['error'] = error_str
-        data = json.dumps(dat)
-        return data
+        #the_data['error'] = error_str
+        #data = json.dumps(dat)
+        return error_str
 
 @app.route('/create_user', methods=['GET', 'POST'])
 def create_user():
