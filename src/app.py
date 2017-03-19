@@ -19,6 +19,84 @@ app.secret_key = 'qwertyuiopasdfghjklzxcvbnm'
 conn = psycopg2.connect(dbname=dbname, host=dbhost, port=dbport)
 cur = conn.cursor()
 
+@app.route('/create_user_from_cp', methods=['POST'])
+def create_user_from_cp():
+    
+    error_str = " "
+    the_data = dict()
+    
+    if request.method=='POST' and 'arguments' in request.form:
+        the_req = json.loads(request.form['arguments'])
+        
+        if the_req['name']:
+            the_username = "" + the_req['name'] + ""
+        else:
+             error_str = "No UserName"
+            #return render_template('create_user.html')
+        
+        if the_req['pass']:
+            the_password = "" + the_req['pass'] + ""
+        else:
+             error_str = "No password"
+            #return render_template('create_user.html')
+            
+        if the_req['role']:
+            if the_req['role'] == 'logofc':
+                role_pk   = "Logistics Officer"
+            elif the_req['role'] == 'facofc':
+                role_pk   = "Facilities Officer"
+            else:
+                error_str = "That's not a real job"
+        else:
+             error_str = "No Job"
+            
+        #the_username = "" + request.form['uname'] + ""
+        #the_password = "" + request.form['pass'] + ""
+        #the_jobtitle = "" + request.form['role_menu'] + ""
+        #print (the_username)
+        if error_str == " ":
+        
+            SQL = "SELECT username FROM user_name WHERE username = %s;"
+            one_data = the_username
+            cur.execute('SELECT username FROM user_name WHERE username = %s', (one_data,))
+            db_row = cur.fetchone()
+            #print (db_row)
+
+        
+            try:
+                SQL = "SELECT role_pk FROM role WHERE role = %s;"
+                one_data = the_jobtitle
+                cur.execute(SQL, (one_data,))
+                role_fk = cur.fetchone()
+                #print (db_row)
+            except:
+                error_str = "" + the_jobtitle + " is invalid."
+                #return render_template('login.html')
+            
+            if db_row is None and error_str == " ":
+        
+                SQL = "INSERT INTO user_name (username, password, role_fk, active) VALUES (%s, %s, %s, true);"
+                data = (the_username,the_password,role_fk)
+                cur.execute(SQL, data)
+                conn.commit()
+                print("Added user " + the_username)
+                error_str = "" + the_username + " has been added."
+                #return render_template('login.html')
+        
+            elif error_str == " ":
+                SQL = "UPDATE user_name SET active = true, password = %s WHERE username = %s;"
+                Bdata = (the_password, the_username)
+                cur.execute(SQL, Bdata)
+                conn.commit()
+                error_str = "" + the_username + "'s password has been updated."
+                #return render_template('create_user.html')
+            else:
+                print(error_str)
+        
+        the_data['error'] = error_str
+        data = json.dumps(dat)
+        return data
+
 @app.route('/create_user', methods=['GET', 'POST'])
 def create_user():
     if request.method == 'GET':
@@ -37,16 +115,15 @@ def create_user():
 
         return render_template('create_user.html')
     if request.method == 'POST':
+        #if request.method=='POST' and 'arguments' in request.form:
+            #req = json.loads(request.form['arguments'])
         if request.form['uname']:
-            #print("You've got a name!")
             session['uname'] = request.form['uname']
         else:
-            # If there isn't a username in the session
             session['error'] = "No UserName"
             return render_template('create_user.html')
         
         if request.form['pass'] or request.form['role']:
-            #print("You've got a password!")
             session['pass'] = request.form['pass']
         else:
             session['error'] = "No password"
