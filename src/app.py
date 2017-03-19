@@ -19,8 +19,8 @@ app.secret_key = 'qwertyuiopasdfghjklzxcvbnm'
 conn = psycopg2.connect(dbname=dbname, host=dbhost, port=dbport)
 cur = conn.cursor()
 
-@app.route('/create_user_from_cp', methods=['POST'])
-def create_user_from_cp():
+@app.route('/activate_user/', methods=['POST'])
+def activate_user():
     
     error_str = " "
     the_data = dict()
