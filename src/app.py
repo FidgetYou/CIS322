@@ -124,6 +124,7 @@ def revoke_user():
 
 @app.route('/create_user', methods=['GET', 'POST'])
 def create_user():
+    return render_template('dashboard.html')
     if request.method == 'GET':
         SQL = "SELECT role FROM role"
         cur.execute(SQL)
