@@ -214,7 +214,7 @@ def asset_report():
         for f in fac:
             a = dict()
             if f[0] != "None":
-                a['ass_date']=f[0]a['ass_date']=f[0]
+                a['ass_date']=f[0]
             ass_date.append(a)
         
         SQL = "SELECT approve_time FROM requests"
