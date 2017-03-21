@@ -22,26 +22,34 @@
 		</div>    
 
 		{% if session['works'] %}
+		    <table>
+		    <tr>
 			{% for entry in session.works %}
-				<tr><td><a href="{{url_for('do_work')}}?id={{entry.id}}">{{entry.asset_name}}</a></td></tr><br>
+				<td><a href="{{url_for('do_work')}}?id={{entry.id}}">{{entry.asset_name}}</a></td><br>
 			{% endfor %}
+		    </tr>
+		    </table>
 		{% endif %}
-		    <!-- end of row 
-		<form action = "{{url_for('asset_report')}}">
-			<input type = "Submit" value = "What Assets?">
-		</form>
-		
-		<form action = "{{url_for('transfer_report')}}">
-			<input type = "Submit" value = "What Transfers?">
-		</form>
-		    -->
-		<form action = "{{url_for('add_asset')}}">
-			<input type = "Submit" value = "Add Asset">
-		</form>
 		    
 		<form action = "{{url_for('add_facility')}}">
 			<input type = "Submit" value = "Add Facility">
 		</form>
+		    
+		<form action = "{{url_for('add_asset')}}">
+			<input type = "Submit" value = "Add Asset">
+		</form>
+		    
+		<form action = "{{url_for('asset_report')}}">
+			<input type = "Submit" value = "What Assets?">
+		</form>
+		 <!-- end of row 
+		<form action = "{{url_for('transfer_report')}}">
+			<input type = "Submit" value = "What Transfers?">
+		</form>
+		    -->
+		
+		    
+		
 		    
 		
 		    
