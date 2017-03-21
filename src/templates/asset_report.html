@@ -1,52 +1,65 @@
 <!DOCTYPE html>
+
 <html>
-	<head><title>OSNAP Assets</title></head>
-<body>
+	<head><title>OSNAP Transfer Request</title></head>
+	<body><h1>Transfer Requests</h1>
 
-<H1>Asset Report:</H1>
-        <H1>Filter Criteria</H1>
-		<FORM action="{{url_for('asset_report')}}" method="POST">
-			<TABLE>
-				<TR>
-					<TD>Facility:</TD>
-					<TD><SELECT NAME="fcode">
-					<OPTION VALUE="">All Facilities</OPTION>
-					{{fcode_options|safe}}</SELECT>
-					</TD>
-				</TR>
-				
-				<TR>
-					<TD>Date:</TD>
-					<TD><INPUT TYPE="TEXT" NAME="date" value="{{fvals['rdate']}}"/></TD>
-				</TR>
-			</TABLE>
-			<INPUT TYPE="SUBMIT" />
-		</FORM>
-        
-        <H1>Asset Report</H1>
-        <TABLE>
-            <TR>
-		    <TH>Asset Tag</TH>
-		    <TH>Description</TH>
-		    <TH>fcode</TH>
-		    <TH>Common Name</TH>
-		    <TH>Arrive</TH>
-		    <TH>Depart</TH>
-		    <TR>
-            {% for r in data: %}
-                <TR>
-			<TD>{{r['atag']}}</TD>
-			<TD>{{r['desc']}}</TD>
-			<TD>{{r['fcode']}}</TD>
-			<TD>{{r['cname']}}</TD>
-			<TD>{{r['adate']}}</TD>
-			<TD>{{r['ddate']}}</TD>
-		    </TR>
-            {% endfor %}
-	</TR>
-	</TABLE>
+		
+	<div class="row">
+            <div class="col-lg-12">
 
+		<div id ="content">
+                	{% if session['error'] %}
+               		 <br> <strong>{{session['error']}}</strong> <br>
+			{% endif %}
+		</div> 
+
+                <p> <label>LOST Asset Transitions: Hey, {{session.username}} where do you want it?</label> </p>
+                
+                <form action="{{url_for('transfer_req')}}" method="POST">
+			
+                     <div class="input-group" style="width:640px">
+                        	<label> Asset Name (Current Location): </label>
+                        	<select name = "asset_menu">
+				{% for entry in session.assets_transfer %}
+				<option value="{{ entry.asset_name }}"> {{ entry.asset_name }} ({{ entry.facility_name }})  </option>
+				{% endfor %}
+				</select>
+			</div>
+			
+			 
+                    
+                     	<div class="input-group" style="width:640px">
+				<label> To Facility: </label>
+                        	<select name = "facility_menu">
+				{% for entry in session.facilities %}
+				<option value="{{ entry.facility_name }}"> {{ entry.facility_name }} </option>
+				{% endfor %}
+				</select>
+			</div>
+                   
+                    <div class="input-group" style="width:340px">
+                        <button type="submit" class="btn btn-success">ADD</button>
+                    </div>
+			
+			
+			
+                </form>
 		    
+		    <form action = "{{url_for('dashboard')}}">
+				<input type = "Submit" name = "Go Back" value = "Go Back">
+			</form>
+            </div>
+
+        </div>
+       
+
+        <br>
+        <br>
+
+       
+	
+
+
 </body>
 </html>
-		    
