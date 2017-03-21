@@ -203,7 +203,8 @@ def asset_report():
         ass_date = []
         for f in fac:
             a = dict()
-            a['ass_date']=f[0]
+            if f[0] != "None":
+                a['ass_date']=f[0]
             ass_date.append(a)
             
         SQL = "SELECT depart FROM asset_at"
@@ -212,7 +213,8 @@ def asset_report():
         #ass_date = []
         for f in fac:
             a = dict()
-            a['ass_date']=f[0]
+            if f[0] != "None":
+                a['ass_date']=f[0]a['ass_date']=f[0]
             ass_date.append(a)
         
         SQL = "SELECT approve_time FROM requests"
@@ -221,7 +223,8 @@ def asset_report():
         #ass_date = []
         for f in fac:
             a = dict()
-            a['ass_date']=f[0]
+            if f[0] != "None":
+                a['ass_date']=f[0]
             ass_date.append(a)
             
         SQL = "SELECT request_time FROM requests"
@@ -230,7 +233,8 @@ def asset_report():
         #ass_date = []
         for f in fac:
             a = dict()
-            a['ass_date']=f[0]
+            if f[0] != "None":
+                a['ass_date']=f[0]
             ass_date.append(a)
         
         SQL = "SELECT unload_time FROM transit"
@@ -239,7 +243,8 @@ def asset_report():
         #ass_date = []
         for f in fac:
             a = dict()
-            a['ass_date']=f[0]
+            if f[0] != "None":
+                a['ass_date']=f[0]
             ass_date.append(a)
             
         SQL = "SELECT load_time FROM transit"
@@ -248,7 +253,8 @@ def asset_report():
         #ass_date = []
         for f in fac:
             a = dict()
-            a['ass_date']=f[0]
+            if f[0] != "None":
+                a['ass_date']=f[0]
             ass_date.append(a)
             
             
