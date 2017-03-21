@@ -196,36 +196,63 @@ def asset_report():
 
         ##print (session['facilities'])
         
-        SQL = "SELECT asset.asset_tag, facility.facility_name FROM asset, asset_at, facility WHERE asset.asset_pk = asset_at.asset_fk AND facility.facility_pk = asset_at.facility_fk AND asset_at.disposed = false"
-        cur.execute(SQL)
-        ac = cur.fetchall()
-        #print ("what does a query return = ")
-        #print (ac)
         
-        asset_trsf = []
-        facil_trsf = []
-        ##ass = False
-        for f in ac:
-            ##ass = not ass
-            ##if ass:
-            b = dict()
-            b['asset_name']=f[0]
-            #print ("add asset = ")
-            #print (f[0])
-            #print ("what is b = ")
-            #print (b)
-            #asset_trsf.append(b)
-            #else:
-            #c = dict()
-            b['facility_name']=f[1]
-            #print ("add facility = ")
-            ##print (f[1])
-            #print ("what is b = ")
-            #print (b)
-            asset_trsf.append(b)
-            #facil_trsf.append(c)
-
-        session['assets_transfer'] = asset_trsf
+        SQL = "SELECT arrive FROM asset_at"
+        cur.execute(SQL)
+        fac = cur.fetchall()
+        ass_date = []
+        for f in fac:
+            a = dict()
+            a['ass_date']=f[0]
+            ass_date.append(a)
+            
+        SQL = "SELECT depart FROM asset_at"
+        cur.execute(SQL)
+        fac = cur.fetchall()
+        #ass_date = []
+        for f in fac:
+            a = dict()
+            a['ass_date']=f[0]
+            ass_date.append(a)
+        
+        SQL = "SELECT approve_time FROM requests"
+        cur.execute(SQL)
+        fac = cur.fetchall()
+        #ass_date = []
+        for f in fac:
+            a = dict()
+            a['ass_date']=f[0]
+            ass_date.append(a)
+            
+        SQL = "SELECT request_time FROM requests"
+        cur.execute(SQL)
+        fac = cur.fetchall()
+        #ass_date = []
+        for f in fac:
+            a = dict()
+            a['ass_date']=f[0]
+            ass_date.append(a)
+        
+        SQL = "SELECT unload_time FROM transit"
+        cur.execute(SQL)
+        fac = cur.fetchall()
+        #ass_date = []
+        for f in fac:
+            a = dict()
+            a['ass_date']=f[0]
+            ass_date.append(a)
+            
+        SQL = "SELECT load_time FROM transit"
+        cur.execute(SQL)
+        fac = cur.fetchall()
+        #ass_date = []
+        for f in fac:
+            a = dict()
+            a['ass_date']=f[0]
+            ass_date.append(a)
+            
+            
+        session['assets_date'] = ass_date
         
         ##session['facility_transfer'] = facil_trsf
         #print ("session asset = ")
