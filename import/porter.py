@@ -35,7 +35,7 @@ if import_files:
     except:
         sys.exit("Unable to find the file " + arg3)    
     
-    print (csv_list)
+    #print (csv_list)
     for i in range (1, len(csv_list)):
         #print ("i = " + str(i))
         #for j in range (1, len(csv_list)):
@@ -87,7 +87,7 @@ if import_files:
         sys.exit("Unable to find the file " + arg3)    
     f.close()
     
-    print (csv_list)
+    #print (csv_list)
     for i in range (1, len(csv_list)):
         the_code = "" + csv_list[i][0] + ""
         the_name = "" + csv_list[i][1] + ""       
@@ -109,7 +109,7 @@ if import_files:
         sys.exit("Unable to find the file " + arg3)    
     f.close()
     
-    print (csv_list)
+    #print (csv_list)
     for i in range (1, len(csv_list)):
         #print (csv_list[i])
         the_tag = "" + csv_list[i][0] + ""
@@ -177,27 +177,27 @@ if import_files:
         sys.exit("Unable to find the file " + arg3)    
     f.close()
     
-    print ("csv transfers:")
-    print (csv_list)
+    #print ("csv transfers:")
+    #print (csv_list)
     for i in range (1, len(csv_list)):
-        print (csv_list[i])
+        #print (csv_list[i])
         
         asset_tag = "" + csv_list[i][0] + ""
-        print(asset_tag)
+        #print(asset_tag)
         
         request_by = "" + csv_list[i][1] + ""  
-        print(request_by)
+        #print(request_by)
         
         request_dt = "" + csv_list[i][2] + "" 
-        print(request_dt)
+        #print(request_dt)
         
         #approve_by = "" + csv_list[i][3] + "" 
         #approve_dt = "" + csv_list[i][4] + "" 
         sour = "" + csv_list[i][5] + ""
-        print(sour)
+        #print(sour)
         
         destination = "" + csv_list[i][6] + ""  
-        print(destination)
+        #print(destination)
         
         #load_dt = "" + csv_list[i][7] + "" 
         #unload_dt = "" + csv_list[i][8] + "" 
