@@ -87,6 +87,7 @@ if import_files:
         sys.exit("Unable to find the file " + arg3)    
     f.close()
     
+    print (csv_list)
     for i in range (1, len(csv_list)):
         the_code = "" + csv_list[i][0] + ""
         the_name = "" + csv_list[i][1] + ""       
@@ -108,8 +109,9 @@ if import_files:
         sys.exit("Unable to find the file " + arg3)    
     f.close()
     
+    print (csv_list)
     for i in range (1, len(csv_list)):
-        print (csv_list[i])
+        #print (csv_list[i])
         the_tag = "" + csv_list[i][0] + ""
         the_des = "" + csv_list[i][1] + ""     
         the_fac = "" + csv_list[i][2] + "" 
