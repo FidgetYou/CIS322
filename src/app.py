@@ -195,72 +195,7 @@ def asset_report():
         session['facilities'] = facility_name
 
         ##print (session['facilities'])
-        
-        
-        SQL = "SELECT arrive FROM asset_at"
-        cur.execute(SQL)
-        fac = cur.fetchall()
-        ass_date = []
-        for f in fac:
-            a = dict()
-            if f[0] != None:
-                a['ass_date']=f[0]
-                ass_date.append(a)
-            
-        SQL = "SELECT depart FROM asset_at"
-        cur.execute(SQL)
-        fac = cur.fetchall()
-        #ass_date = []
-        for f in fac:
-            a = dict()
-            if f[0] != None:
-                a['ass_date']=f[0]
-                ass_date.append(a)
-        
-        SQL = "SELECT approve_time FROM requests"
-        cur.execute(SQL)
-        fac = cur.fetchall()
-        #ass_date = []
-        for f in fac:
-            a = dict()
-            if f[0] != None:
-                a['ass_date']=f[0]
-                ass_date.append(a)
-            
-        SQL = "SELECT request_time FROM requests"
-        cur.execute(SQL)
-        fac = cur.fetchall()
-        #ass_date = []
-        for f in fac:
-            a = dict()
-            if f[0] != None:
-                a['ass_date']=f[0]
-                ass_date.append(a)
-        
-        SQL = "SELECT unload_time FROM transit"
-        cur.execute(SQL)
-        fac = cur.fetchall()
-        #ass_date = []
-        for f in fac:
-            a = dict()
-            if f[0] != None:
-                a['ass_date']=f[0]
-                ass_date.append(a)
-            
-        SQL = "SELECT load_time FROM transit"
-        cur.execute(SQL)
-        fac = cur.fetchall()
-        #ass_date = []
-        for f in fac:
-            a = dict()
-            if f[0] != None:
-                a['ass_date']=f[0]
-                ass_date.append(a)
-            
-            
-        session['assets_date'] = ass_date
-        
-        
+
 
     
         ##session['facility_transfer'] = facil_trsf
@@ -287,30 +222,40 @@ def asset_report():
         
         if request.form['date_menu'] and request.form['facility_menu']:
             
-            if request.form['facility_menu'] == "ALL":
-                the_facil = "*"
+            
+            
                 
             SQL = "SELECT facility_name FROM facility WHERE facility_name = %s;"
             Adata = the_facil
             cur.execute(SQL, (Adata,))
             test1 = cur.fetchone()
         
-            if test1 is None:
+            if test1 is None and request.form['facility_menu'] != "ALL"::
                 session['error'] = "That destination does not exist."
                 return render_template('asset_report.html')
             
-            SQL = """SELECT asset_tag, asset_info, facility_name, arrive, depart
+            if request.form['facility_menu'] != "ALL":
+                SQL = """SELECT asset_tag, asset_info, facility_name, arrive, depart
 FROM asset_at aa
 JOIN facility f ON aa.facility_fk=f.facility_pk
 JOIN asset a ON a.asset_pk=aa.asset_fk
 WHERE (arrive is null or arrive<=%s) and
       (depart is null or depart>=%s) and 
-      facility_name = %s
-      """
-            Bdata = (the_times, the_times, the_facil)
-            cur.execute(SQL, Bdata)
-            ass_request = cur.fetchall()
+      facility_name = %s"""
+                Bdata = (the_times, the_times, the_facil)
+                cur.execute(SQL, Bdata)
+                ass_request = cur.fetchall()
             
+            else:
+                SQL = """SELECT asset_tag, asset_info, facility_name, arrive, depart
+FROM asset_at aa
+JOIN facility f ON aa.facility_fk=f.facility_pk
+JOIN asset a ON a.asset_pk=aa.asset_fk
+WHERE (arrive is null or arrive<=%s) and
+      (depart is null or depart>=%s) """
+                Bdata = (the_times, the_times, the_facil)
+                cur.execute(SQL, Bdata)
+                ass_request = cur.fetchall()
         
     
             asset_name = []
