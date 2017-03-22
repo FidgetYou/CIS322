@@ -709,8 +709,8 @@ def dashboard():
         if session['role'] == logisticsOfficer:
             SQL = """SELECT asset.asset_tag, transit.transit_pk, transit.load_time, transit.unload_time
             FROM asset, transit 
-            WHERE asset.asset_pk = transit.asset_fk 
-            AND (transit.unload_time = null OR transit.load_time = null)
+            WHERE (transit.unload_time IS NULL OR transit.load_time IS NULL)
+            AND asset.asset_pk = transit.asset_fk 
             """
             # AND (unload_time = null OR load_time = null);
         else:
