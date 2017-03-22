@@ -710,7 +710,8 @@ def dashboard():
             SQL = """SELECT asset.asset_tag, transit.transit_pk 
             FROM asset, transit 
             WHERE asset.asset_pk = transit.asset_fk 
-            AND (unload_time = null OR load_time = null);"""
+            """
+            # AND (unload_time = null OR load_time = null);
         else:
             SQL = """SELECT asset.asset_tag, requests.request_pk 
             FROM asset, requests 
