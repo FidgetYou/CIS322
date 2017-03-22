@@ -177,8 +177,9 @@ if import_files:
         sys.exit("Unable to find the file " + arg3)    
     f.close()
     
+    print ("csv transfers:")
+    print (csv_list[i])
     for i in range (1, len(csv_list)):
-        print ("csv list:")
         print (csv_list[i])
         asset_tag = "" + csv_list[i][0] + ""
         print(asset_tag)
