@@ -725,7 +725,7 @@ def dashboard():
     
     cur.execute(SQL)
     fac = cur.fetchall()
-    print (fac)
+    #print (fac)
     
     asset_name = []
     for f in fac:
