@@ -291,7 +291,7 @@ def transfer_req():
     try:
         if session['role'] != logisticsOfficer:
             session['error'] = "You can't go in there! Why, you're not a Logistics Officer."
-            return render_template('dashboard.html')
+            return redirect(url_for('dashboard'))
     except:
         session['error'] = "You have not logged in yet."
         return render_template('login.html')
@@ -459,7 +459,7 @@ def approve_req():
     try:
         if session['role'] != facilitiesOfficer:
             session['error'] = "You can't go in there! Why, you're not a Facilities Officer."
-            return render_template('dashboard.html')
+            return redirect(url_for('dashboard'))
     except:
         session['error'] = "You haven't logged in yet."
         return render_template('login.html')
@@ -535,7 +535,7 @@ def approve_req():
             conn.commit()
             
             session['error'] = "Okay, we won't move that."
-            return render_template('dashboard.html')
+            return redirect(url_for('dashboard'))
         
         if request.form['submit'] == 'Approve':
             #app_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M").isoformat()
@@ -560,7 +560,7 @@ def approve_req():
             cur.execute(SQL, Bdata)
             conn.commit()
             
-            return render_template('dashboard.html')
+            return redirect(url_for('dashboard'))
         
         return render_template('approve_req.html')
         
@@ -574,7 +574,7 @@ def update_transit():
     try:
         if session['role'] != logisticsOfficer:
             session['error'] = "You can't go in there! Why, you're not a Logistics Officer."
-            return render_template('dashboard.html')
+            return redirect(url_for('dashboard'))
     except:
         session['error'] = "You haven't logged in yet."
         return render_template('login.html')
@@ -654,7 +654,7 @@ def update_transit():
             conn.commit()
             
             session['error'] = "Load time has been set."
-            return render_template('dashboard.html')
+            return redirect(url_for('dashboard'))
         
         if request.form['submit'] == 'Unload':
             #the_times = datetime.datetime.strptime(request.form['unload'], '%Y-%m-%dT%H:%M').isoformat()
@@ -671,7 +671,7 @@ def update_transit():
             conn.commit()
             
             session['error'] = "Un-Load time has been set."
-            return render_template('dashboard.html')
+            return redirect(url_for('dashboard'))
         
         session['error'] = "I don't know what button you pushed."
         return render_template('update_transit.html')
@@ -698,7 +698,7 @@ def do_work():
         session['error'] = "You haven't logged in yet."
         return render_template('login.html')
     
-    return render_template('dashboard.html')
+    return redirect(url_for('dashboard'))
 
 
 @app.route('/dashboard', methods=['GET'])
@@ -995,3 +995,6 @@ def dispose_asset():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
+#
+#
+#  Wooo!  100 lines of code!  I'm so Copy Pasted!
