@@ -181,18 +181,24 @@ if import_files:
     print (csv_list)
     for i in range (1, len(csv_list)):
         print (csv_list[i])
+        
         asset_tag = "" + csv_list[i][0] + ""
         print(asset_tag)
+        
         request_by = "" + csv_list[i][1] + ""  
         print(request_by)
+        
         request_dt = "" + csv_list[i][2] + "" 
         print(request_dt)
+        
         #approve_by = "" + csv_list[i][3] + "" 
         #approve_dt = "" + csv_list[i][4] + "" 
         sour = "" + csv_list[i][5] + ""
         print(sour)
+        
         destination = "" + csv_list[i][6] + ""  
         print(destination)
+        
         #load_dt = "" + csv_list[i][7] + "" 
         #unload_dt = "" + csv_list[i][8] + "" 
         
@@ -216,8 +222,8 @@ if import_files:
         SQL = """INSERT INTO requests (asset_fk, requester, approver, source_fac, destination_fac, request_time, approve_time ) 
         VALUES 
         ( (SELECT asset_pk from asset WHERE asset_tag = %s LIMIT 1),
-        (SELECT user_pk from user_name WHERE user_pk = %s),
-        (SELECT user_pk from user_name WHERE user_pk = %s),
+        (SELECT user_pk from user_name WHERE user_name = %s),
+        (SELECT user_pk from user_name WHERE user_name = %s),
         (SELECT facility_pk from facility WHERE facility_name = %s),
         (SELECT facility_pk from facility WHERE facility_name = %s),
         %s, %s );"""
