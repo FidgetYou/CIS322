@@ -309,12 +309,12 @@ WHERE (arrive is null or arrive<=%s) and
       """
             Bdata = (the_times, the_times, the_facil)
             cur.execute(SQL, Bdata)
-            test5 = cur.fetchall()
+            ass_request = cur.fetchall()
             
         
     
             asset_name = []
-            for f in fac:
+            for f in ass_request:
         
                 b = dict()
                 b['asset_name']=f[0]
