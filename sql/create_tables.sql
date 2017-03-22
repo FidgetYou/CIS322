@@ -61,8 +61,8 @@ to look for another arrival time, but if in_transit is TRUE, then you do.
 CREATE TABLE asset_at(
 	asset_fk	integer REFERENCES asset (asset_pk) not null,
 	facility_fk	integer REFERENCES facility (facility_pk) not null,
-	arrive		timestamp default null,
-	depart		timestamp default null,
+	arrive		date default null,
+	depart		date default null,
 	in_transit	boolean default false,
 	disposed	boolean default false
 );
@@ -80,8 +80,8 @@ CREATE TABLE requests(
 	approver	integer REFERENCES user_name (user_pk) default null,
 	source_fac	integer REFERENCES facility (facility_pk) not null,
 	destination_fac	integer REFERENCES facility (facility_pk) not null,
-	request_time	timestamp default null,
-	approve_time	timestamp default null,
+	request_time	date default null,
+	approve_time	date default null,
 	approved	boolean default false,
 	rejected	boolean default false,
 	comments	varchar(300)
@@ -102,8 +102,8 @@ CREATE TABLE transit(
 	asset_fk	integer REFERENCES asset (asset_pk) not null,
 	source_fac	integer REFERENCES facility (facility_pk) not null,
 	destination_fac	integer REFERENCES facility (facility_pk) not null,
-	load_time	timestamp default null,
-	unload_time	timestamp default null
+	load_time	date default null,
+	unload_time	date default null
 );
 
 
