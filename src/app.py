@@ -260,6 +260,9 @@ def asset_report():
             
         session['assets_date'] = ass_date
         
+        
+
+    
         ##session['facility_transfer'] = facil_trsf
         #print ("session asset = ")
         #print (session['assets_transfer'])
@@ -273,17 +276,20 @@ def asset_report():
     
     if request.method == 'POST':
         session['error'] = ""
-        the_asset = "" + request.form['asset_menu'] + ""
+        #the_date = "" + request.form['date_menu'] + ""
         the_facil = "" + request.form['facility_menu'] + ""
-        the_users = session['uname']
+        #the_users = session['uname']
+        
+        now = datetime.datetime.strptime(request.form['date_menu'], '%Y-%m-%dT%H:%M')
+        print(now)
+        the_times = now.date().isoformat()
+        print (the_times)
         
         if request.form['asset_menu'] and request.form['facility_menu']:
-            SQL = "SELECT facility_name FROM facility, asset, asset_at WHERE asset.asset_tag = %s AND asset.asset_pk = asset_at.asset_fk AND asset_at.facility_fk = facility.facility_pk;"
-            Adata = the_asset
-            cur.execute(SQL, (Adata,))
-            the_dest = cur.fetchone()
             
-            
+            if request.form['facility_menu'] == "ALL":
+                the_facil = "*"
+                
             SQL = "SELECT facility_name FROM facility WHERE facility_name = %s;"
             Adata = the_facil
             cur.execute(SQL, (Adata,))
@@ -293,82 +299,38 @@ def asset_report():
                 session['error'] = "That destination does not exist."
                 return render_template('asset_report.html')
             
-            SQL = "SELECT asset.asset_tag FROM asset, asset_at WHERE asset.asset_tag = %s AND asset_at.disposed = false;"
-            Adata = the_asset
-            cur.execute(SQL, (Adata,))
-            test2 = cur.fetchone()
-        
-            if test2 is None:
-                session['error'] = "That asset has been disposed of."
-                return render_template('asset_report.html')
-            
-            SQL = "SELECT asset.asset_tag FROM asset, requests WHERE asset.asset_tag = %s AND requests.asset_fk = asset.asset_pk;"
-            Adata = the_asset
-            cur.execute(SQL, (Adata,))
-            test3 = cur.fetchone()
-        
-            if test3 is not None:
-                session['error'] = "This asset has already been requested for transfer."
-                return render_template('asset_report.html')
-            
-            SQL = "SELECT asset.asset_tag FROM asset, asset_at WHERE asset.asset_pk = asset_at.asset_fk AND asset_at.disposed = false AND asset_at.in_transit = false AND asset.asset_tag = %s;"
-            Adata = the_asset
-            cur.execute(SQL, (Adata,))
-            test4 = cur.fetchone()
-        
-            if test4 is None:
-                session['error'] = "That is not at that facility."
-                return render_template('asset_report.html')
-            
-            SQL = "SELECT facility.facility_name FROM asset, asset_at, facility WHERE asset.asset_pk = asset_at.asset_fk AND facility.facility_pk = asset_at.facility_fk AND asset_at.disposed = false AND asset_at.in_transit = false AND facility.facility_name = %s AND asset.asset_tag = %s;"
-            Bdata = (the_facil, the_asset)
+            SQL = """SELECT asset_tag, asset_info, facility_name, arrive, depart
+FROM asset_at aa
+JOIN facility f ON aa.facility_fk=f.facility_pk
+JOIN asset a ON a.asset_pk=aa.asset_fk
+WHERE (arrive is null or arrive<=%s) and
+      (depart is null or depart>=%s) and 
+      facility_name = %s
+      """
+            Bdata = (the_times, the_times, the_facil)
             cur.execute(SQL, Bdata)
-            test5 = cur.fetchone()
-            #print(test5)
+            test5 = cur.fetchall()
+            
         
-            if test5 is not None:
-                session['error'] = "The asset is already at that facility."
-                return render_template('asset_report.html')
-            
-            
-            ## Insert all the Foreign Keys into Request table.
-            SQL = "SELECT facility_pk FROM facility WHERE facility_name = %s;"
-            Adata = the_facil
-            cur.execute(SQL, (Adata,))
-            dest_fac_fk = cur.fetchone()
-            
-            SQL = "SELECT user_pk FROM user_name WHERE username = %s;"
-            Adata = the_users
-            cur.execute(SQL, (Adata,))
-            user_fk = cur.fetchone()
-            
-            SQL = "SELECT facility.facility_pk FROM facility, asset, asset_at WHERE asset.asset_tag = %s AND asset.asset_pk = asset_at.asset_fk AND asset_at.facility_fk = facility.facility_pk;"
-            Bdata = (the_asset, )
-            cur.execute(SQL, Bdata)
-            sour_fac_fk = cur.fetchone()
-            
-            SQL = "SELECT asset_pk FROM asset WHERE asset_tag = %s;"
-            Adata = the_asset
-            cur.execute(SQL, (Adata,))
-            ass_fk = cur.fetchone()
-            
-            #req_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M").isoformat()
-            
-            now = datetime.datetime.now()
-            print(now)
-            str_now = now.date().isoformat()
-            print (str_now)
+    
+            asset_name = []
+            for f in fac:
+        
+                b = dict()
+                b['asset_name']=f[0]
+                b['asset_info']=f[1]
+                b['facil_name']=f[2]
+                b['arrive']=f[3]
+                b['depart']=f[4]
 
-            SQL = "INSERT INTO requests (asset_fk, requester, source_fac, destination_fac, request_time) VALUES (%s, %s, %s, %s, %s);"
-            fourdata = (ass_fk, user_fk, sour_fac_fk, dest_fac_fk, str_now)
-            cur.execute(SQL, fourdata)
-            conn.commit()
+                asset_name.append(b)
+        
+            session['stock'] = asset_name
+
+            #print (session['stock'])
+            
                     
-            session['error'] = "The transfer request has been created."
-            return redirect(url_for('asset_report'))
-        else:
-            session['error'] = "Please fill in ALL of the boxes."
-            return render_template('asset_report.html')
+            
     
     return render_template('asset_report.html')
 
