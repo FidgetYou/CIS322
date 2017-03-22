@@ -224,8 +224,8 @@ if import_files:
         ( (SELECT asset_pk from asset WHERE asset_tag = %s LIMIT 1),
         (SELECT user_pk from user_name WHERE username = %s),
         (SELECT user_pk from user_name WHERE username = %s),
-        (SELECT facility_pk from facility WHERE facility_name = %s),
-        (SELECT facility_pk from facility WHERE facility_name = %s),
+        (SELECT facility_pk from facility WHERE facility_code = %s),
+        (SELECT facility_pk from facility WHERE facility_code = %s),
         %s, %s );"""
         data = (asset_tag, request_by, approve_by, sour, destination, request_dt, approve_dt)
         cur.execute(SQL, data)
