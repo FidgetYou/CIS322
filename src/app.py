@@ -285,7 +285,7 @@ def asset_report():
         the_times = now.date().isoformat()
         print (the_times)
         
-        if request.form['asset_menu'] and request.form['facility_menu']:
+        if request.form['date_menu'] and request.form['facility_menu']:
             
             if request.form['facility_menu'] == "ALL":
                 the_facil = "*"
@@ -329,7 +329,9 @@ WHERE (arrive is null or arrive<=%s) and
 
             #print (session['stock'])
             
-                    
+        else:
+            session['error'] = "Please Select Something"
+            return render_template('asset_report.html')
             
     
     return render_template('asset_report.html')
