@@ -16,6 +16,21 @@
 
                 <p> <label>LOST Asset Reports: Hey, {{session.username}} did you lose something?</label> </p>
                 
+		{% if session['works'] %}
+		    <table>
+			    <tr> <td>Asset Name</td> <td>Description</td> <td>Facility</td> <td>Arrive</td> <td>Depart</td> </tr>
+		    <tr>
+			{% for entry in session.stock %}
+			    <td>{{entry.asset_name}}</td>
+			    <td>{{entry.asset_info}}</td>
+			    <td>{{entry.facil_name}}</td>
+			    <td>{{entry.arrive}}</td>
+			    <td>{{entry.depart}}</td>
+			{% endfor %}
+		    </tr>
+		    </table>
+		{% endif %}
+		    
                 <form action="{{url_for('asset_report')}}" method="POST">
 			
                      <div class="input-group" style="width:640px">
