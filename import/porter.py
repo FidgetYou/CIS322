@@ -35,7 +35,7 @@ if import_files:
     except:
         sys.exit("Unable to find the file " + arg3)    
     
-    
+    print (csv_list)
     for i in range (1, len(csv_list)):
         #print ("i = " + str(i))
         #for j in range (1, len(csv_list)):
