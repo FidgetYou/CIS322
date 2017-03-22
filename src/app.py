@@ -678,9 +678,11 @@ def do_work():
     
     try:
         if session['role'] == logisticsOfficer:
-            return render_template('update_transit.html')
+            return redirect(url_for('update_transit'))
+            #return render_template('update_transit.html')
         else:
-            return render_template('approve_req.html')
+            return redirect(url_for('approve_req'))
+            #return render_template('approve_req.html')
     except:
         session['error'] = "You haven't logged in yet."
         return render_template('login.html')
