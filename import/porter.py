@@ -120,15 +120,16 @@ if import_files:
         else:
             arrive = None
         #rrive = "" + csv_list[i][3] + "" 
-        if csv_list[i][4] == NULL or csv_list[i][4] == "NULL":
+        if csv_list[i][4] == 'null' or csv_list[i][4] == "NULL":
             depart = None
             
             #depart = None
         else:
             #depart = csv_list[i][4] 
-            depart = csv_list[i][4]
-            
-            
+            if csv_list[i][4]:
+                depart = csv_list[i][4]
+            else: 
+                depart = None
             
         SQL = "INSERT INTO asset (asset_tag, asset_info) VALUES (%s, %s);"
         data = (the_tag, the_des)
