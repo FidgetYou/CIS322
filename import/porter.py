@@ -222,8 +222,8 @@ if import_files:
         SQL = """INSERT INTO requests (asset_fk, requester, approver, source_fac, destination_fac, request_time, approve_time ) 
         VALUES 
         ( (SELECT asset_pk from asset WHERE asset_tag = %s LIMIT 1),
-        (SELECT user_pk from user_name WHERE user_name = %s),
-        (SELECT user_pk from user_name WHERE user_name = %s),
+        (SELECT user_pk from user_name WHERE username = %s),
+        (SELECT user_pk from user_name WHERE username = %s),
         (SELECT facility_pk from facility WHERE facility_name = %s),
         (SELECT facility_pk from facility WHERE facility_name = %s),
         %s, %s );"""
