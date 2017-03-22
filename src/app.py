@@ -253,7 +253,7 @@ JOIN facility f ON aa.facility_fk=f.facility_pk
 JOIN asset a ON a.asset_pk=aa.asset_fk
 WHERE (arrive is null or arrive<=%s) and
       (depart is null or depart>=%s) """
-                Bdata = (the_times, the_times, the_facil)
+                Bdata = (the_times, the_times)
                 cur.execute(SQL, Bdata)
                 ass_request = cur.fetchall()
         
