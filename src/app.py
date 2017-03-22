@@ -582,7 +582,7 @@ def update_transit():
     if request.method == 'GET':
         the_users = session['uname']
         the_id = session['id']
-        SQL = "SELECT asset_fk FROM transit WHERE transit_pk = %s AND unload_time = null "
+        SQL = "SELECT asset_fk FROM transit WHERE transit_pk = %s AND (unload_time = None OR load_time = None) "
         Adata = the_id
         cur.execute(SQL, (Adata,))
         db_row = cur.fetchone()
