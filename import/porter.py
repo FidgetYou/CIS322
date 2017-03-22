@@ -178,7 +178,7 @@ if import_files:
     f.close()
     
     print ("csv transfers:")
-    print (csv_list[i])
+    print (csv_list)
     for i in range (1, len(csv_list)):
         print (csv_list[i])
         asset_tag = "" + csv_list[i][0] + ""
