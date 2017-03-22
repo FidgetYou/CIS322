@@ -707,15 +707,23 @@ def dashboard():
     logisticsOfficer = "Logistics Officer"
     try:
         if session['role'] == logisticsOfficer:
-            SQL = "SELECT asset.asset_tag, transit.transit_pk FROM asset, transit WHERE asset.asset_pk = transit.asset_fk AND (unload_time = null OR load_time = null);"
+            SQL = """SELECT asset.asset_tag, transit.transit_pk 
+            FROM asset, transit 
+            WHERE asset.asset_pk = transit.asset_fk 
+            AND (unload_time = null OR load_time = null);"""
         else:
-            SQL = "SELECT asset.asset_tag, requests.request_pk FROM asset, requests WHERE asset.asset_pk = requests.asset_fk AND requests.approved = false AND requests.rejected = false;"
+            SQL = """SELECT asset.asset_tag, requests.request_pk 
+            FROM asset, requests 
+            WHERE asset.asset_pk = requests.asset_fk 
+            AND requests.approved = false 
+            AND requests.rejected = false;"""
     except:
         session['error'] = "You haven't logged in yet."
         return render_template('login.html')
     
     cur.execute(SQL)
     fac = cur.fetchall()
+    print (fac)
     
     asset_name = []
     for f in fac:
