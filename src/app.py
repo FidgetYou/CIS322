@@ -230,7 +230,7 @@ def asset_report():
             cur.execute(SQL, (Adata,))
             test1 = cur.fetchone()
         
-            if test1 is None and request.form['facility_menu'] != "ALL"::
+            if test1 is None and request.form['facility_menu'] != "ALL":
                 session['error'] = "That destination does not exist."
                 return render_template('asset_report.html')
             
