@@ -582,7 +582,7 @@ def update_transit():
     if request.method == 'GET':
         the_users = session['uname']
         the_id = session['id']
-        SQL = "SELECT asset_fk FROM transit WHERE transit_pk = %s AND (unload_time = null OR load_time = null) "
+        SQL = "SELECT asset_fk FROM transit WHERE transit_pk = %s AND (unload_time is null OR load_time is null) "
         Adata = the_id
         cur.execute(SQL, (Adata,))
         db_row = cur.fetchone()
@@ -592,7 +592,13 @@ def update_transit():
             return render_template('update_transit.html')
         
         
-        SQL = "SELECT asset.asset_tag FROM asset, asset_at, transit WHERE transit.transit_pk = %s AND asset.asset_pk = transit.asset_fk AND asset.asset_pk = asset_at.asset_fk AND asset_at.in_transit = false AND asset_at.disposed = false "
+        SQL = """SELECT asset.asset_tag 
+        FROM asset, asset_at, transit 
+        WHERE transit.transit_pk = %s 
+        AND asset.asset_pk = transit.asset_fk 
+        AND asset.asset_pk = asset_at.asset_fk 
+        AND asset_at.in_transit = false 
+        AND asset_at.disposed = false """
         Adata = the_id
         cur.execute(SQL, (Adata,))
         db_row = cur.fetchone()
@@ -602,7 +608,12 @@ def update_transit():
             return render_template('approve_req.html')
         
         
-        SQL = "SELECT user_name.username, asset.asset_tag, facility.facility_name, requests.approve_time FROM asset, requests, facility, user_name WHERE requests.asset_fk = asset.asset_pk AND requests.approver = user_name.user_pk AND requests.source_fac = facility.facility_pk AND requests.request_pk = %s "
+        SQL = """SELECT user_name.username, asset.asset_tag, facility.facility_name, requests.approve_time 
+        FROM asset, requests, facility, user_name 
+        WHERE requests.asset_fk = asset.asset_pk 
+        AND requests.approver = user_name.user_pk 
+        AND requests.source_fac = facility.facility_pk 
+        AND requests.request_pk = %s """
         Adata = the_id
         cur.execute(SQL, (Adata,))
         ac = cur.fetchone()
@@ -696,7 +707,7 @@ def dashboard():
     logisticsOfficer = "Logistics Officer"
     try:
         if session['role'] == logisticsOfficer:
-            SQL = "SELECT asset.asset_tag, transit.transit_pk FROM asset, transit WHERE asset.asset_pk = transit.asset_fk;"
+            SQL = "SELECT asset.asset_tag, transit.transit_pk FROM asset, transit WHERE asset.asset_pk = transit.asset_fk AND (unload_time = null OR load_time = null);"
         else:
             SQL = "SELECT asset.asset_tag, requests.request_pk FROM asset, requests WHERE asset.asset_pk = requests.asset_fk AND requests.approved = false AND requests.rejected = false;"
     except:
