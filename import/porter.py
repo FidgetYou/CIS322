@@ -173,14 +173,20 @@ if import_files:
     f.close()
     
     for i in range (1, len(csv_list)):
+        print ("csv list:")
         print (csv_list[i])
         asset_tag = "" + csv_list[i][0] + ""
-        request_by = "" + csv_list[i][1] + ""     
+        print(asset_tag)
+        request_by = "" + csv_list[i][1] + ""  
+        print(request_by)
         request_dt = "" + csv_list[i][2] + "" 
+        print(request_dt)
         #approve_by = "" + csv_list[i][3] + "" 
         #approve_dt = "" + csv_list[i][4] + "" 
-        source = "" + csv_list[i][5] + ""
-        destination = "" + csv_list[i][6] + ""     
+        sour = "" + csv_list[i][5] + ""
+        print(sour)
+        destination = "" + csv_list[i][6] + ""  
+        print(destination)
         #load_dt = "" + csv_list[i][7] + "" 
         #unload_dt = "" + csv_list[i][8] + "" 
         
@@ -209,7 +215,7 @@ if import_files:
         (SELECT facility_pk from facility WHERE facility_name = %s),
         (SELECT facility_pk from facility WHERE facility_name = %s),
         %s, %s );"""
-        data = (asset_tag, request_by, approve_by, source, destination, request_dt, approve_dt)
+        data = (asset_tag, request_by, approve_by, sour, destination, request_dt, approve_dt)
         cur.execute(SQL, data)
         conn.commit()
         
@@ -218,7 +224,7 @@ if import_files:
         (SELECT facility_pk from facility WHERE facility_code = %s),
         (SELECT facility_pk from facility WHERE facility_code = %s),
         %s, %s );"""
-        data = (asset_tag, source, destination, load_dt, unload_dt)
+        data = (asset_tag, sour, destination, load_dt, unload_dt)
         cur.execute(SQL, data)
         conn.commit()
 
