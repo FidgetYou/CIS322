@@ -328,7 +328,7 @@ WHERE (arrive is null or arrive<=%s) and
             session['stock'] = asset_name
 
             #print (session['stock'])
-            
+            return redirect(url_for('asset_report'))
         else:
             session['error'] = "Please Select Something"
             return render_template('asset_report.html')
