@@ -280,7 +280,7 @@ def asset_report():
         the_facil = "" + request.form['facility_menu'] + ""
         #the_users = session['uname']
         
-        now = datetime.datetime.strptime(request.form['date_menu'], '%Y-%m-%dT%H:%M')
+        now = datetime.datetime.strptime(request.form['date_menu'], '%Y-%m-%d')
         print(now)
         the_times = now.date().isoformat()
         print (the_times)
@@ -683,7 +683,7 @@ def update_transit():
         #if request.form['facil'] and request.form['fcode'] and request.form['finfo']:
         if request.form['submit'] == 'Load':
             #the_times = datetime.datetime.strptime(request.form['load'], '%Y-%m-%dT%H:%M').isoformat()
-            now = datetime.datetime.strptime(request.form['load'], '%Y-%m-%dT%H:%M')
+            now = datetime.datetime.strptime(request.form['load'], '%Y-%m-%d')
             print(now)
             the_times = now.date().isoformat()
             print (the_times)
@@ -698,7 +698,7 @@ def update_transit():
         
         if request.form['submit'] == 'Unload':
             #the_times = datetime.datetime.strptime(request.form['unload'], '%Y-%m-%dT%H:%M').isoformat()
-            now = datetime.datetime.strptime(request.form['unload'], '%Y-%m-%dT%H:%M')
+            now = datetime.datetime.strptime(request.form['unload'], '%Y-%m-%d')
             print(now)
             the_times = now.date().isoformat()
             print (the_times)
@@ -873,7 +873,7 @@ def add_asset():
             the_ainfo = "" + request.form['ainfo'] + ""
             the_facil = "" + request.form['facilitymenu'] + ""
             #the_times = datetime.datetime.strptime(request.form['time'], '%Y-%m-%dT%H:%M').isoformat()
-            now = datetime.datetime.strptime(request.form['time'], '%Y-%m-%dT%H:%M')
+            now = datetime.datetime.strptime(request.form['time'], '%Y-%m-%d')
             print(now)
             the_times = now.date().isoformat()
             print (the_times)
@@ -962,7 +962,7 @@ def dispose_asset():
         if request.form['asset'] and request.form['time']:
             the_asset = "" + request.form['asset'] + ""
             #the_times = datetime.datetime.strptime(request.form['time'], '%Y-%m-%dT%H:%M').isoformat()
-            now = datetime.datetime.strptime(request.form['time'], '%Y-%m-%dT%H:%M')
+            now = datetime.datetime.strptime(request.form['time'], '%Y-%m-%d')
             print(now)
             the_times = now.date().isoformat()
             print (the_times)
