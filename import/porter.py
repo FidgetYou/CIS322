@@ -175,35 +175,35 @@ if import_files:
     for i in range (1, len(csv_list)):
         print ("csv list:")
         print (csv_list[i])
-        asset_tag = "" + csv_list[0][i][0] + ""
+        asset_tag = "" + csv_list[1][i][0] + ""
         print(asset_tag)
-        request_by = "" + csv_list[0][i][1] + ""  
+        request_by = "" + csv_list[1][i][1] + ""  
         print(request_by)
-        request_dt = "" + csv_list[0][i][2] + "" 
+        request_dt = "" + csv_list[1][i][2] + "" 
         print(request_dt)
         #approve_by = "" + csv_list[i][3] + "" 
         #approve_dt = "" + csv_list[i][4] + "" 
-        sour = "" + csv_list[0][i][5] + ""
+        sour = "" + csv_list[1][i][5] + ""
         print(sour)
-        destination = "" + csv_list[0][i][6] + ""  
+        destination = "" + csv_list[1][i][6] + ""  
         print(destination)
         #load_dt = "" + csv_list[i][7] + "" 
         #unload_dt = "" + csv_list[i][8] + "" 
         
         if csv_list[i][7]:
-            load_dt = csv_list[0][i][7]
+            load_dt = csv_list[1][i][7]
         else:
             load_dt = None
         if csv_list[i][8]:
-            unload_dt = csv_list[0][i][8]
+            unload_dt = csv_list[1][i][8]
         else:
             unload_dt = None
         if csv_list[i][3]:
-            approve_by = csv_list[0][i][3]
+            approve_by = csv_list[1][i][3]
         else:
             approve_by = None
         if csv_list[i][4]:
-            approve_dt = csv_list[0][i][4]
+            approve_dt = csv_list[1][i][4]
         else:
             approve_dt = None
             
