@@ -507,6 +507,7 @@ def approve_req():
 
         rTime = str(ac[3])
         request_txt = "" + ac[0] + " suggested at " + rTime + " that " + ac[1] + " be moved from " + ac[2] + " to "
+        print(request_txt)
         
         # With two facility names, I can't seem to get all of the results into one query.
         SQL = "SELECT facility.facility_name FROM requests, facility WHERE requests.destination_fac = facility.facility_pk AND requests.request_pk = %s "
@@ -517,6 +518,7 @@ def approve_req():
         #print (ac)
         
         request_txt = request_txt + "" + ac[0] + "."
+        print(request_txt)
         session['request_text'] = request_txt
         
         return render_template('approve_req.html')
