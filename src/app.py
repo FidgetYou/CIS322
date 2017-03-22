@@ -180,7 +180,7 @@ def login():
 
 
 
-@app.route('/asset_report')
+@app.route('/asset_report', methods=['GET', 'POST'])
 def asset_report():
     if request.method == 'GET':
         
